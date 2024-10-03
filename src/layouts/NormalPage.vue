@@ -1,7 +1,7 @@
 <template>
   <div class="flex gap-2.5">
     <Sidebar></Sidebar>
-    <div class="flex items-center h-lvh">
+    <div class="flex-1">
       <router-view />
     </div>
   </div>

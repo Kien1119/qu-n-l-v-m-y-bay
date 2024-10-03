@@ -1,6 +1,6 @@
 <template>
-  <div class="w-max">
-    <div class="flex flex-col !bg-emerald-50 rounded-2xl gap-2">
+  <div class="h-full flex items-center">
+    <div class="w-full !bg-emerald-50 rounded-2xl gap-2">
       <div>
         <div class="card flex justify-center">
           <div class="flex flex-wrap gap-4">
@@ -35,7 +35,8 @@
           <Button icon="pi pi-refresh"></Button>
         </div>
       </div>
-      <div class="flex bg-white">
+
+      <div class="bg-white flex justify-around">
         <AddressPage></AddressPage>
         <div class="mx-3 my-3">
           <Button
