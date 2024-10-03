@@ -1,7 +1,9 @@
 <template>
-  <div>
+  <div class="flex gap-2.5">
     <Sidebar></Sidebar>
-    <router-view />
+    <div class="flex items-center h-lvh">
+      <router-view />
+    </div>
   </div>
 </template>
 <script setup>
