@@ -49,19 +49,19 @@
     },
     {
       "id": 2,
-      "airportCode": "SGN",
-      "name": "Sân bay Hồ Chí Minh",
-      "city": "Hồ Chí Minh",
+      "airportCode": "HAN",
+      "name": "Sân bay Nội bài",
+      "city": "Hà Nội",
       "country": "Việt Nam",
-      "airline": "VJ",
+      "airline": "VN",
       "bookingCode": "B6JQ92",
       "departure": {
         "time": "2024-10-15T05:00:00.000Z",
-        "airport": "SGN"
+        "airport": "HAN"
       },
       "arrival": {
         "time": "2024-10-15T07:00:00.000Z",
-        "airport": "DAD"
+        "airport": "SGN"
       },
       "flightNumber": "345",
       "aircraft": "Boeing 787",
@@ -96,19 +96,19 @@
     },
     {
       "id": 3,
-      "airportCode": "DAD",
-      "name": "Sân bay Đà Nẵng",
-      "city": "Đà Nẵng",
+      "airportCode": "HAN",
+      "name": "Sân bay Nội bài",
+      "city": "Hà Nội",
       "country": "Việt Nam",
       "airline": "VN",
       "bookingCode": "B6JQ92",
       "departure": {
         "time": "2024-10-15T05:00:00.000Z",
-        "airport": "DAD"
+        "airport": "HAN"
       },
       "arrival": {
         "time": "2024-10-15T07:00:00.000Z",
-        "airport": "HAN"
+        "airport": "SGN"
       },
       "flightNumber": "345",
       "aircraft": "Boeing 787",
@@ -143,15 +143,15 @@
     },
     {
       "id": 4,
-      "airportCode": "PQC",
-      "name": "Sân bay Phú Quốc",
-      "city": "Phú Quốc",
+      "airportCode": "HAN",
+      "name": "Sân bay Nội bài",
+      "city": "Hà Nội",
       "country": "Việt Nam",
       "airline": "VN",
       "bookingCode": "B6JQ92",
       "departure": {
         "time": "2024-10-15T05:00:00.000Z",
-        "airport": "PQC"
+        "airport": "HAN"
       },
       "arrival": {
         "time": "2024-10-15T07:00:00.000Z",
