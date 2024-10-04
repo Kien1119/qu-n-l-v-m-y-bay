@@ -15,15 +15,17 @@ export const usePlaneStore = defineStore('planeStore', {
   }),
   actions: {
     async fetchAirports(params) {
+      const temp={}
+      Object.assign(temp,this.params,params)
+      for(const e of Object.keys(this.params)){
+        if(this.params[e] === '')
+          delete temp[e]
+      }
+        
+
       try {
-        const response = await axios.get(`http://localhost:3000/plane`, {
-          params: {
-            ...this.params,
-            _per_page: params._per_page
-          }
-        })
-        console.log('🚀 ~ fetchAirports ~ params:', params)
-        this.airports = response.data
+        const response = await axios.get(`http://localhost:3000/plane`, {params:temp})
+        this.airports = response.data.data
 
         // .data.map((e, i) => {
         //   console.log(e.instances?.[0] ? i : '')
@@ -35,7 +37,6 @@ export const usePlaneStore = defineStore('planeStore', {
         // }) // Lưu dữ liệu vào state
 
         this.total = response.data.items // Lưu dữ liệu vào state
-        console.log('🚀 ~ fetchAirports ~ this.total:', this.total)
       } catch (error) {
         console.error('Lỗi khi lấy dữ liệu sản phẩm:', error)
       }

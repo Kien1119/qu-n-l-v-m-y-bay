@@ -14,10 +14,6 @@
       <pre>
         <!-- {{ planeStore.airports }} -->
       </pre>
-
-      paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink
-      :rows="planeStore.params._per_page" :totalRecords="planeStore.total" CurrentPageReport
-      RowsPerPageDropdown" paginator
       <DataTable
         :value="planeStore.airports"
         :loading="loading"
@@ -28,6 +24,10 @@
         tableStyle="min-width: 50rem"
         @page="onPage"
         @sort="onSort"
+        paginator
+        :rows="planeStore.params._per_page" 
+        :totalRecords="planeStore.total" 
+        :first="planeStore.params._page"
       >
         <template #header>
           <div class="flex flex-wrap gap-2 items-center justify-between">
@@ -65,20 +65,17 @@ import { usePlaneStore } from '@/stores/airports'
 const planeStore = usePlaneStore()
 const loading = ref(false)
 const startIndex = computed(() => {
-  return planeStore.params._page * planeStore.params._per_page - planeStore.params._per_page
+  // return planeStore.params._page * planeStore.params._per_page - planeStore.params._per_page
   //return lazyParams.page * lazyParams.rows - lazyParams.rows;
 })
-
-console.log('🚀 ~ planeStore:', planeStore)
 const onPage = (event) => {
-  startIndex.value = event.first
-  planeStore.params._page = event.page + 1
-  planeStore.params._per_page = event.rows
-  planeStore.fetchAirports({})
+  // startIndex.value = event.first
+  planeStore.params._page = event?.page || 0 + 1
+  // planeStore.params._per_page = event.rows
+  planeStore.fetchAirports()
 }
 
 const onSort = (event) => {
-  console.log('🚀 ~ onSort ~ event:', event)
   planeStore.params._field = event.sortField
   planeStore.fetchAirports({})
 }
