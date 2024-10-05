@@ -1,5 +1,5 @@
 <template>
-  <div class="flex-1 flex-col rounded-lg bg-slate-200 px-3 py-3">
+  <div class="flex-1 flex-col rounded-lg bg-white px-3 py-3">
     <div class="ml-4 text-base font-serif text-black">Khởi hành</div>
     <div class="flex flex-col justify-content-start text-title gap-1.5 px-2 py-1">
       <div class="flex gap-2">

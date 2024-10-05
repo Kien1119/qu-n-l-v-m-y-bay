@@ -1,43 +1,43 @@
 <template>
   <div
-    class="h-full bg-cover bg-center flex items-center"
+    class="h-full bg-cover bg-center flex items-center justify-center"
     style="background-image: url(https://dev.airdata.site/img/background-image2.15114820.svg)"
   >
     <div
-      class="backdrop-blur-md flex w-full p-3 flex-col bg-white/50 h-1/2 rounded-2xl mx-20 my-20 border border-gray-500 gap-7"
+      class="backdrop-blur-md flex p-3 flex-col bg-white/50 h-1/2 rounded-2xl mx-20 my-20 border !border-gray-500 gap-7"
     >
       <div>
         <div class="card flex justify-between">
           <div class="flex flex-wrap gap-4">
             <div class="flex items-center">
-              <RadioButton
-                v-model="ingredient"
-                inputId="ingredient1"
-                name="pizza"
-                value="One-way"
-              />
+              <RadioButton v-model="ingredient" inputId="ingredient1" name="pizza" :value="1" />
               <label for="ingredient1" class="ml-2">Một chiều</label>
             </div>
             <div class="flex items-center">
               <RadioButton
+                disabled
                 v-model="ingredient"
                 inputId="ingredient3"
                 name="pizza"
-                value="Round-trip"
+                :value="2"
               />
               <label for="ingredient3" class="ml-2">Khứ hồi</label>
             </div>
             <div class="flex items-center">
               <RadioButton
+                disabled
                 v-model="ingredient"
                 inputId="ingredient4"
                 name="pizza"
-                value="Many-stages"
+                :value="3"
               />
               <label for="ingredient4" class="ml-2">Nhiều chặng</label>
             </div>
           </div>
-          <Button class="!bg-slate-50 !text-black" icon="pi pi-refresh"></Button>
+          <Button
+            class="!bg-white/50 !border-0 !text-black hover:!bg-black/50"
+            icon="pi pi-refresh"
+          ></Button>
         </div>
       </div>
       <div class="flex h-1/3 justify-center">
@@ -101,65 +101,20 @@
         <div class="border-l-2"></div>
         <div class="flex items-center gap-3">
           <img src="https://dev.airdata.site/img/users.1985e36a.svg" width="24px" alt="" />
-          <Button
-            type="button"
-            :label="selectedMember ? selectedMember.name : '1 người lớn, 0 trẻ em, 0 em bé'"
-            @click="toggle"
-            class="min-w-48"
-          />
-          <Popover ref="op">
-            <div class="flex flex-col gap-4">
-              <div class="flex flex-col gap-3">
-                <span class="font-medium block mb-2">Số lượng hành khách</span>
-                <div class="flex-1">
-                  <div class="flex gap-3 items-center">
-                    <div class="flex-1 flex-col items-center">
-                      <span class="font-medium block">Người lớn</span>
-                      <span class="font-medium block text-gray-300">(Từ 12 tuổi)</span>
-                    </div>
-                    <div class="flex-1">
-                      <InputGroup>
-                        <Button icon="pi pi-plus" severity="success" />
-                        <InputNumber placeholder="1" />
-                        <Button icon="pi pi-minus" severity="danger" />
-                      </InputGroup>
-                    </div>
-                  </div>
-                </div>
-                <div class="flex-1">
-                  <div class="flex gap-3 items-center">
-                    <div class="flex-1 flex-col">
-                      <span class="font-medium block">Trẻ em</span>
-                      <span class="font-medium block text-gray-300">(Từ 2 đến dưới 12 tuổi)</span>
-                    </div>
-                    <div class="flex-1">
-                      <InputGroup>
-                        <Button icon="pi pi-plus" severity="success" />
-                        <InputNumber placeholder="0" />
-                        <Button icon="pi pi-minus" severity="danger" />
-                      </InputGroup>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="flex-1">
-                  <div class="flex gap-3 items-center">
-                    <div class="flex-1 flex-col items-center">
-                      <span class="font-medium block">Em bé</span>
-                      <span class="font-medium block text-gray-300">(Dưới 2 tuổi)</span>
-                    </div>
-                    <div class="flex-1">
-                      <InputGroup>
-                        <Button icon="pi pi-plus" severity="success" />
-                        <InputNumber placeholder="0" />
-                        <Button icon="pi pi-minus" severity="danger" />
-                      </InputGroup>
-                    </div>
-                  </div>
-                </div>
+          <div class="flex-1">
+            <div class="flex gap-3 items-center">
+              <div class="">
+                <span class="font-medium">Hành khách</span>
+              </div>
+              <div class="grow">
+                <InputGroup>
+                  <Button icon="pi pi-plus" severity="success" />
+                  <InputNumber placeholder="0" />
+                  <Button icon="pi pi-minus" severity="danger" />
+                </InputGroup>
               </div>
             </div>
-          </Popover>
+          </div>
         </div>
       </div>
       <div class="flex items-center items-center justify-center">
@@ -172,7 +127,8 @@
 <script setup>
 import AddressPage from '@/component/AddressPage.vue'
 import { ref } from 'vue'
-const ingredient = ref()
+
+const ingredient = ref(1)
 const calendarValue = ref()
 const multiselectValue = ref()
 const multiselectValues = ref([
@@ -187,11 +143,7 @@ const multiselectValues = ref([
   { name: 'Spain', code: 'ES' },
   { name: 'United States', code: 'US' }
 ])
-const op = ref()
-const selectedMember = ref(null)
-const toggle = (event) => {
-  op.value.toggle(event)
-}
+
 // const search = (event) => {
 //   let query = event.query
 //   let newFilteredCities = []
