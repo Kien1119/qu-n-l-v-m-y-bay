@@ -47,7 +47,7 @@ export const usePlaneStore = defineStore('planeStore', {
         console.log('Sản phẩm đã xóa thành công:', deleteAirport.data)
         await this.fetchAirports()
       } catch (error) {
-        console.log('data Error')
+        console.error('data Error')
       }
     },
     async fetchAirportById(id) {
@@ -62,7 +62,6 @@ export const usePlaneStore = defineStore('planeStore', {
       }
     },
     async updateAirport(id, data) {
-      console.log('store update airport', { id, data })
       try {
         // Gọi API để cập nhật sân bay
         const response = await axios.patch(`http://localhost:3000/plane/${id}`, data)
@@ -88,22 +87,18 @@ export const usePlaneStore = defineStore('planeStore', {
         return error
       }
     },
-    async sortAirport(sortField, sortOrder) {
+    async sortAirport(sortOrder, sortField) {
       try {
         // Cập nhật params với cột và thứ tự sắp xếp
 
         // Gọi API để lấy dữ liệu sắp xếp
-        const sortData = await axios.get(`http://localhost:3000/plane`, {
-          params: {
-            _field: sortField,
-            _order: sortOrder
-          }
-        })
-
         this.params._field = sortField
-        console.log('🚀 ~ sortAirport ~  this.params._field :', this.params._field)
         this.params._order = sortOrder
-        this.airport = sortData.data
+        const sortData = await axios.get(
+          `http://localhost:3000/plane?_sort=-id,name,city,country,airportCode`
+        )
+        this.airports = sortData.data
+        console.log('🚀 ~ sortAirport ~ this.airports:', this.airports)
       } catch (error) {
         console.error('Error sorting airports:', error)
       }
