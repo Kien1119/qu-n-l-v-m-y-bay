@@ -23,6 +23,7 @@
           <Button label="Export" icon="pi pi-upload" severity="secondary" />
         </template>
       </Toolbar>
+
       <DataTable
         :paginator="true"
         :loading="loading"
@@ -42,16 +43,15 @@
         <template #header>
           <div class="flex flex-wrap gap-2 items-center justify-between">
             <h4 class="m-0">Manage Airports</h4>
-            <IconField>
-              <InputIcon>
-                <i class="pi pi-search" />
-              </InputIcon>
+            <InputGroup>
+              <Button @click="handleSearch" icon="pi pi-search" severity="search" />
               <InputText
-                v-model="planeStore.params.name"
+                v-model="searchQueryAirport"
                 placeholder="Search..."
                 @keyup.enter="debouncedSearch()"
               />
-            </IconField>
+              <Button icon="pi pi-times" severity="danger" @click="resetFilters" />
+            </InputGroup>
           </div>
         </template>
 
@@ -103,7 +103,7 @@
           </div>
           <div>
             <label for="city" class="block font-bold mb-3">City</label>
-            <InputText id="city" v-model.trim="city" required="true" autofocus fluid />
+            <InputText id="city" v-model.trim="airport.city" required="true" autofocus fluid />
           </div>
           <div>
             <label for="country" class="block font-bold mb-3">Country</label>
@@ -212,23 +212,33 @@ const onPage = (event) => {
 }
 
 const onSort = async (event) => {
-  const sortField = event.sortField // Lấy trường cần sắp xếp
-  const sortOrder = event.sortOrder === 1 ? 'asc' : 'desc' // Đặt thứ tự sắp xếp (asc hoặc desc)
-
   // Gọi hàm sortAirport để lấy dữ liệu đã sắp xếp từ API
-  await planeStore.sortAirport(sortOrder, sortField)
+  // await planeStore.sortAirport(sortField, sortOrder)
+  const sortField = event.sortField // Lấy trường c
+  const sortOrder = event.sortOrder === 1 ? '-' : '' // Đặt thứ tự sắp xếp (asc hoặc desc)
+  planeStore.params._sort = sortOrder + sortField
+  // Gọi hàm sortAirport để lấy dữ liệu đã sắp xếp từ API
+  planeStore.fetchAirports()
+}
+const resetFilters = () => {
+  searchQueryAirport.value = ''
+  planeStore.fetchAirports() // Re-fetch or reset the airports list
+}
+const searchQueryAirport = ref('')
+const handleSearch = () => {
+  const [name, airportCode] = searchQueryAirport.value.split(',').map((str) => str.trim())
+  planeStore.searchAirport({ name, airportCode })
+}
+let timeoutID = null
+const debouncedSearch = () => {
+  clearTimeout(timeoutID)
+  timeoutID = setTimeout(() => {
+    planeStore.params._search = searchQueryAirport.value
+    handleSearch
+  }, 300)
 }
 
-watch(
-  () => planeStore.airports,
-  (newValue) => {
-    console.log(newValue)
-  },
-  {
-    deep: true
-  }
-)
-
+watch(searchQueryAirport, debouncedSearch)
 const confirmDeleteAirport = (id) => {
   confirm.require({
     message: 'Bạn có muốn xóa sân bay này không??',
@@ -381,11 +391,7 @@ const [name, nameAttrs] = defineField('name')
 const [airportCode, airportCodeAttrs] = defineField('airportCode')
 const [city, cityAttrs] = defineField('city')
 const [country, countryAttrs] = defineField('country')
-let timoutID
-const debouncedSearch = () => {
-  clearTimeout(timoutID)
-  timoutID = setTimeout(() => 300)
-}
+
 onMounted(() => {
   onPage(1, 10)
 })
