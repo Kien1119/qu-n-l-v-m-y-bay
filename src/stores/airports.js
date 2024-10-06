@@ -6,7 +6,8 @@ export const usePlaneStore = defineStore('planeStore', {
     params: {
       _page: 1,
       _per_page: 10,
-      _field: 'id',
+      _field: 'id,name,city,country,airportCode',
+      _order: 'asc',
       _title: ''
     },
     airports: [],
@@ -47,6 +48,64 @@ export const usePlaneStore = defineStore('planeStore', {
         await this.fetchAirports()
       } catch (error) {
         console.log('data Error')
+      }
+    },
+    async fetchAirportById(id) {
+      try {
+        const { data } = await axios.get(`http://localhost:3000/plane/${id}`)
+        this.airport = {
+          ...data
+        }
+        return data
+      } catch (error) {
+        console.error('data lỗi')
+      }
+    },
+    async updateAirport(id, data) {
+      console.log('store update airport', { id, data })
+      try {
+        // Gọi API để cập nhật sân bay
+        const response = await axios.patch(`http://localhost:3000/plane/${id}`, data)
+        console.log('Sân bay đã cập nhật thành công:', response)
+
+        // Sau khi cập nhật, tải lại danh sách sân bay
+        await this.fetchAirports()
+      } catch (error) {
+        console.error('Lỗi khi cập nhật sân bay:', error)
+      }
+    },
+    async addAirport(req) {
+      try {
+        const { data } = await axios.post(`http://localhost:3000/plane`, req)
+
+        data.id = Math.round(Math.random() * 1000000)
+        await this.fetchAirports({})
+
+        return data
+      } catch (error) {
+        console.error(error)
+
+        return error
+      }
+    },
+    async sortAirport(sortField, sortOrder) {
+      try {
+        // Cập nhật params với cột và thứ tự sắp xếp
+
+        // Gọi API để lấy dữ liệu sắp xếp
+        const sortData = await axios.get(`http://localhost:3000/plane`, {
+          params: {
+            _field: sortField,
+            _order: sortOrder
+          }
+        })
+
+        this.params._field = sortField
+        console.log('🚀 ~ sortAirport ~  this.params._field :', this.params._field)
+        this.params._order = sortOrder
+        this.airport = sortData.data
+      } catch (error) {
+        console.error('Error sorting airports:', error)
       }
     }
   }

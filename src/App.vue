@@ -1,6 +1,7 @@
 <template>
   <div>
-    <ConfirmPopup></ConfirmPopup>
+    <ConfirmDialog></ConfirmDialog>
+    <Toast></Toast>
     <component :is="layout">
       <RouterView></RouterView>
     </component>
@@ -11,7 +12,6 @@
 import { computed } from 'vue'
 import DefaultPage from './layouts/DefaultPage.vue'
 import NormalPage from './layouts/NormalPage.vue'
-import ConfirmPopup from 'primevue/confirmpopup';
 
 import { useRoute } from 'vue-router'
 const route = useRoute()
