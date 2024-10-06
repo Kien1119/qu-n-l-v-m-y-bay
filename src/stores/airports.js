@@ -6,8 +6,7 @@ export const usePlaneStore = defineStore('planeStore', {
     params: {
       _page: 1,
       _per_page: 10,
-      _field: 'id,name,city,country,airportCode',
-      _order: 'asc',
+      _sort: '',
       _title: ''
     },
     airports: [],

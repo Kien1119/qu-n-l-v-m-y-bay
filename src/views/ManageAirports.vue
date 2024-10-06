@@ -213,10 +213,10 @@ const onPage = (event) => {
 
 const onSort = async (event) => {
   const sortField = event.sortField // Lấy trường cần sắp xếp
-  const sortOrder = event.sortOrder === 1 ? 'asc' : 'desc' // Đặt thứ tự sắp xếp (asc hoặc desc)
-
+  const sortOrder = event.sortOrder === 1 ? '' : '-' // Đặt thứ tự sắp xếp (asc hoặc desc)
+  planeStore.params._sort = sortOrder + sortField
   // Gọi hàm sortAirport để lấy dữ liệu đã sắp xếp từ API
-  await planeStore.sortAirport(sortOrder, sortField)
+  planeStore.fetchAirports()
 }
 
 watch(
