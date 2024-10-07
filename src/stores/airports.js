@@ -129,6 +129,29 @@ export const usePlaneStore = defineStore('planeStore', {
       } catch (error) {
         console.error('Lỗi data')
       }
+    },
+    async deleteFlights(id) {
+      try {
+        console.log('🚀 ~ deleteFlights ~ id:', id)
+        const deleteFlights = await axios.delete(`http://localhost:3000/flights/${id}`)
+        console.log('🚀 ~ deleteFlights ~ deleteFlights:', deleteFlights)
+        console.log('Sản phẩm đã xóa thành công:', deleteFlights.data)
+        await this.fetchFlights()
+      } catch (error) {
+        console.error('data Error')
+      }
+    },
+    async updateFlights(id, data) {
+      try {
+        // Gọi API để cập nhật sân bay
+        const response = await axios.patch(`http://localhost:3000/flights/${id}`, data)
+        console.log('Sân bay đã cập nhật thành công:', response)
+
+        // Sau khi cập nhật, tải lại danh sách sân bay
+        await this.fetchFlights()
+      } catch (error) {
+        console.error('Lỗi khi cập nhật sân bay:', error)
+      }
     }
   }
 })
