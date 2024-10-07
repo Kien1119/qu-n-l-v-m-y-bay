@@ -42,7 +42,7 @@
       >
         <template #header>
           <div class="flex flex-wrap gap-2 items-center justify-between">
-            <h4 class="m-0">Manage Airports</h4>
+            <h1 class="m-0 font-serif font-medium text-4xl text-orange-600">Manage Airports</h1>
             <InputGroup>
               <Button @click="handleSearch" icon="pi pi-search" severity="search" />
               <InputText
@@ -57,20 +57,33 @@
 
         <template #empty> No airports found. </template>
         <template #loading> Loading airports data. Please wait. </template>
-        <Column field="stt" header="STT" sortable style="width: 10rem">
+        <Column class="text-orange-600" field="stt" header="STT" sortable style="width: 10rem">
           <template #body="{ index }">
             {{ startIndex + index + 1 }}
           </template>
         </Column>
 
-        <Column field="name" header="Name" sortable style="min-width: 16rem" />
-        <Column field="airportCode" header="Airport Code" sortable style="min-width: 12rem" />
-        <Column field="city" header="City" sortable style="min-width: 16rem" />
-        <Column field="country" header="Country" sortable style="min-width: 16rem" />
-        <Column :exportable="false" style="min-width: 12rem">
+        <Column class="" field="name" header="Tên sân bay" sortable style="min-width: 16rem" />
+        <Column
+          class=""
+          field="airportCode"
+          header="Mã sân bay"
+          sortable
+          style="min-width: 12rem"
+        />
+        <Column class="" field="city" header="Thành phố" sortable style="min-width: 16rem" />
+        <Column class="" field="country" header="Đất nước" sortable style="min-width: 16rem" />
+        <Column class="" :exportable="false" style="min-width: 12rem">
           <template #body="{ data }">
-            <Button icon="pi pi-pencil" outlined rounded class="mr-2" @click="editAirPort(data)" />
             <Button
+              icon="pi pi-pencil"
+              outlined
+              rounded
+              class="mr-2 !bg-green-100"
+              @click="editAirPort(data)"
+            />
+            <Button
+              class="!bg-red-100"
               icon="pi pi-trash"
               outlined
               rounded
@@ -206,9 +219,11 @@ const startIndex = computed(() => {
   return planeStore.params._page * planeStore.params._per_page - planeStore.params._per_page
 })
 
-const onPage = (event) => {
+const onPage = async (event) => {
+  loading.value = true
   planeStore.params._page = event.page + 1 || event
-  planeStore.fetchAirports()
+  await planeStore.fetchAirports()
+  loading.value = false
 }
 
 const onSort = async (event) => {
@@ -218,7 +233,9 @@ const onSort = async (event) => {
   const sortOrder = event.sortOrder === 1 ? '-' : '' // Đặt thứ tự sắp xếp (asc hoặc desc)
   planeStore.params._sort = sortOrder + sortField
   // Gọi hàm sortAirport để lấy dữ liệu đã sắp xếp từ API
-  planeStore.fetchAirports()
+  loading.value = true
+  await planeStore.fetchAirports()
+  loading.value = false
 }
 const resetFilters = () => {
   searchQueryAirport.value = ''
@@ -232,9 +249,11 @@ const handleSearch = () => {
 let timeoutID = null
 const debouncedSearch = () => {
   clearTimeout(timeoutID)
-  timeoutID = setTimeout(() => {
+  timeoutID = setTimeout(async () => {
+    loading.value = true
     planeStore.params._search = searchQueryAirport.value
-    handleSearch
+    await handleSearch()
+    loading.value = false
   }, 300)
   const sortField = event.sortField // Lấy trường cần sắp xếp
   const sortOrder = event.sortOrder === 1 ? '' : '-' // Đặt thứ tự sắp xếp (asc hoặc desc)
@@ -290,7 +309,7 @@ const handleUpdateAirport = async () => {
         detail: 'Đang tiến hành cập nhật sân bay...',
         life: 3000
       })
-
+      loading.value = true
       try {
         // Gọi API cập nhật sân bay với ID và dữ liệu đã chỉnh sửa
         await planeStore.updateAirport(airport.value.id, airport.value)
@@ -315,6 +334,8 @@ const handleUpdateAirport = async () => {
           detail: 'Cập nhật sân bay thất bại.',
           life: 3000
         })
+      } finally {
+        loading.value = false
       }
     },
     reject: () => {
@@ -354,6 +375,7 @@ const handleAddAirport = handleSubmit((values) => {
       label: 'Save'
     },
     accept: async () => {
+      loading.value = true
       toast.add({
         severity: 'thông tin',
         summary: 'Đã xác nhận',
@@ -374,6 +396,8 @@ const handleAddAirport = handleSubmit((values) => {
           airportAddDialog.value = true
         } catch (error) {
           console.error('lỗi data', { error })
+        } finally {
+          loading.value = false // Set loading to false
         }
         airportAddDialog.value = false
       } else {

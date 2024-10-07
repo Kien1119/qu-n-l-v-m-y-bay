@@ -2,6 +2,7 @@
   <div>
     <ConfirmDialog></ConfirmDialog>
     <Toast></Toast>
+
     <component :is="layout">
       <RouterView></RouterView>
     </component>

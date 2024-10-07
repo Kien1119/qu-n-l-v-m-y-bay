@@ -21,7 +21,7 @@ const router = createRouter({
     {
       path: '/flights',
       name: 'ManageFlights',
-      component: () => import('../views/HomeView.vue'),
+      component: () => import('../views/ManageFlights.vue'),
       meta: { layout: NormalPage }
     },
     {

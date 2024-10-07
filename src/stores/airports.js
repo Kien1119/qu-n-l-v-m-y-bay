@@ -11,6 +11,8 @@ export const usePlaneStore = defineStore('planeStore', {
     },
     airports: [],
     airport: {},
+    flights: [],
+    flight: {},
     total: 0, // Tổng số sản phẩm
     first: 0
   }),
@@ -111,6 +113,21 @@ export const usePlaneStore = defineStore('planeStore', {
         console.log('Search results:', this.airports)
       } catch (error) {
         console.error('Error searching airports:', error)
+      }
+    },
+    async fetchFlights(params) {
+      const temp = {}
+      Object.assign(temp, this.params, params)
+      for (const e of Object.keys(this.params)) {
+        if (this.params[e] === '') delete temp[e]
+      }
+      try {
+        const response = await axios.get(`http://localhost:3000/flights`, { params: temp })
+        this.flights = response.data.data
+        console.log(response)
+        this.total = response.data.items
+      } catch (error) {
+        console.error('Lỗi data')
       }
     }
   }
