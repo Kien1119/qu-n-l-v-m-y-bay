@@ -1,10 +1,13 @@
 <template>
   <div
-    class="h-full bg-cover bg-center flex items-center justify-center"
-    style="background-image: url(https://dev.airdata.site/img/background-image2.15114820.svg)"
+    class="bg-cover bg-center flex items-center justify-center"
+    style="
+      height: 100vh;
+      background-image: url(https://dev.airdata.site/img/background-image2.15114820.svg);
+    "
   >
     <div
-      class="backdrop-blur-md flex p-3 flex-col bg-white/50 h-1/2 rounded-2xl mx-20 my-20 border !border-gray-500 gap-7"
+      class="backdrop-blur-md flex p-3 flex-col bg-white/50 rounded-2xl mx-20 my-20 border !border-gray-500 gap-7 h-2/3 justify-between"
     >
       <div>
         <div class="card flex justify-between">
@@ -55,6 +58,7 @@
         <div class="flex gap-3">
           <img src="https://dev.airdata.site/img/airplane-up.50b67a05.svg" width="24px" alt="" />
           <DatePicker
+            placeholder="Chọn ngày đi"
             :showIcon="true"
             :showButtonBar="true"
             v-model="calendarValue"

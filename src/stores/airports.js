@@ -152,6 +152,37 @@ export const usePlaneStore = defineStore('planeStore', {
       } catch (error) {
         console.error('Lỗi khi cập nhật sân bay:', error)
       }
+    },
+    async addFlights(req) {
+      try {
+        const { data } = await axios.post(`http://localhost:3000/flights`, req)
+
+        data.id = Math.round(Math.random() * 1000000)
+        await this.fetchFlights({})
+
+        return data
+      } catch (error) {
+        console.error(error)
+
+        return error
+      }
+    },
+    async searchFlights(searchParams = {}) {
+      try {
+        const { name, airportCode } = searchParams
+
+        const query = {}
+        if (name) query.name = name
+        if (airportCode) query.airportCode = airportCode
+
+        const searchData = await axios.get(`http://localhost:3000/flights`, { params: query })
+
+        console.log('🚀 ~ searchAirport ~ searchData:', searchData)
+        this.airports = searchData.data
+        console.log('Search results:', this.airports)
+      } catch (error) {
+        console.error('Error searching airports:', error)
+      }
     }
   }
 })
