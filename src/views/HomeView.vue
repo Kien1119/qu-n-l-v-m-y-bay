@@ -233,6 +233,12 @@ const handleSubmit = async () => {
           loading.value = false
         }
       }
+      toast.add({
+        severity: 'success',
+        summary: 'Thành công',
+        detail: 'Sân bay đã được cập nhật!',
+        life: 3000
+      })
     },
     reject: () => {
       toast.add({

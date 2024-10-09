@@ -80,32 +80,55 @@
         <Button class="!bg-slate-600 !rounded-full h-4/5" icon="pi pi-search" iconPos="top" />
       </div>
     </div>
-    {{ planeStore.filteredFlights }}
-    <div class="flex w-11/12 h-14 rounded-lg border-2 bg-slate-50 justify-between">
-      <img
-        style="border-radius: 5px"
-        src="https://www.vnas.vn/public/upload/files/29.9.2020/%E1%BA%A3nh%20vinayuuki%20vinh/04.10/06.10/10.10/%C4%91%E1%BA%A1i%20h%E1%BB%8Dc%20vinh/16.10/trang%20nh%C6%B0/ng%C3%A0y%2018.10/%C4%90%E1%BA%A1i%20h%20vinh/ng%C3%A0y%2030.10/th%C3%A1ng%2011/logo%2C/vietnam-airline-logo.jpg"
-        alt=""
-      />
-      <span class="flex items-center text-orange-600 font-bold">VN8060</span>
-      <div class="flex items-center">
-        <span class="text-stone-950 font-bold">07:10</span> - 08:25
-      </div>
-      <span class="flex items-center">CAH-SGN</span>
-      <span class="flex items-center">ATR</span>
-      <span class="flex items-center text-red-600 font-bold">1,176,000</span>
-      <div class="flex items-center mr-3">
-        <Checkbox v-model="pizza" inputId="ingredient1" name="pizza" :value="item" />
-      </div>
-    </div>
+
+    <ul>
+      <li v-for="flight in storedFilteredFlights" :key="flight.id">
+        <div class="flex w-11/12 h-14 rounded-lg border-2 bg-slate-50 justify-between">
+          <img
+            style="border-radius: 5px"
+            src="https://www.vnas.vn/public/upload/files/29.9.2020/%E1%BA%A3nh%20vinayuuki%20vinh/04.10/06.10/10.10/%C4%91%E1%BA%A1i%20h%E1%BB%8Dc%20vinh/16.10/trang%20nh%C6%B0/ng%C3%A0y%2018.10/%C4%90%E1%BA%A1i%20h%20vinh/ng%C3%A0y%2030.10/th%C3%A1ng%2011/logo%2C/vietnam-airline-logo.jpg"
+            alt=""
+          />
+          <span class="flex items-center text-orange-600 font-bold">{{ flight.bookingCode }}</span>
+          <div class="flex items-center">
+            <span class="text-stone-950 font-bold">{{ formatDate(flight.departure.time) }}</span> -
+            {{ formatDate(flight.arrival.time) }}
+          </div>
+          <span class="flex items-center"
+            >{{ flight.departure.airport }}-{{ flight.arrival.airport }}</span
+          >
+          <span class="flex items-center">{{ flight.aircraft }}</span>
+          <span class="flex items-center text-red-600 font-bold">1,176,000</span>
+          <div class="flex items-center mr-3">
+            <Checkbox v-model="pizza" inputId="ingredient1" name="pizza" :value="flight" />
+          </div>
+        </div>
+      </li>
+    </ul>
   </div>
 </template>
 <script setup>
 import { ref, onMounted } from 'vue'
-import { usePlaneStore } from '@/stores/airports'
-const planeStore = usePlaneStore()
+const storedFilteredFlights = ref([])
+function formatDate() {
+  const date = new Date()
+
+  const day = String(date.getDate()).padStart(2, '0')
+  const month = String(date.getMonth() + 1).padStart(2, '0')
+  const year = date.getFullYear()
+
+  const hours = String(date.getHours()).padStart(2, '0')
+  const minutes = String(date.getMinutes()).padStart(2, '0')
+  const seconds = String(date.getSeconds()).padStart(2, '0')
+
+  return `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`
+}
 onMounted(() => {
-  planeStore.getFilteredFlights()
+  const savedFlights = localStorage.getItem('filteredFlights')
+  if (savedFlights) {
+    storedFilteredFlights.value = JSON.parse(savedFlights)
+  }
+  console.log('🚀 ~ onMounted ~ savedFlights:', storedFilteredFlights)
 })
 const calendarValue = ref()
 const pizza = ref()

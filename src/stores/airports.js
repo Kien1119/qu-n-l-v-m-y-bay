@@ -194,7 +194,7 @@ export const usePlaneStore = defineStore('planeStore', {
           (flight) =>
             flight.departure.airport === req.departure && flight.arrival.airport === req.arrival
         )
-
+        localStorage.setItem('filteredFlights', JSON.stringify(this.filteredFlights))
         return this.filteredFlights
       } catch (error) {
         console.error('Không thể hiển thị data:', error)
