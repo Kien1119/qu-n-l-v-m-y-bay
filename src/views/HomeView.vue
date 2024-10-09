@@ -44,7 +44,7 @@
         </div>
       </div>
       <div class="flex h-1/3 justify-center">
-        <AddressPage></AddressPage>
+        <AddressPage v-model:airports="departures" />
         <div class="mx-3 my-3 flex items-center">
           <Button
             type="button"
@@ -52,18 +52,12 @@
             icon="pi pi-arrow-right-arrow-left"
           />
         </div>
-        <AddressPage></AddressPage>
+        <AddressPage v-model:airports="arrival" />
       </div>
       <div class="flex justify-around gap-3">
         <div class="flex gap-3">
           <img src="https://dev.airdata.site/img/airplane-up.50b67a05.svg" width="24px" alt="" />
-          <DatePicker
-            placeholder="Chọn ngày đi"
-            :showIcon="true"
-            :showButtonBar="true"
-            v-model="calendarValue"
-            iconDisplay="input"
-          ></DatePicker>
+          <DatePicker placeholder="Chọn ngày đi" v-model="formattedDate"></DatePicker>
         </div>
         <div class="border-r-2"></div>
         <div class="flex gap-3 items-center">
@@ -92,11 +86,12 @@
               </template>
             </template>
             <template #option="slotProps">
-              <div class="flex items-center">
+              <div class="flex items-center gap-3">
                 <span
                   :class="'mr-2 flag flag-' + slotProps.option.code.toLowerCase()"
                   style="width: 18px; height: 12px"
                 />
+                <div><img style="width: 24px" :src="slotProps.option.img" alt="" /></div>
                 <div>{{ slotProps.option.name }}</div>
               </div>
             </template>
@@ -112,9 +107,9 @@
               </div>
               <div class="grow">
                 <InputGroup>
-                  <Button icon="pi pi-plus" severity="success" />
-                  <InputNumber placeholder="0" />
-                  <Button icon="pi pi-minus" severity="danger" />
+                  <Button icon="pi pi-plus" severity="success" @click="increment" />
+                  <InputNumber v-model="count" placeholder="0" />
+                  <Button icon="pi pi-minus" severity="danger" @click="decrement" />
                 </InputGroup>
               </div>
             </div>
@@ -132,22 +127,66 @@
 import AddressPage from '@/component/AddressPage.vue'
 import { ref } from 'vue'
 
+function formatDate() {
+  const date = new Date()
+  const day = String(date.getDate()).padStart(2, '0')
+  const month = String(date.getMonth() + 1).padStart(2, '0')
+  const year = date.getFullYear()
+  return ` ${day}/${month}/${year}`
+}
+// const formattedDate = formatDate()
+const formattedDate = ref()
+formattedDate.value = formatDate()
+
 const ingredient = ref(1)
-const calendarValue = ref()
+
 const multiselectValue = ref()
 const multiselectValues = ref([
-  { name: 'Australia', code: 'AU' },
-  { name: 'Brazil', code: 'BR' },
-  { name: 'China', code: 'CN' },
-  { name: 'Egypt', code: 'EG' },
-  { name: 'France', code: 'FR' },
-  { name: 'Germany', code: 'DE' },
-  { name: 'India', code: 'IN' },
-  { name: 'Japan', code: 'JP' },
-  { name: 'Spain', code: 'ES' },
-  { name: 'United States', code: 'US' }
+  {
+    name: 'Vietnam Airlines',
+    code: 'VN',
+    img: 'https://www.vnas.vn/public/upload/files/29.9.2020/%E1%BA%A3nh%20vinayuuki%20vinh/04.10/06.10/10.10/%C4%91%E1%BA%A1i%20h%E1%BB%8Dc%20vinh/16.10/trang%20nh%C6%B0/ng%C3%A0y%2018.10/%C4%90%E1%BA%A1i%20h%20vinh/ng%C3%A0y%2030.10/th%C3%A1ng%2011/logo%2C/vietnam-airline-logo.jpg'
+  },
+  {
+    name: 'Vietjet Air',
+    code: 'VJ',
+    img: 'https://www.vnas.vn/public/upload/files/29.9.2020/%E1%BA%A3nh%20vinayuuki%20vinh/04.10/06.10/10.10/%C4%91%E1%BA%A1i%20h%E1%BB%8Dc%20vinh/16.10/trang%20nh%C6%B0/ng%C3%A0y%2018.10/%C4%90%E1%BA%A1i%20h%20vinh/ng%C3%A0y%2030.10/th%C3%A1ng%2011/logo%2C/logo%2C%2C%2C/y-nghia-logo-vietjet.jpg'
+  },
+  {
+    name: 'Bambo Airways',
+    code: 'QH',
+    img: 'https://www.vnas.vn/public/upload/files/29.9.2020/%E1%BA%A3nh%20vinayuuki%20vinh/04.10/06.10/10.10/%C4%91%E1%BA%A1i%20h%E1%BB%8Dc%20vinh/16.10/trang%20nh%C6%B0/ng%C3%A0y%2018.10/%C4%90%E1%BA%A1i%20h%20vinh/ng%C3%A0y%2030.10/th%C3%A1ng%2011/logo%2C/3e4ba930-ea1f-4a72-a8b1-252a62cdde6b.jpg'
+  },
+  {
+    name: 'Viettravel Arilines',
+    code: 'VU',
+    img: 'https://media.loveitopcdn.com/3807/logo-vietravel-airlines.png'
+  }
 ])
+const departures = ref({
+  airportCode: 'HAN',
+  name: 'Sân bay Nội Bài',
+  city: 'Hà Nội',
+  country: 'Việt Nam',
+  id: '1'
+})
+const arrival = ref({
+  airportCode: 'SGN',
+  name: 'Sân bay Tân Sơn Nhất',
+  city: 'Hồ Chí Minh',
+  country: 'Việt Nam',
+  id: '2'
+})
+const count = ref(1)
+const increment = () => {
+  count.value += 1
+}
 
+const decrement = () => {
+  if (count.value > 0) {
+    count.value -= 1
+  }
+}
 // const search = (event) => {
 //   let query = event.query
 //   let newFilteredCities = []
