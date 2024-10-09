@@ -14,6 +14,12 @@ const router = createRouter({
       meta: { layout: DefaultPage }
     },
     {
+      path: '/booking',
+      name: 'BookFlight',
+      component: () => import('../views/BookFlights.vue'),
+      meta: { layout: DefaultPage }
+    },
+    {
       path: '/airports',
       name: 'ManageAirports',
       component: () => import('../views/ManageAirports.vue'),
