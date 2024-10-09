@@ -80,6 +80,7 @@
         <Button class="!bg-slate-600 !rounded-full h-4/5" icon="pi pi-search" iconPos="top" />
       </div>
     </div>
+    {{ planeStore.filteredFlights }}
     <div class="flex w-11/12 h-14 rounded-lg border-2 bg-slate-50 justify-between">
       <img
         style="border-radius: 5px"
@@ -100,7 +101,12 @@
   </div>
 </template>
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
+import { usePlaneStore } from '@/stores/airports'
+const planeStore = usePlaneStore()
+onMounted(() => {
+  planeStore.getFilteredFlights()
+})
 const calendarValue = ref()
 const pizza = ref()
 </script>

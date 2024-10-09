@@ -57,7 +57,11 @@
       <div class="flex justify-around gap-3">
         <div class="flex gap-3">
           <img src="https://dev.airdata.site/img/airplane-up.50b67a05.svg" width="24px" alt="" />
-          <DatePicker placeholder="Chọn ngày đi" v-model="formattedDate"></DatePicker>
+          <DatePicker
+            placeholder="Chọn ngày đi"
+            dateFormat="dd/mm/yy"
+            v-model="startedDate"
+          ></DatePicker>
         </div>
         <div class="border-r-2"></div>
         <div class="flex gap-3 items-center">
@@ -132,8 +136,15 @@
 import AddressPage from '@/component/AddressPage.vue'
 import { onMounted, ref } from 'vue'
 import { usePlaneStore } from '@/stores/airports'
-const planeStore = usePlaneStore()
+import { useConfirm } from 'primevue/useconfirm'
+import { useToast } from 'primevue/usetoast'
+import { useRouter } from 'vue-router'
 
+const router = useRouter()
+const planeStore = usePlaneStore()
+const confirm = useConfirm()
+const toast = useToast()
+const loading = ref(false)
 function formatDate() {
   const date = new Date()
   const day = String(date.getDate()).padStart(2, '0')
@@ -141,9 +152,9 @@ function formatDate() {
   const year = date.getFullYear()
   return ` ${day}/${month}/${year}`
 }
-// const formattedDate = formatDate()
-const formattedDate = ref()
-formattedDate.value = formatDate()
+// const startedDate = formatDate()
+const startedDate = ref()
+startedDate.value = formatDate()
 
 const ingredient = ref(1)
 
@@ -196,39 +207,44 @@ const decrement = () => {
 }
 
 const handleSubmit = async () => {
-  const req = {
-    departure: departures.value.airportCode,
-    arrival: arrival.value.airportCode,
-    formattedDate: formattedDate.value
-  }
-  if (req) {
-    try {
-      await planeStore.getFilteredFlights(req)
-    } catch (error) {
-      console.error('lỗi data')
+  confirm.require({
+    header: 'Bạn có chắc không?',
+    message: 'Vui lòng xác nhận để tiếp tục.',
+    accept: async () => {
+      toast.add({
+        severity: 'info',
+        summary: 'Đang cập nhật',
+        detail: 'Đang tiến hành cập nhật sân bay...',
+        life: 3000
+      })
+      loading.value = true
+      const req = {
+        departure: departures.value.airportCode,
+        arrival: arrival.value.airportCode,
+        startedDate: startedDate.value
+      }
+      if (req) {
+        try {
+          await planeStore.getFilteredFlights(req)
+          router.push({ path: '/booking' })
+        } catch (error) {
+          console.error('lỗi data')
+        } finally {
+          loading.value = false
+        }
+      }
+    },
+    reject: () => {
+      toast.add({
+        severity: 'error',
+        summary: 'Đã hủy',
+        detail: 'Bạn đã từ chối cập nhật.',
+        life: 3000
+      })
     }
-  }
+  })
 }
 onMounted(() => {
   planeStore.fetchFlights
 })
-// }
-// const search = (event) => {
-//   let query = event.query
-//   let newFilteredCities = []
-
-//   for (let country of groupedCities.value) {
-//     let filteredItems = FilterService.filter(
-//       country.items,
-//       ['label'],
-//       query,
-//       FilterMatchMode.CONTAINS
-//     )
-//     if (filteredItems && filteredItems.length) {
-//       newFilteredCities.push({ ...country, ...{ items: filteredItems } })
-//     }
-//   }
-
-//   filteredCities.value = newFilteredCities
-// }
 </script>

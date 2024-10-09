@@ -13,6 +13,7 @@ export const usePlaneStore = defineStore('planeStore', {
     airport: {},
     flights: [],
     flight: {},
+    filteredFlights: [],
     total: 0, // Tổng số sản phẩm
     first: 0
   }),
@@ -189,13 +190,12 @@ export const usePlaneStore = defineStore('planeStore', {
 
         const flights = response.data
 
-        const filteredFlights = flights.filter(
+        this.filteredFlights = flights.filter(
           (flight) =>
             flight.departure.airport === req.departure && flight.arrival.airport === req.arrival
         )
 
-        console.log(filteredFlights)
-        return filteredFlights
+        return this.filteredFlights
       } catch (error) {
         console.error('Không thể hiển thị data:', error)
         throw error
