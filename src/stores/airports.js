@@ -179,9 +179,26 @@ export const usePlaneStore = defineStore('planeStore', {
 
         console.log('🚀 ~ searchAirport ~ searchData:', searchData)
         this.airports = searchData.data
-        console.log('Search results:', this.airports)
       } catch (error) {
         console.error('Error searching airports:', error)
+      }
+    },
+    async getFilteredFlights(req) {
+      try {
+        const response = await axios.get('http://localhost:3000/flights')
+
+        const flights = response.data
+
+        const filteredFlights = flights.filter(
+          (flight) =>
+            flight.departure.airport === req.departure && flight.arrival.airport === req.arrival
+        )
+
+        console.log(filteredFlights)
+        return filteredFlights
+      } catch (error) {
+        console.error('Không thể hiển thị data:', error)
+        throw error
       }
     }
   }

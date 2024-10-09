@@ -117,7 +117,12 @@
         </div>
       </div>
       <div class="flex items-center items-center justify-center">
-        <Button class="!rounded-3xl" icon="pi pi-search" label="Tìm kiếm chuyến bay"></Button>
+        <Button
+          class="!rounded-3xl"
+          icon="pi pi-search"
+          label="Tìm kiếm chuyến bay"
+          @click="handleSubmit"
+        ></Button>
       </div>
     </div>
   </div>
@@ -125,7 +130,9 @@
 
 <script setup>
 import AddressPage from '@/component/AddressPage.vue'
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
+import { usePlaneStore } from '@/stores/airports'
+const planeStore = usePlaneStore()
 
 function formatDate() {
   const date = new Date()
@@ -187,6 +194,25 @@ const decrement = () => {
     count.value -= 1
   }
 }
+
+const handleSubmit = async () => {
+  const req = {
+    departure: departures.value.airportCode,
+    arrival: arrival.value.airportCode,
+    formattedDate: formattedDate.value
+  }
+  if (req) {
+    try {
+      await planeStore.getFilteredFlights(req)
+    } catch (error) {
+      console.error('lỗi data')
+    }
+  }
+}
+onMounted(() => {
+  planeStore.fetchFlights
+})
+// }
 // const search = (event) => {
 //   let query = event.query
 //   let newFilteredCities = []
