@@ -1,5 +1,4 @@
 import { createRouter, createWebHistory } from 'vue-router'
-
 import NormalPage from '@/layouts/NormalPage.vue'
 import DefaultPage from '@/layouts/DefaultPage.vue'
 // import DefaultPage from '@/layouts/DefaultPage.vue'
@@ -18,6 +17,11 @@ const router = createRouter({
       name: 'BookFlight',
       component: () => import('../views/BookFlights.vue'),
       meta: { layout: DefaultPage }
+    },
+    {
+      path: '/reservation',
+      name: 'Reservation',
+      component: () => import('../views/Reservation.vue')
     },
     {
       path: '/airports',

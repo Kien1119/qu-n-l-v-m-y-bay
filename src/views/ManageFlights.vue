@@ -275,7 +275,42 @@
               />
               <span style="color: #d81221">{{ errors.aircraft }}</span>
             </div>
-
+            <div class="flex flex-col gap-3">
+              <MultiSelect
+                v-model="multiselectValue"
+                :options="multiselectValues"
+                optionLabel="name"
+                placeholder="Chọn hệ thống đặt vé"
+                :filter="true"
+              >
+                <template #value="slotProps">
+                  <div
+                    class="inline-flex items-center py-1 px-2 bg-primary text-primary-contrast rounded-border mr-2"
+                    v-for="option of slotProps.value"
+                    :key="option.code"
+                  >
+                    <span
+                      :class="'mr-2 flag flag-' + option.code.toLowerCase()"
+                      style="width: 18px; height: 12px"
+                    />
+                    <div>{{ option.name }}</div>
+                  </div>
+                  <template v-if="!slotProps.value || slotProps.value.length === 0">
+                    <div class="p-1">Chọn hệ thống đặt vé</div>
+                  </template>
+                </template>
+                <template #option="slotProps">
+                  <div class="flex items-center gap-3">
+                    <span
+                      :class="'mr-2 flag flag-' + slotProps.option.code.toLowerCase()"
+                      style="width: 18px; height: 12px"
+                    />
+                    <div><img style="width: 24px" :src="slotProps.option.img" alt="" /></div>
+                    <div>{{ slotProps.option.name }}</div>
+                  </div>
+                </template>
+              </MultiSelect>
+            </div>
             <!-- Điểm đi và Điểm đến -->
             <div class="flex justify-between gap-3">
               <div class="flex flex-col gap-3">
@@ -373,6 +408,29 @@ import { useToast } from 'primevue/usetoast'
 import { useForm } from 'vee-validate'
 import * as yup from 'yup'
 
+const multiselectValue = ref()
+const multiselectValues = ref([
+  {
+    name: 'Vietnam Airlines',
+    code: 'VN',
+    img: 'https://www.vnas.vn/public/upload/files/29.9.2020/%E1%BA%A3nh%20vinayuuki%20vinh/04.10/06.10/10.10/%C4%91%E1%BA%A1i%20h%E1%BB%8Dc%20vinh/16.10/trang%20nh%C6%B0/ng%C3%A0y%2018.10/%C4%90%E1%BA%A1i%20h%20vinh/ng%C3%A0y%2030.10/th%C3%A1ng%2011/logo%2C/vietnam-airline-logo.jpg'
+  },
+  {
+    name: 'Vietjet Air',
+    code: 'VJ',
+    img: 'https://www.vnas.vn/public/upload/files/29.9.2020/%E1%BA%A3nh%20vinayuuki%20vinh/04.10/06.10/10.10/%C4%91%E1%BA%A1i%20h%E1%BB%8Dc%20vinh/16.10/trang%20nh%C6%B0/ng%C3%A0y%2018.10/%C4%90%E1%BA%A1i%20h%20vinh/ng%C3%A0y%2030.10/th%C3%A1ng%2011/logo%2C/logo%2C%2C%2C/y-nghia-logo-vietjet.jpg'
+  },
+  {
+    name: 'Bambo Airways',
+    code: 'QH',
+    img: 'https://www.vnas.vn/public/upload/files/29.9.2020/%E1%BA%A3nh%20vinayuuki%20vinh/04.10/06.10/10.10/%C4%91%E1%BA%A1i%20h%E1%BB%8Dc%20vinh/16.10/trang%20nh%C6%B0/ng%C3%A0y%2018.10/%C4%90%E1%BA%A1i%20h%20vinh/ng%C3%A0y%2030.10/th%C3%A1ng%2011/logo%2C/3e4ba930-ea1f-4a72-a8b1-252a62cdde6b.jpg'
+  },
+  {
+    name: 'Viettravel Arilines',
+    code: 'VU',
+    img: 'https://media.loveitopcdn.com/3807/logo-vietravel-airlines.png'
+  }
+])
 const { handleSubmit, errors, defineField } = useForm({
   validationSchema: yup.object({
     airline: yup

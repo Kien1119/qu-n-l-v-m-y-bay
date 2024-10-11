@@ -27,6 +27,7 @@ export const usePlaneStore = defineStore('planeStore', {
       try {
         const response = await axios.get(`http://localhost:3000/plane`, { params: temp })
         this.airports = response.data.data
+        console.log('🚀 ~ fetchAirports ~ response:', response)
 
         // .data.map((e, i) => {
         //   console.log(e.instances?.[0] ? i : '')

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="relative pb-20">
     <div class="bg-slate-200 flex justify-center rounded-lg gap-3 mb-8">
       <div class="flex w-11/12 h-14 rounded-lg border-2 bg-slate-50">
         <div class="flex justify-around gap-3">
@@ -13,7 +13,7 @@
         </div>
         <div class="grow flex items-center text-orange-400">
           <div class="flex-1 flex items-center justify-center">
-            <Label>Cà Mau</Label>
+            <Label>{{ planeStore.airports.city }}</Label>
           </div>
           <div>
             <img
@@ -81,35 +81,94 @@
       </div>
     </div>
 
-    <ul>
-      <li v-for="flight in storedFilteredFlights" :key="flight.id">
-        <div class="flex w-11/12 h-14 rounded-lg border-2 bg-slate-50 justify-between">
-          <img
-            style="border-radius: 5px"
-            src="https://www.vnas.vn/public/upload/files/29.9.2020/%E1%BA%A3nh%20vinayuuki%20vinh/04.10/06.10/10.10/%C4%91%E1%BA%A1i%20h%E1%BB%8Dc%20vinh/16.10/trang%20nh%C6%B0/ng%C3%A0y%2018.10/%C4%90%E1%BA%A1i%20h%20vinh/ng%C3%A0y%2030.10/th%C3%A1ng%2011/logo%2C/vietnam-airline-logo.jpg"
-            alt=""
-          />
-          <span class="flex items-center text-orange-600 font-bold">{{ flight.bookingCode }}</span>
-          <div class="flex items-center">
-            <span class="text-stone-950 font-bold">{{ formatDate(flight.departure.time) }}</span> -
-            {{ formatDate(flight.arrival.time) }}
-          </div>
-          <span class="flex items-center"
-            >{{ flight.departure.airport }}-{{ flight.arrival.airport }}</span
-          >
-          <span class="flex items-center">{{ flight.aircraft }}</span>
-          <span class="flex items-center text-red-600 font-bold">1,176,000</span>
-          <div class="flex items-center mr-3">
-            <Checkbox v-model="pizza" inputId="ingredient1" name="pizza" :value="flight" />
-          </div>
-        </div>
-      </li>
-    </ul>
+    <div class="w-full">
+      <Accordion value="0" expandIcon="none" collapseIcon="none">
+        <AccordionPanel v-for="flight in storedFilteredFlights" :key="flight.id" :value="flight">
+          <AccordionHeader>
+            <div class="flex w-full h-14 rounded-lg border-2 bg-slate-50 justify-between">
+              <img
+                style="border-radius: 5px"
+                src="https://www.vnas.vn/public/upload/files/29.9.2020/%E1%BA%A3nh%20vinayuuki%20vinh/04.10/06.10/10.10/%C4%91%E1%BA%A1i%20h%E1%BB%8Dc%20vinh/16.10/trang%20nh%C6%B0/ng%C3%A0y%2018.10/%C4%90%E1%BA%A1i%20h%20vinh/ng%C3%A0y%2030.10/th%C3%A1ng%2011/logo%2C/vietnam-airline-logo.jpg"
+                alt=""
+              />
+              <span class="flex items-center text-orange-600 font-bold">{{
+                flight.bookingCode
+              }}</span>
+              <div class="flex items-center">
+                <span class="text-stone-950 font-bold">{{
+                  formatDate(flight.departure.time)
+                }}</span>
+                -
+                {{ formatDate(flight.arrival.time) }}
+              </div>
+              <span class="flex items-center"
+                >{{ flight.departure.airport }}-{{ flight.arrival.airport }}</span
+              >
+              <span class="flex items-center">{{ flight.aircraft }}</span>
+              <span class="flex items-center text-red-600 font-bold">1,176,000</span>
+              <div class="flex items-center mr-3">
+                <RadioButton
+                  v-model="flightTicket"
+                  inputId="ingredient1"
+                  name="flightTicket"
+                  :value="flight"
+                />
+              </div></div
+          ></AccordionHeader>
+          <AccordionContent>
+            <div class="flex flex-col gap-3">
+              <div
+                v-for="price in flight.fareOptions"
+                :key="price.index"
+                class="flex items-center gap-5 bg-slate-200 h-12 p-5 border-2 rounded-lg"
+              >
+                {{ priceTicket }}
+                <RadioButton
+                  v-model="priceTicket"
+                  inputId="ingredient1"
+                  name="ingredient"
+                  :value="price"
+                /><span class="text-orange-500"> {{ price.class }}</span>
+                <span class=""
+                  >Giá:
+                  <span class="text-red-600 font-bold">{{ formatPrice(price.price) }}</span></span
+                >
+              </div>
+            </div>
+          </AccordionContent>
+        </AccordionPanel>
+      </Accordion>
+    </div>
+
+    <div
+      class="backdrop-blur-md flex !bg-white/50 rounded-2xl border gap-7 h-20 justify-center fixed inset-x-0 bottom-0"
+    >
+      <Button
+        class="!bg-gradient-to-r from-orange-500 from-10% !rounded-2xl h-10 flex items-center shadow-2xl justify-center mt-5"
+        label="Quay lại"
+        @click="backBooking"
+      ></Button>
+      <Button
+        class="!bg-gradient-to-r shadow-2xl from-orange-500 from-10% !rounded-2xl h-10 flex items-center justify-center mt-5"
+        label="Xác nhận"
+        @click="bookingFlightHandel"
+      ></Button>
+    </div>
   </div>
 </template>
 <script setup>
 import { ref, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
+import { usePlaneStore } from '@/stores/airports'
+import { useToast } from 'primevue/usetoast'
+
+const toast = useToast()
+const planeStore = usePlaneStore()
+const router = useRouter()
 const storedFilteredFlights = ref([])
+const formatPrice = (price) => {
+  return price.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })
+}
 function formatDate() {
   const date = new Date()
 
@@ -123,14 +182,35 @@ function formatDate() {
 
   return `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`
 }
+const priceTicket = ref()
+
+const calendarValue = ref()
+const flightTicket = ref()
+const bookingFlightHandel = () => {
+  if (flightTicket.value && priceTicket.value) {
+    localStorage.setItem('flightTicket', JSON.stringify(flightTicket.value))
+    localStorage.setItem('priceTicket', JSON.stringify(priceTicket.value))
+
+    router.push({ path: '/reservation' })
+  } else {
+    toast.add({
+      severity: 'error',
+      summary: 'Lỗi',
+      detail: 'Không lấy được thông tin vé máy bay',
+      life: 3000
+    })
+  }
+}
+const backBooking = () => {
+  router.push({ path: '/' })
+}
 onMounted(() => {
+  planeStore.fetchAirports
   const savedFlights = localStorage.getItem('filteredFlights')
   if (savedFlights) {
     storedFilteredFlights.value = JSON.parse(savedFlights)
   }
   console.log('🚀 ~ onMounted ~ savedFlights:', storedFilteredFlights)
 })
-const calendarValue = ref()
-const pizza = ref()
 </script>
 <style scoped></style>
