@@ -236,7 +236,7 @@ const handleSubmit = async () => {
       toast.add({
         severity: 'success',
         summary: 'Thành công',
-        detail: 'Sân bay đã được cập nhật!',
+        detail: 'Chuyến bay đã được cập nhật!',
         life: 3000
       })
     },
