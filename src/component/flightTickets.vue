@@ -66,13 +66,19 @@
                     >
                   </div>
                 </template>
-                <Column field="class" header="Hạng">
+
+            <Column field="class" header="Hạng"></Column>
+            <Column field="price" header="GIÁ"></Column>
+            <Column field="tax" header="Thuế"></Column>
+            <Column field="total" header="total"></Column>
+                <!-- <Column field="class" header="Hạng">
                   <template #body="slotProps">
                     {{ slotProps }}
                   </template>
                 </Column>
                 <Column field="price" header="GIÁ">
                   <template #body="slotProps">
+                    {{ slotProps }}
                     {{ formatCurrency(slotProps.price) }}
                   </template>
                 </Column>
@@ -80,10 +86,10 @@
                   <template #body="slotProps">
                     {{ formatCurrency(slotProps.price) }}
                   </template>
-                </Column>
+                </Column> -->
                 <template #footer>
                   <span class="text-red-400 font-bold w-full flex flex-row-reverse"
-                    >Tổng: 1,135,640</span
+                    >{{ price.reduce((acc,cur)=>acc+cur.total,0) }}</span
                   >
                   <!-- In total there are {{ products ? products.length : 0 }} products. -->
                 </template>
@@ -243,7 +249,7 @@ const title = ref([
   { name: 'Cô', code: 'MS' }
 ])
 const information = ref()
-const price = ref()
+const price = ref([])
 onMounted(() => {
   planeStore.fetchAirports()
 
