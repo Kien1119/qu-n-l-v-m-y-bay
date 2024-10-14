@@ -1898,5 +1898,146 @@
       ]
     }
   ],
-  "reservations": []
+  "reservations": [
+    {
+      "id": "c827",
+      "bookingCode": "0Q2NQ27E",
+      "createdAt": "2024-11-14T09:44:28.780Z",
+      "flight": {
+        "id": "10",
+        "airline": "VN",
+        "departure": {
+          "time": "2024-10-24T08:00:00.000Z",
+          "airport": "HAN"
+        },
+        "arrival": {
+          "time": "2024-10-24T10:00:00.000Z",
+          "airport": "SGN"
+        },
+        "flightNumber": "901",
+        "aircraft": "Boeing 787",
+        "fareOptions": {
+          "class": "Economy",
+          "price": 1540000
+        }
+      },
+      "contact": {
+        "email": "kien@me.ee",
+        "phone": 129387
+      },
+      "paxLists": [
+        {
+          "firstName": "kien",
+          "lastName": " kien",
+          "titleName": "MR",
+          "birthday": "2024-10-13T17:00:00.000Z"
+        }
+      ]
+    },
+    {
+      "id": "7722",
+      "bookingCode": "AF1TENHL",
+      "createdAt": "2024-10-14T09:44:28.780Z",
+      "flight": {
+        "id": "16",
+        "airline": "QH",
+        "departure": {
+          "time": "2024-10-30T18:00:00.000Z",
+          "airport": "HAN"
+        },
+        "arrival": {
+          "time": "2024-10-30T20:00:00.000Z",
+          "airport": "SGN"
+        },
+        "flightNumber": "614",
+        "aircraft": "Boeing 787",
+        "fareOptions": {
+          "class": "Business",
+          "price": 3520000
+        }
+      },
+      "contact": {
+        "email": "kien@me.e",
+        "phone": 123
+      },
+      "paxLists": [
+        {
+          "firstName": "kien",
+          "lastName": "1123",
+          "titleName": "MR",
+          "birthday": "2024-10-13T17:00:00.000Z"
+        }
+      ]
+    },
+    {
+      "id": "123e",
+      "bookingCode": "I1BMSNIK",
+      "createdAt": "2024-10-14T10:11:24.723Z",
+      "flight": {
+        "id": "34",
+        "airline": "QH",
+        "departure": {
+          "time": "2024-11-19T11:30:00.000Z",
+          "airport": "HAN"
+        },
+        "arrival": {
+          "time": "2024-11-19T13:30:00.000Z",
+          "airport": "SGN"
+        },
+        "flightNumber": "104",
+        "aircraft": "Boeing 787",
+        "fareOptions": {
+          "class": "Economy",
+          "price": 1045000
+        }
+      },
+      "contact": {
+        "email": "kie@me.me",
+        "phone": 123
+      },
+      "paxLists": [
+        {
+          "firstName": "kien",
+          "lastName": "kien",
+          "titleName": "MRS",
+          "birthday": "2024-10-13T17:00:00.000Z"
+        }
+      ]
+    },
+    {
+      "id": "fa2e",
+      "bookingCode": "H41UJJOR",
+      "createdAt": 1728900832513,
+      "flight": {
+        "id": "19",
+        "airline": "QH",
+        "departure": {
+          "time": "2024-12-17T08:00:00.000Z",
+          "airport": "HAN"
+        },
+        "arrival": {
+          "time": "2024-12-17T10:00:00.000Z",
+          "airport": "SGN"
+        },
+        "flightNumber": "200",
+        "aircraft": "Airbus A320",
+        "fareOptions": {
+          "class": "Business",
+          "price": 3190000
+        }
+      },
+      "contact": {
+        "email": "kien@me.ee",
+        "phone": 1234
+      },
+      "paxLists": [
+        {
+          "firstName": "        createdAt :(new Date()).getTime(),",
+          "lastName": "        createdAt :(new Date()).getTime(),",
+          "titleName": "MR",
+          "birthday": "2024-10-13T17:00:00.000Z"
+        }
+      ]
+    }
+  ]
 }

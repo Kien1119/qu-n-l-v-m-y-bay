@@ -3,23 +3,27 @@
     <div class="m-4 p-4">
       <div class="flex gap-5">
         <div class="flex-1">
-          <DatePicker placeholder="Ngày đặt vé" date-format="mm/dd/yy" v-model="dayBooking" :showIcon="true">
+          <DatePicker placeholder="Ngày đặt vé" date-format="mm/dd/yy" v-model="filter.startDate" :showIcon="true">
           </DatePicker>
         </div>
         <div class="flex-1">
-          <DatePicker :showIcon="true" placeholder="Ngày bay" date-format="mm/dd/yy" v-model="dayFlight"></DatePicker>
+          <DatePicker :showIcon="true" placeholder="Ngày bay" date-format="mm/dd/yy" v-model="filter.endDate"></DatePicker>
         </div>
         <div class="flex-1">
           <InputGroup>
-            <InputText v-model="searchQueryName" placeholder="Tìm kiếm tên khách hàng" />
+            <InputText v-model="filter.name" placeholder="Tìm kiếm tên khách hàng" />
             <Button icon="pi pi-search" class="!bg-gray-300 !border-none" severity="warn" @click="handleSearch" />
           </InputGroup>
         </div>
         <div class="flex-1">
           <InputGroup>
-            <InputText placeholder="Tìm kiếm PNR trong hệ thống" />
+            <InputText v-model="filter.bookingCode" placeholder="Tìm kiếm PNR trong hệ thống" />
             <Button icon="pi pi-search" class="!bg-gray-300 !border-none" severity="warn" />
           </InputGroup>
+        </div>
+        <div class="search">
+          <Button icon="pi pi-search" class="!bg-gray-300 !border-none" severity="warn" @click="handleSearch" />
+
         </div>
       </div>
       <div>
@@ -58,13 +62,10 @@
               </div>
             </template>
           </Column>
-          <Column field="day" header="Ngày đặt chỗ">
+          <Column field="createdAt" header="Ngày đặt chỗ">
             <template #body="slotProps">
               <div class="flex flex-col">
-                <div>{{ formatDate(slotProps.data.flight.departure.time) }}-</div>
-                <div>
-                  {{ formatDate(slotProps.data.flight.arrival.time) }}
-                </div>
+                <div>{{ formatDate(slotProps.data.createdAt) }}                </div>
               </div>
             </template>
           </Column>
@@ -77,45 +78,26 @@
 import { ref, onMounted } from 'vue'
 import { usePlaneStore } from '../stores/airports.js'
 import { useReservationStore } from '@/stores/reservation'
+import {formatDate,formatPrice,genBookingCode} from '../utils/format'
+
 const reservationStore = useReservationStore()
 const planeStore = usePlaneStore()
-const dayBooking = ref()
-const dayFlight = ref()
-const booking = ref()
-function generateBookingCode() {
-  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
-  let result = ''
-  for (let i = 0; i < 6; i++) {
-    result += characters.charAt(Math.floor(Math.random() * characters.length))
-  }
-  return result
-}
+
 const getAirportName = (code) => {
   const airport = planeStore.airports.find((airport) => airport.airportCode === code)
   return `${airport ? airport.name : code} (${code})` // Return the code if no name is found
 }
-function formatDate() {
-  const date = new Date()
-
-  const day = String(date.getDate()).padStart(2, '0')
-  const month = String(date.getMonth() + 1).padStart(2, '0')
-  const year = date.getFullYear()
-
-  const hours = String(date.getHours()).padStart(2, '0')
-  const minutes = String(date.getMinutes()).padStart(2, '0')
-  const seconds = String(date.getSeconds()).padStart(2, '0')
-
-  return `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`
-}
-const searchQueryName = ref()
+const filter = ref({})
 const handleSearch = () => {
-  const searchText = searchQueryName.value.toLowerCase()
-  const filteredPaxLists = booking.value.filter((booking) => {
-    const matchesLastName = booking.paxLists.filter((pax) => {
-      return pax.lastName.toLowerCase() === searchText || pax.firstName.toLowerCase() === searchText
-    })
-    return matchesLastName
-  })
+  const {bookingCode,name,startDate } =filter.value
+  if(bookingCode)
+    reservationStore.params.bookingCode = bookingCode
+  if(name)
+    reservationStore.params._paxLists[0].lastName = name
+  if(startDate)
+    reservationStore.params.createdAt_gt = startDate.getTime()
+
+  reservationStore.fetchBooking()
 }
 onMounted(() => {
   planeStore.fetchAirports()

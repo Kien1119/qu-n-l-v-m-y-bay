@@ -217,90 +217,90 @@ const [birthday, birthdayAttrs] = defineField('birthday')
 const [phone, phoneAttrs] = defineField('phone')
 
 
-const bookingFlightHandel = handleSubmit((values) => {
-  confirm.require({
-    message: 'Bạn có chắc chắn muốn tiếp tục không?',
-    header: 'Xác nhận',
-    icon: 'pi pi-exclamation-triangle',
-    rejectProps: {
-      label: 'Hủy bỏ',
-      severity: 'secondary',
-      outlined: true
-    },
-    acceptProps: {
-      label: 'Save'
-    },
+// const bookingFlightHandel = handleSubmit((values) => {
+//   confirm.require({
+//     message: 'Bạn có chắc chắn muốn tiếp tục không?',
+//     header: 'Xác nhận',
+//     icon: 'pi pi-exclamation-triangle',
+//     rejectProps: {
+//       label: 'Hủy bỏ',
+//       severity: 'secondary',
+//       outlined: true
+//     },
+//     acceptProps: {
+//       label: 'Save'
+//     },
 
-    accept: async () => {
-      toast.add({
-        severity: 'info',
-        summary: 'Đang cập nhật',
-        detail: 'Đang tiến hành cập nhật sân bay...',
-        life: 3000
-      })
+//     accept: async () => {
+//       toast.add({
+//         severity: 'info',
+//         summary: 'Đang cập nhật',
+//         detail: 'Đang tiến hành cập nhật sân bay...',
+//         life: 3000
+//       })
 
-      loading.value = true
-      const req =
-      {
-        bookingCode:genBookingCode(),
-        flight: {
-          id: information.value?.id,
-          airline: information.value?.airline,
-          departure: {
-            time: information.value?.departure.time,
-            airport: information.value?.departure.airport
-          },
-          arrival: {
-            time: information.value?.arrival.time,
-            airport: information.value?.arrival.airport
-          },
-          flightNumber: information.value?.flightNumber,
-          aircraft: information.value?.aircraft,
-          fareOptions: {
-            class: price.value[0]?.class,
-            price: price.value[0]?.total
-          }
-        },
-        contact: {
-          email: values.email,
-          phone: values.phone
-        },
-        paxLists: [
-          {
-            firstName: values.firstName,
-            lastName: values.lastName,
-            titleName: values.titleName,
-            birthday: values.birthday
-          }
-        ]
-      }
-      if (req) {
-        const existingBookings = JSON.parse(localStorage.getItem('bookingsReservation')) || []
-        existingBookings.push(req)
+//       loading.value = true
+//       const req =
+//       {
+//         bookingCode:genBookingCode(),
+//         flight: {
+//           id: information.value?.id,
+//           airline: information.value?.airline,
+//           departure: {
+//             time: information.value?.departure.time,
+//             airport: information.value?.departure.airport
+//           },
+//           arrival: {
+//             time: information.value?.arrival.time,
+//             airport: information.value?.arrival.airport
+//           },
+//           flightNumber: information.value?.flightNumber,
+//           aircraft: information.value?.aircraft,
+//           fareOptions: {
+//             class: price.value[0]?.class,
+//             price: price.value[0]?.total
+//           }
+//         },
+//         contact: {
+//           email: values.email,
+//           phone: values.phone
+//         },
+//         paxLists: [
+//           {
+//             firstName: values.firstName,
+//             lastName: values.lastName,
+//             titleName: values.titleName,
+//             birthday: values.birthday
+//           }
+//         ]
+//       }
+//       if (req) {
+//         const existingBookings = JSON.parse(localStorage.getItem('bookingsReservation')) || []
+//         existingBookings.push(req)
 
-        localStorage.setItem('bookingsReservation', JSON.stringify(existingBookings))
+//         localStorage.setItem('bookingsReservation', JSON.stringify(existingBookings))
 
-        // router.push({ path: '/' })
-      } else {
-        alert('Đặt Thất bại')
-      }
-      toast.add({
-        severity: 'success',
-        summary: 'Thành công',
-        detail: 'Đặt vé thành công!',
-        life: 3000
-      })
-    },
-    reject: () => {
-      toast.add({
-        severity: 'Lỗi',
-        summary: 'Vật bị loại bỏ',
-        detail: 'Bạn đã từ chối',
-        life: 3000
-      })
-    }
-  })
-})
+//         // router.push({ path: '/' })
+//       } else {
+//         alert('Đặt Thất bại')
+//       }
+//       toast.add({
+//         severity: 'success',
+//         summary: 'Thành công',
+//         detail: 'Đặt vé thành công!',
+//         life: 3000
+//       })
+//     },
+//     reject: () => {
+//       toast.add({
+//         severity: 'Lỗi',
+//         summary: 'Vật bị loại bỏ',
+//         detail: 'Bạn đã từ chối',
+//         life: 3000
+//       })
+//     }
+//   })
+// })
 
 const holdBooking = handleSubmit((values) => {
   confirm.require({
@@ -328,6 +328,7 @@ const holdBooking = handleSubmit((values) => {
       const req =
       {
         bookingCode :genBookingCode(),
+        createdAt :(new Date()).getTime(),
         flight: {
           id: information.value?.id,
           airline: information.value?.airline,

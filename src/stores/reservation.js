@@ -7,7 +7,7 @@ export const useReservationStore = defineStore('reservationStore', {
       _page: 1,
       _per_page: 10,
       _sort: '',
-      _title: ''
+      _title: '',
     },
     airports: [],
     reservations: [],
@@ -36,6 +36,7 @@ export const useReservationStore = defineStore('reservationStore', {
       for (const e of Object.keys(this.params)) {
         if (this.params[e] === '') delete temp[e]
       }
+        console.log('KANE:: ~ fetchAirports ~ temp:', temp);
       const { data } = await axios.get(`http://localhost:3000/reservations`, { params: temp })
       this.reservations = data.data
       this.total = data.items // Lưu dữ liệu vào state
