@@ -145,6 +145,7 @@ const handleSearch = () => {
 onMounted(() => {
   planeStore.fetchAirports()
   const bookingFlight = localStorage.getItem('bookingsReserVation')
+  console.log(bookingFlight)
   if (bookingFlight) {
     try {
       const parsedData = JSON.parse(bookingFlight)

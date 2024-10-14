@@ -359,13 +359,12 @@ const bookingFlightHandel = handleSubmit((values) => {
           ]
         }
       ]
-
       if (req) {
-        const existingBookings = JSON.parse(localStorage.getItem('bookingsReserVation')) || []
+        const existingBookings = JSON.parse(localStorage.getItem('bookingsReservation')) || []
 
         existingBookings.push(req)
 
-        localStorage.setItem('bookingsReserVation', JSON.stringify(existingBookings))
+        localStorage.setItem('bookingsReservation', JSON.stringify(existingBookings))
 
         router.push({ path: '/' })
       } else {
