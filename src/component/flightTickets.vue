@@ -359,8 +359,14 @@ const bookingFlightHandel = handleSubmit((values) => {
           ]
         }
       ]
+
       if (req) {
-        localStorage.setItem('bookingsReserVation', JSON.stringify(req))
+        const existingBookings = JSON.parse(localStorage.getItem('bookingsReserVation')) || []
+
+        existingBookings.push(req)
+
+        localStorage.setItem('bookingsReserVation', JSON.stringify(existingBookings))
+
         router.push({ path: '/' })
       } else {
         alert('Đặt Thất bại')
