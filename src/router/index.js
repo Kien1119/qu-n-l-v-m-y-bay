@@ -38,7 +38,7 @@ const router = createRouter({
     {
       path: '/bookings',
       name: 'ManageBookings',
-      component: () => import('../views/HomeView.vue'),
+      component: () => import('../views/ManageBookig.vue'),
       meta: { layout: NormalPage }
     }
   ]

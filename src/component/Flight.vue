@@ -194,6 +194,7 @@ function formatDate() {
 const loading = ref(false)
 const handleFlightSelect = (flight) => {
   flightTicket.value = flight
+  priceTicket.value = null
 }
 const priceTicket = ref()
 

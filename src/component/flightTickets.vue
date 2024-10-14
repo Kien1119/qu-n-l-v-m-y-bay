@@ -325,38 +325,40 @@ const bookingFlightHandel = handleSubmit((values) => {
       })
 
       loading.value = true
-      const req = {
-        flight: {
-          id: information.value?.id,
-          airline: information.value?.airline,
-          departure: {
-            time: information.value?.departure.time,
-            airport: information.value?.departure.airport
+      const req = [
+        {
+          flight: {
+            id: information.value?.id,
+            airline: information.value?.airline,
+            departure: {
+              time: information.value?.departure.time,
+              airport: information.value?.departure.airport
+            },
+            arrival: {
+              time: information.value?.arrival.time,
+              airport: information.value?.arrival.airport
+            },
+            flightNumber: information.value?.flightNumber,
+            aircraft: information.value?.aircraft,
+            fareOptions: {
+              class: price.value[0]?.class,
+              price: price.value[0]?.total
+            }
           },
-          arrival: {
-            time: information.value?.arrival.time,
-            airport: information.value?.arrival.airport
+          contact: {
+            email: values.email,
+            phone: values.phone
           },
-          flightNumber: information.value?.flightNumber,
-          aircraft: information.value?.aircraft,
-          fareOptions: {
-            class: price.value[0]?.class,
-            price: price.value[0]?.total
-          }
-        },
-        contact: {
-          email: values.email,
-          phone: values.phone
-        },
-        paxLists: [
-          {
-            firstName: values.firstName,
-            lastName: values.lastName,
-            titleName: values.titleName,
-            birthday: values.birthday
-          }
-        ]
-      }
+          paxLists: [
+            {
+              firstName: values.firstName,
+              lastName: values.lastName,
+              titleName: values.titleName,
+              birthday: values.birthday
+            }
+          ]
+        }
+      ]
       if (req) {
         localStorage.setItem('bookingsReserVation', JSON.stringify(req))
         router.push({ path: '/' })
