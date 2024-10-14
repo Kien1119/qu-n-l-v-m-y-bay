@@ -467,7 +467,6 @@ const [departureTime, departureTimeAttrs] = defineField('departureTime')
 const [arrivalTime, arrivalTimeAttrs] = defineField('arrivalTime')
 
 const handleAddFlights = handleSubmit((values) => {
-  console.log(values)
   confirm.require({
     message: 'Bạn có chắc chắn muốn tiếp tục không?',
     header: 'Xác nhận',
@@ -636,8 +635,6 @@ function formatDate(inputDate) {
   return `${hours}:${minutes} ${day}/${month}/${year}`
 }
 
-const formattedDate = formatDate('2024-10-06T19:38:15.812Z')
-console.log(formattedDate) // Output: 06/10/
 const resetFilters = () => {
   searchQueryAirport.value = ''
   planeStore.fetchAirports() // Re-fetch or reset the airports list

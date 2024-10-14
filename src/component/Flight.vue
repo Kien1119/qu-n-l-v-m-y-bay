@@ -85,7 +85,7 @@
         <AccordionPanel
           v-for="flight in storedFilteredFlights"
           :key="flight.id"
-          :value="flight"
+          :value="flight.id"
           v-model="flightTicket"
         >
           <AccordionHeader class="">

@@ -45,7 +45,6 @@ const props = defineProps({
   }
 })
 const emit = defineEmits(['update:airports'])
-console.log({ props }, 1)
 const planeStore = usePlaneStore()
 
 const getAirportName = (code) => {
@@ -57,7 +56,6 @@ onMounted(() => {
 })
 
 function onChangeAirports(val) {
-  console.log({ val })
   emit('update:airports', val)
 }
 </script>

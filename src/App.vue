@@ -18,7 +18,6 @@ import { useRoute } from 'vue-router'
 const route = useRoute()
 
 const layout = computed(() => {
-  console.log(route)
   return route.meta.layout?.__name === 'NormalPage' ? NormalPage : DefaultPage
 })
 </script>

@@ -27,8 +27,6 @@ export const usePlaneStore = defineStore('planeStore', {
       try {
         const response = await axios.get(`http://localhost:3000/plane`, { params: temp })
         this.airports = response.data.data
-        console.log('🚀 ~ fetchAirports ~ response:', response)
-
         // .data.map((e, i) => {
         //   console.log(e.instances?.[0] ? i : '')
         //   return {
@@ -95,7 +93,6 @@ export const usePlaneStore = defineStore('planeStore', {
           `http://localhost:3000/plane?_sort=-id,name,city,country,airportCode`
         )
         this.airports = sortData.data
-        console.log('🚀 ~ sortAirport ~ this.airports:', this.airports)
       } catch (error) {
         console.error('Error sorting airports:', error)
       }
@@ -109,8 +106,6 @@ export const usePlaneStore = defineStore('planeStore', {
         if (airportCode) query.airportCode = airportCode
 
         const searchData = await axios.get(`http://localhost:3000/plane`, { params: query })
-
-        console.log('🚀 ~ searchAirport ~ searchData:', searchData)
         this.airports = searchData.data
         console.log('Search results:', this.airports)
       } catch (error) {
@@ -134,9 +129,7 @@ export const usePlaneStore = defineStore('planeStore', {
     },
     async deleteFlights(id) {
       try {
-        console.log('🚀 ~ deleteFlights ~ id:', id)
         const deleteFlights = await axios.delete(`http://localhost:3000/flights/${id}`)
-        console.log('🚀 ~ deleteFlights ~ deleteFlights:', deleteFlights)
         console.log('Sản phẩm đã xóa thành công:', deleteFlights.data)
         await this.fetchFlights()
       } catch (error) {
@@ -178,8 +171,6 @@ export const usePlaneStore = defineStore('planeStore', {
         if (airportCode) query.airportCode = airportCode
 
         const searchData = await axios.get(`http://localhost:3000/flights`, { params: query })
-
-        console.log('🚀 ~ searchAirport ~ searchData:', searchData)
         this.airports = searchData.data
       } catch (error) {
         console.error('Error searching airports:', error)
