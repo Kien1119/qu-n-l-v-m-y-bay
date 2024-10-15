@@ -2038,6 +2038,76 @@
           "birthday": "2024-10-13T17:00:00.000Z"
         }
       ]
+    },
+    {
+      "id": "6607",
+      "bookingCode": "GSO2Y8XH",
+      "createdAt": 1728902447197,
+      "flight": {
+        "id": "2",
+        "airline": "VJ",
+        "departure": {
+          "time": "2024-10-06T19:38:15.812Z",
+          "airport": "DAD"
+        },
+        "arrival": {
+          "time": "2024-10-09T09:37:52.000Z",
+          "airport": "CXR"
+        },
+        "flightNumber": "567",
+        "aircraft": "Airbus A321",
+        "fareOptions": {
+          "class": "Business",
+          "price": 3850000
+        }
+      },
+      "contact": {
+        "email": "Pham@gmail.com",
+        "phone": 2222222222222222
+      },
+      "paxLists": [
+        {
+          "firstName": "KIen",
+          "lastName": "ôii",
+          "titleName": "MRS",
+          "birthday": "2024-10-06T17:00:00.000Z"
+        }
+      ]
+    },
+    {
+      "id": "9a09",
+      "bookingCode": "RZA4FMN1",
+      "createdAt": 1728914341265,
+      "flight": {
+        "id": "10",
+        "airline": "VN",
+        "departure": {
+          "time": "2024-10-24T08:00:00.000Z",
+          "airport": "HAN"
+        },
+        "arrival": {
+          "time": "2024-10-24T10:00:00.000Z",
+          "airport": "SGN"
+        },
+        "flightNumber": "901",
+        "aircraft": "Boeing 787",
+        "fareOptions": {
+          "class": "Business",
+          "price": 3520000
+        }
+      },
+      "contact": {
+        "email": "Phamkien@gmi.me",
+        "phone": 929202
+      },
+      "paxLists": [
+        {
+          "firstName": "Pham",
+          "lastName": "Kien",
+          "titleName": "MR",
+          "birthday": "2024-10-05T17:00:00.000Z"
+        }
+      ]
     }
   ]
 }

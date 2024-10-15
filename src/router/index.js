@@ -19,6 +19,13 @@ const router = createRouter({
       meta: { layout: DefaultPage }
     },
     {
+      path: '/detail',
+      name: 'InformationDetail',
+      component: () => import('../views/InformationDetail.vue'),
+      meta: { layout: DefaultPage }
+    },
+
+    {
       path: '/reservation',
       name: 'Reservation',
       component: () => import('../views/Reservation.vue')
