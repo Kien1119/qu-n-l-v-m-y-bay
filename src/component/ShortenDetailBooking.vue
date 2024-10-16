@@ -35,7 +35,7 @@
           </div>
           <div>
             <span>Tổng tiền:</span
-            ><span>{{ formatPrice(reservationStore.detail.flight.fareOptions.price) }}</span>
+            ><span>{{ formatPrice(reservationStore?.detail?.flight?.fareOptions?.price) }}</span>
           </div>
         </div>
       </div>

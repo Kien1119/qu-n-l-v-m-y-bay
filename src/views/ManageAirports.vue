@@ -20,7 +20,7 @@
         </template>
 
         <template #end>
-          <Button label="Export" icon="pi pi-upload" severity="secondary" />
+          <Button disabled label="Export" icon="pi pi-upload" severity="secondary" />
         </template>
       </Toolbar>
 
@@ -42,7 +42,7 @@
       >
         <template #header>
           <div class="flex flex-wrap gap-2 items-center justify-between">
-            <h1 class="m-0 font-serif font-medium text-4xl text-orange-600">Manage Airports</h1>
+            <h1 class="m-0 font-mono font-medium text-4xl text-orange-600">Danh sách sân bay</h1>
             <InputGroup>
               <Button @click="handleSearch" icon="pi pi-search" severity="search" />
               <InputText
@@ -57,7 +57,7 @@
 
         <template #empty> No airports found. </template>
         <template #loading> Loading airports data. Please wait. </template>
-        <Column class="text-orange-600" field="stt" header="STT" sortable style="width: 10rem">
+        <Column class="text-orange-600" field="stt" header="STT" style="width: 10rem">
           <template #body="{ index }">
             {{ startIndex + index + 1 }}
           </template>
@@ -101,11 +101,11 @@
       >
         <div class="flex flex-col gap-6">
           <div>
-            <label for="name" class="block font-bold mb-3">Name</label>
+            <label for="name" class="block font-bold mb-3">Tên sân bay</label>
             <InputText id="name" v-model.trim="airport.name" required="true" autofocus fluid />
           </div>
           <div>
-            <label for="airportCode" class="block font-bold mb-3">Airport Code</label>
+            <label for="airportCode" class="block font-bold mb-3">Mã sân bay</label>
             <InputText
               id="airportCode"
               v-model.trim="airport.airportCode"
@@ -115,11 +115,11 @@
             />
           </div>
           <div>
-            <label for="city" class="block font-bold mb-3">City</label>
+            <label for="city" class="block font-bold mb-3">Thành phố</label>
             <InputText id="city" v-model.trim="airport.city" required="true" autofocus fluid />
           </div>
           <div>
-            <label for="country" class="block font-bold mb-3">Country</label>
+            <label for="country" class="block font-bold mb-3">Đất nước</label>
             <InputText
               id="country"
               v-model.trim="airport.country"
@@ -143,7 +143,7 @@
       >
         <div class="flex flex-col gap-6">
           <div>
-            <label for="name" class="block font-bold mb-3">Name</label>
+            <label for="name" class="block font-bold mb-3">Tên sân bay</label>
             <InputText
               v-bind="nameAttrs"
               id="name"
@@ -156,7 +156,7 @@
           <span style="color: #d81221">{{ errors.name }}</span>
 
           <div>
-            <label for="airportCode" class="block font-bold mb-3">Airport Code</label>
+            <label for="airportCode" class="block font-bold mb-3">Mã sân bay</label>
             <InputText
               id="airportCode"
               v-bind="airportCodeAttrs"
@@ -169,7 +169,7 @@
           <span style="color: #d81221">{{ errors.airportCode }}</span>
 
           <div>
-            <label for="city" class="block font-bold mb-3">City</label>
+            <label for="city" class="block font-bold mb-3">Thành phố</label>
             <InputText
               id="city"
               v-bind="cityAttrs"
@@ -182,7 +182,7 @@
           <span style="color: #d81221">{{ errors.city }}</span>
 
           <div>
-            <label for="country" class="block font-bold mb-3">Country</label>
+            <label for="country" class="block font-bold mb-3">Đất nước</label>
             <InputText
               v-bind="countryAttrs"
               id="country"

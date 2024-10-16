@@ -15,12 +15,11 @@
             icon="pi pi-trash"
             severity="secondary"
             @click="confirmDeleteSelected"
-            :disabled="!selectionAirports || !selectionAirports.length"
           />
         </template>
 
         <template #end>
-          <Button label="Export" icon="pi pi-upload" severity="secondary" />
+          <Button disabled label="Export" icon="pi pi-upload" severity="secondary" />
         </template>
       </Toolbar>
 
@@ -42,7 +41,7 @@
       >
         <template #header>
           <div class="flex flex-wrap gap-2 items-center justify-between">
-            <h1 class="m-0 font-serif font-medium text-4xl text-orange-600">Manage Flights</h1>
+            <h1 class="m-0 font-mono font-medium text-4xl text-orange-600">Danh sách chuyến bay</h1>
             <InputGroup>
               <Button @click="handleSearch" icon="pi pi-search" severity="search" />
               <InputText
@@ -76,7 +75,7 @@
           header="Thời gian khởi hành - Thời gian đến"
           sortable
           class="flex items-center justify-center"
-          style="min-width: 20rem"
+          style="min-width: 16rem"
         >
           <template #body="slotProps">
             {{ formatDate(slotProps.data.departure.time) }} -
@@ -276,8 +275,32 @@
               <span style="color: #d81221">{{ errors.aircraft }}</span>
             </div>
             <div class="flex flex-col gap-3">
+              <label for="fareOptions" class="block font-bold mb-3">Giá cả </label>
+              <MultiSelect
+                v-model="ClassFareOptions"
+                :options="selectedFlightFareOptions"
+                filter
+                option-label="class"
+                option-value="price"
+                placeholder="Chọn giá"
+                :maxSelectedLabels="6"
+                v-bind="ClassFareOptionsAttrs"
+              />
+              <InputGroup>
+                <InputGroupAddon>$</InputGroupAddon>
+                <InputNumber
+                  v-model="numberFareOptions"
+                  placeholder="Giá vé"
+                  v-bind="numberFareOptionsAttrs"
+                />
+                <InputGroupAddon>.00</InputGroupAddon>
+              </InputGroup>
+            </div>
+            <div class="flex flex-col gap-3">
+              <label for="aircraft" class="block font-bold mb-3">Hệ thống</label>
               <MultiSelect
                 v-model="multiselectValue"
+                v-bind="multiselectValueAttrs"
                 :options="multiselectValues"
                 optionLabel="name"
                 placeholder="Chọn hệ thống đặt vé"
@@ -373,6 +396,7 @@
                   hourFormat="24"
                   :class="{ 'p-invalid': errors['departure.time'] }"
                   v-bind="departureTimeAttrs"
+                  placeholder="Thời gian đi"
                 />
                 <span style="color: #d81221">{{ errors['departure.time'] }}</span>
               </div>
@@ -386,6 +410,7 @@
                   hourFormat="24"
                   :class="{ 'p-invalid': errors['arrival.time'] }"
                   v-bind="arrivalTimeAttrs"
+                  placeholder="Thời gian đến"
                 />
                 <span style="color: #d81221">{{ errors['arrival.time'] }}</span>
               </div>
@@ -407,8 +432,8 @@ import { useConfirm } from 'primevue/useconfirm'
 import { useToast } from 'primevue/usetoast'
 import { useForm } from 'vee-validate'
 import * as yup from 'yup'
-
-const multiselectValue = ref()
+const selectionFlights = ref()
+const confirmDeleteSelected = () => {}
 const multiselectValues = ref([
   {
     name: 'Vietnam Airlines',
@@ -431,6 +456,11 @@ const multiselectValues = ref([
     img: 'https://media.loveitopcdn.com/3807/logo-vietravel-airlines.png'
   }
 ])
+const selectedFlightId = ref('2')
+const selectedFlightFareOptions = computed(() => {
+  const flight = planeStore.flights.find((f) => f.id === selectedFlightId.value)
+  return flight ? flight.fareOptions : []
+})
 const { handleSubmit, errors, defineField } = useForm({
   validationSchema: yup.object({
     airline: yup
@@ -440,21 +470,20 @@ const { handleSubmit, errors, defineField } = useForm({
     flightNumber: yup.string().required('Số hiệu chuyến bay là bắt buộc'),
     aircraft: yup.string().required('Phi cơ là bắt buộc'),
 
-    departure: yup.object({
-      airport: yup
-        .string()
-        .required('Điểm đi là bắt buộc')
-        .matches(/^[A-Z]{3}$/, 'Mã sân bay phải có chính xác 3 chữ in hoa'),
-      time: yup.string().required('Thời gian bắt buộc')
-    }),
+    departureAirport: yup
+      .string()
+      .required('Điểm đi là bắt buộc')
+      .matches(/^[A-Z]{3}$/, 'Mã sân bay phải có chính xác 3 chữ in hoa'),
+    departureTime: yup.string().required('Thời gian bắt buộc'),
 
-    arrival: yup.object({
-      airport: yup
-        .string()
-        .required('Điểm đến là bắt buộc')
-        .matches(/^[A-Z]{3}$/, 'Mã sân bay phải có chính xác 3 chữ in hoa'),
-      time: yup.string().required('Thời gian bắt buộc')
-    })
+    arrivalAirport: yup
+      .string()
+      .required('Điểm đến là bắt buộc')
+      .matches(/^[A-Z]{3}$/, 'Mã sân bay phải có chính xác 3 chữ in hoa'),
+    arrivalTime: yup.string().required('Thời gian bắt buộc'),
+    ClassFareOptions: yup.string().required(),
+    numberFareOptions: yup.number().required(),
+    multiselectValue: yup.number().required()
   })
 })
 
@@ -465,6 +494,9 @@ const [departureAirport, departureAirportAttrs] = defineField('departureAirport'
 const [arrivalAirport, arrivalAirportAttrs] = defineField('arrivalAirport')
 const [departureTime, departureTimeAttrs] = defineField('departureTime')
 const [arrivalTime, arrivalTimeAttrs] = defineField('arrivalTime')
+const [ClassFareOptions, ClassFareOptionsAttrs] = defineField('ClassFareOptions')
+const [numberFareOptions, numberFareOptionsAttrs] = defineField('numberFareOptions')
+const [multiselectValue, multiselectValueAttrs] = defineField('multiselectValue')
 
 const handleAddFlights = handleSubmit((values) => {
   confirm.require({
@@ -489,12 +521,26 @@ const handleAddFlights = handleSubmit((values) => {
       })
       const req = {
         airline: values.airline,
+        departure: {
+          time: values.departureTime,
+          airport: values.departureAirport
+        },
+        arrival: {
+          time: values.arrivalTime,
+          airport: values.arrivalAirport
+        },
         flightNumber: values.flightNumber,
         aircraft: values.aircraft,
-        departureAirport: values.departureAirport,
-        arrivalAirport: values.arrivalAirport,
-        departureTime: values.departureTime,
-        arrivalTime: values.arrivalTime
+        fareOptions: [
+          {
+            class: values.ClassFareOptions,
+            price: values.numberFareOptions
+          },
+          {
+            class: values.ClassFareOptions,
+            price: values.numberFareOptions
+          }
+        ]
       }
 
       if (req) {
@@ -532,6 +578,7 @@ const getAirportName = (code) => {
   const airport = planeStore.airports.find((airport) => airport.airportCode === code)
   return `${airport ? airport.name : code} (${code})` // Return the code if no name is found
 }
+const onSort = () => {}
 const onPage = async (event) => {
   loading.value = true
   planeStore.params._page = event.page + 1 || event

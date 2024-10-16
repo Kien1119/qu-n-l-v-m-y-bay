@@ -9,6 +9,8 @@
             :model-value="airports"
             :options="planeStore.airports"
             placeholder="Chọn chuyến bay"
+            optionLabel="name"
+            filter
             @update:modelValue="onChangeAirports"
           >
             <template #value="slotProps">

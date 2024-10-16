@@ -1,6 +1,6 @@
 <template>
-  <div class="relative pb-20">
-    <div class="bg-slate-200 flex justify-center rounded-lg gap-3 mb-8">
+  <div class="relative pb-20 pt-10 px-20">
+    <!-- <div class="bg-slate-200 flex justify-center rounded-lg gap-3 mb-8">
       <div class="flex w-11/12 h-14 rounded-lg border-2 bg-slate-50">
         <div class="flex justify-around gap-3">
           <img
@@ -79,7 +79,7 @@
       <div class="flex items-center">
         <Button class="!bg-slate-600 !rounded-full h-4/5" icon="pi pi-search" iconPos="top" />
       </div>
-    </div>
+    </div> -->
     <div class="w-full">
       <Accordion value="0" expandIcon="none" collapseIcon="none">
         <AccordionPanel
@@ -98,9 +98,7 @@
                 src="https://www.vnas.vn/public/upload/files/29.9.2020/%E1%BA%A3nh%20vinayuuki%20vinh/04.10/06.10/10.10/%C4%91%E1%BA%A1i%20h%E1%BB%8Dc%20vinh/16.10/trang%20nh%C6%B0/ng%C3%A0y%2018.10/%C4%90%E1%BA%A1i%20h%20vinh/ng%C3%A0y%2030.10/th%C3%A1ng%2011/logo%2C/vietnam-airline-logo.jpg"
                 alt=""
               />
-              <span class="flex items-center text-orange-600 font-bold">{{
-                flight.bookingCode
-              }}</span>
+              <span class="flex items-center text-orange-600 font-bold">{{ flight.airline }}</span>
               <div class="flex items-center">
                 <span class="text-stone-950 font-bold">{{
                   formatDate(flight.departure.time)
@@ -112,7 +110,9 @@
                 >{{ flight.departure.airport }}-{{ flight.arrival.airport }}</span
               >
               <span class="flex items-center">{{ flight.aircraft }}</span>
-              <span class="flex items-center text-red-600 font-bold">1,176,000</span>
+              <span class="flex items-center text-red-600 font-bold">{{
+                formatPrice(flight.fareOptions[0].price)
+              }}</span>
               <div class="flex items-center mr-3">
                 <!-- <RadioButton
                   v-model="flightTicket"
@@ -126,16 +126,13 @@
           <AccordionContent>
             <div class="flex flex-col gap-3">
               <div
-                v-for="price in flight.fareOptions"
-                :key="price.index"
+                v-for="(price, index) in flight.fareOptions"
+                :key="index"
+                @click="priceTicket = price"
                 class="flex items-center gap-5 bg-slate-200 h-12 p-5 border-2 rounded-lg"
               >
-                <RadioButton
-                  v-model="priceTicket"
-                  inputId="ingredient1"
-                  name="ingredient"
-                  :value="price"
-                /><span class="text-orange-500"> {{ price.class }}</span>
+                <RadioButton v-model="priceTicket" :inputId="price" :value="price" />
+                <span class="text-orange-500"> {{ price.class }}</span>
                 <span class=""
                   >Giá:
                   <span class="text-red-600 font-bold">{{ formatPrice(price.price) }}</span></span
@@ -169,6 +166,7 @@ import { useRouter } from 'vue-router'
 import { usePlaneStore } from '@/stores/airports'
 import { useToast } from 'primevue/usetoast'
 import { useConfirm } from 'primevue/useconfirm'
+import { formatDate } from '@/utils/format'
 const confirm = useConfirm()
 
 const toast = useToast()
@@ -178,27 +176,19 @@ const storedFilteredFlights = ref([])
 const formatPrice = (price) => {
   return price.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })
 }
-function formatDate() {
-  const date = new Date()
 
-  const day = String(date.getDate()).padStart(2, '0')
-  const month = String(date.getMonth() + 1).padStart(2, '0')
-  const year = date.getFullYear()
-
-  const hours = String(date.getHours()).padStart(2, '0')
-  const minutes = String(date.getMinutes()).padStart(2, '0')
-  const seconds = String(date.getSeconds()).padStart(2, '0')
-
-  return `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`
-}
 const loading = ref(false)
 const handleFlightSelect = (flight) => {
-  flightTicket.value = flight
-  priceTicket.value = null
+  if (flight.id) {
+    flightTicket.value = flight
+
+    priceTicket.value = flight.fareOptions?.[0] || null
+  }
 }
+
 const priceTicket = ref()
 
-const calendarValue = ref()
+// const calendarValue = ref()
 const flightTicket = ref()
 const bookingFlightHandel = () => {
   confirm.require({

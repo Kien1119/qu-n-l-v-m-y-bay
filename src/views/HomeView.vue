@@ -1,10 +1,7 @@
 <template>
   <div
     class="bg-cover bg-center flex items-center justify-center"
-    style="
-      height: 100vh;
-      background-image: url(https://dev.airdata.site/img/background-image2.15114820.svg);
-    "
+    style="height: 100vh; background-image: url('/src/assets/background-image2.15114820.png')"
   >
     <div
       class="backdrop-blur-md flex p-3 flex-col bg-white/50 rounded-2xl mx-20 my-20 border !border-gray-500 gap-7 h-2/3 justify-between"
@@ -37,10 +34,6 @@
               <label for="ingredient4" class="ml-2">Nhiều chặng</label>
             </div>
           </div>
-          <Button
-            class="!bg-white/50 !border-0 !text-black hover:!bg-black/50"
-            icon="pi pi-refresh"
-          ></Button>
         </div>
       </div>
       <div class="flex h-1/3 justify-center">
@@ -61,6 +54,7 @@
             placeholder="Chọn ngày đi"
             dateFormat="dd/mm/yy"
             v-model="startedDate"
+            :minDate="startedDate"
           ></DatePicker>
         </div>
         <div class="border-r-2"></div>
@@ -83,7 +77,7 @@
                   :class="'mr-2 flag flag-' + option.code.toLowerCase()"
                   style="width: 18px; height: 12px"
                 />
-                <div>{{ option.name }}</div>
+                <div>{{ option.code }}</div>
               </div>
               <template v-if="!slotProps.value || slotProps.value.length === 0">
                 <div class="p-1">Chọn hệ thống đặt vé</div>
@@ -91,11 +85,11 @@
             </template>
             <template #option="slotProps">
               <div class="flex items-center gap-3">
-                <span
+                <!-- <span
                   :class="'mr-2 flag flag-' + slotProps.option.code.toLowerCase()"
                   style="width: 18px; height: 12px"
-                />
-                <div><img style="width: 24px" :src="slotProps.option.img" alt="" /></div>
+                /> -->
+                <!-- <div><img style="width: 24px" :src="slotProps.option.img" alt="" /></div> -->
                 <div>{{ slotProps.option.name }}</div>
               </div>
             </template>
@@ -145,12 +139,12 @@ const planeStore = usePlaneStore()
 const confirm = useConfirm()
 const toast = useToast()
 const loading = ref(false)
-function formatDate() {
+const formatDate = () => {
   const date = new Date()
   const day = String(date.getDate()).padStart(2, '0')
   const month = String(date.getMonth() + 1).padStart(2, '0')
   const year = date.getFullYear()
-  return ` ${day}/${month}/${year}`
+  return new Date(`${year}-${month}-${day}`) // Return today's date as a Date object
 }
 // const startedDate = formatDate()
 const startedDate = ref()

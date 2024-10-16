@@ -1,15 +1,19 @@
 <template>
   <div class="relative pb-20">
     <form action="">
-      <div class="bg-slate-300">
-        <div class="flex w-11/12 h-14 rounded-lg bg-slate-50 justify-around border-2 my-3 mx-5 w-full">
-          <img style="border-radius: 5px"
+      <div class="bg-slate-300 pt-5">
+        <div class="flex h-14 rounded-lg bg-slate-50 justify-around border-2 my-3 mx-5 w-full">
+          <img
+            style="border-radius: 5px"
             src="https://www.vnas.vn/public/upload/files/29.9.2020/%E1%BA%A3nh%20vinayuuki%20vinh/04.10/06.10/10.10/%C4%91%E1%BA%A1i%20h%E1%BB%8Dc%20vinh/16.10/trang%20nh%C6%B0/ng%C3%A0y%2018.10/%C4%90%E1%BA%A1i%20h%20vinh/ng%C3%A0y%2030.10/th%C3%A1ng%2011/logo%2C/vietnam-airline-logo.jpg"
-            alt="" />
+            alt=""
+          />
           <span class="flex items-center text-orange-600 font-bold">
-            {{ information?.bookingCode }}</span>
+            {{ information?.bookingCode }}</span
+          >
           <div class="flex items-center">
-            <span class="text-stone-950 font-bold">{{ formatDate(information?.departure.time) }}-
+            <span class="text-stone-950 font-bold"
+              >{{ formatDate(information?.departure.time) }}-
             </span>
             {{ formatDate(information?.arrival.time) }}
           </div>
@@ -22,12 +26,25 @@
             <div class="border-2 rounded-lg">
               <div class="flex gap-3 bg-gradient-to-r from-cyan-500 from-10%">
                 <div class="h-ful flex justify-center items-center bg-cyan-200">
-                  <svg data-v-532b2a7a="" xmlns="http://www.w3.org/2000/svg" width="50px" height="30px"
-                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                    stroke-linejoin="round" class="text-body feather feather-dollar-sign">
+                  <svg
+                    data-v-532b2a7a=""
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="50px"
+                    height="30px"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    class="text-body feather feather-dollar-sign"
+                  >
                     <line data-v-532b2a7a="" x1="12" y1="1" x2="12" y2="23"></line>
-                    <path class="w-50px" data-v-532b2a7a="" d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6">
-                    </path>
+                    <path
+                      class="w-50px"
+                      data-v-532b2a7a=""
+                      d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"
+                    ></path>
                   </svg>
                 </div>
                 <div class="flex flex-col p-3">
@@ -35,28 +52,30 @@
                   <span>Thông tin giá vé, phí dịch vụ kèm theo</span>
                 </div>
               </div>
-              <div class="card border-2 !border-gray-500 rounded-lg mx-5 my-5">
-                <DataTable :value="price" tableStyle="min-width: 50rem">
+              <div class="card border-2 !border-gray-500 !rounded-lg mx-5 my-5">
+                <DataTable :value="price" tableStyle="min-width: 50rem ">
                   <template #header>
                     <div class="flex flex-wrap items-center justify-center gap-2">
-                      <span class="text-xl font-bold !text-orange-400">{{ getAirportName(information?.departure.airport)
-                        }} ({{
+                      <span class="text-xl font-bold !text-orange-400"
+                        >{{ getAirportName(information?.departure.airport) }} ({{
                           information?.departure.airport
                         }}) - {{ getAirportName(information?.arrival.airport) }} ({{
                           information?.arrival.airport
-                        }})</span>
+                        }})</span
+                      >
                     </div>
                   </template>
 
-                  <Column field="class" header="Hạng"></Column>
+                  <Column class="!rounded-lg" field="class" header="Hạng"></Column>
                   <Column field="price" header="GIÁ"></Column>
                   <Column field="tax" header="Thuế"></Column>
                   <Column field="total" header="total"></Column>
 
                   <template #footer>
-                    <span class="text-red-400 font-bold w-full flex flex-row-reverse">{{
-                      formatPrice(price.reduce((acc, cur) => acc + cur.total, 0))
-                      }}</span>
+                    <span class="text-red-400 font-bold w-full flex flex-row-reverse"
+                      >Giá chi tiết:
+                      {{ formatPrice(price.reduce((acc, cur) => acc + cur.total, 0)) }}</span
+                    >
                   </template>
                 </DataTable>
               </div>
@@ -66,7 +85,7 @@
             <span class="text-gray-950 text-sm">(Đã bao gôm thuế, phí)</span>
             <span class="text-orange-400 font-bold text-3xl">{{
               formatPrice(price.reduce((acc, cur) => acc + cur.total, 0))
-              }}</span>
+            }}</span>
             <span class="text-slate-950 font-bold">Tổng chi phí: </span>
           </div>
         </div>
@@ -75,9 +94,19 @@
             <div class="border-2 rounded-lg">
               <div class="flex gap-3 bg-gradient-to-r from-cyan-500 from-10%">
                 <div class="h-ful flex justify-center items-center bg-cyan-200">
-                  <svg data-v-33ccfcdd="" xmlns="http://www.w3.org/2000/svg" width="50px" height="30px"
-                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                    stroke-linejoin="round" class="text-body feather feather-users">
+                  <svg
+                    data-v-33ccfcdd=""
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="50px"
+                    height="30px"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    class="text-body feather feather-users"
+                  >
                     <path data-v-33ccfcdd="" d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
                     <circle data-v-33ccfcdd="" cx="9" cy="7" r="4"></circle>
                     <path data-v-33ccfcdd="" d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
@@ -86,45 +115,76 @@
                 </div>
                 <div class="flex flex-col p-3">
                   <span class="font-bol text-2xl text-cyan-900">Thông tin hành khách</span>
-                  <span>Nhập tiếng Việt không dấu, tên hành khách phải chính xác như trong CCCD/Hộ
-                    chiếu/Giấy phép lái xe.</span>
+                  <span
+                    >Nhập tiếng Việt không dấu, tên hành khách phải chính xác như trong CCCD/Hộ
+                    chiếu/Giấy phép lái xe.</span
+                  >
                 </div>
               </div>
               <div class="flex flex-col card border-2 !border-gray-500 rounded-lg mx-5 my-5 gap-5">
                 <div class="flex flex-wrap items-center pl-4 gap-2">
-                  <span class="text-xl font-bold !text-gray-900 uppercase">{{ firstName }} {{ lastName }} {{ titleName
-                    }}</span>
+                  <span class="text-xl font-bold !text-gray-900 uppercase"
+                    >{{ firstName }} {{ lastName }} {{ titleName }}</span
+                  >
                 </div>
                 <div class="bg-red-200 text-red-600 mx-4 font-bold rounded-lg p-3">
-                  <span class="">Lưu ý: "Theo yêu cầu của VietjetAir tất cả hành khách phải nhập ngày sinh.
+                  <span class=""
+                    >Lưu ý: "Theo yêu cầu của VietjetAir tất cả hành khách phải nhập ngày sinh.
                     Trong trường hợp Quý AG để trống chúng tôi sẽ cung cấp dữ liệu ngẫu nhiên. BGT
-                    không chịu trách nhiệm nếu quý AG không nhập đầy đủ thông tin !"</span>
+                    không chịu trách nhiệm nếu quý AG không nhập đầy đủ thông tin !"</span
+                  >
                 </div>
                 <div class="card flex gap-4 px-4 bg-slate-200 p-6 m-4 rounded-lg py-4">
-                  <div class="flex-1 flex flex-col gap-3">
+                  <div class="flex-1 flex flex-col gap-1">
                     <div>
-                      <InputText class="w-full uppercase" :invalid="errors.firstName" v-bind="firstNameAttrs"
-                        type="text" v-model="firstName" placeholder="Họ (*)" />
+                      <InputText
+                        class="w-full uppercase"
+                        :invalid="errors.firstName"
+                        v-bind="firstNameAttrs"
+                        type="text"
+                        v-model="firstName"
+                        placeholder="Họ (*)"
+                      />
                     </div>
-                    <span style="color: #d81221">{{ errors.firstName }}</span>
+                    <span class="h-6" style="color: #d81221">{{ errors.firstName }}</span>
 
                     <div>
-                      <Select v-model="titleName" v-bind="titleNameAttrs" :options="title" optionLabel="name"
-                        optionValue="code" placeholder="Danh xưng" class="w-full" />
+                      <Select
+                        v-model="titleName"
+                        v-bind="titleNameAttrs"
+                        :options="title"
+                        optionLabel="name"
+                        optionValue="code"
+                        placeholder="Danh xưng"
+                        class="w-full"
+                      />
                     </div>
-                    <span style="color: #d81221">{{ errors.titleName }}</span>
+                    <span class="h-6" style="color: #d81221">{{ errors.titleName }}</span>
                   </div>
-                  <div class="flex-1 flex flex-col gap-3">
+                  <div class="flex-1 flex flex-col gap-1">
                     <div>
-                      <InputText v-bind="lastNameAttrs" class="w-full uppercase" :invalid="errors.lastName" type="text"
-                        v-model="lastName" placeholder="Tên đệm & Tên (*)" />
+                      <InputText
+                        v-bind="lastNameAttrs"
+                        class="w-full uppercase"
+                        :invalid="errors.lastName"
+                        type="text"
+                        v-model="lastName"
+                        placeholder="Tên đệm & Tên (*)"
+                      />
                     </div>
-                    <span style="color: #d81221">{{ errors.lastName }}</span>
+                    <span class="h-6" style="color: #d81221">{{ errors.lastName }}</span>
                     <div>
-                      <DatePicker v-bind="birthdayAttrs" v-model="birthday" :invalid="errors.birthday"
-                        birthdayFormat="dd/mm/yy" placeholder="Ngày sinh (DD-MM-YYYY)" class="w-full" />
+                      <DatePicker
+                        v-bind="birthdayAttrs"
+                        v-model="birthday"
+                        :invalid="errors.birthday"
+                        birthdayFormat="dd/mm/yy"
+                        placeholder="Ngày sinh (DD-MM-YYYY)"
+                        class="w-full"
+                        :maxDate="new Date()"
+                      />
                     </div>
-                    <span style="color: #d81221">{{ errors.birthday }}</span>
+                    <span class="h-6" style="color: #d81221">{{ errors.birthday }}</span>
                   </div>
                 </div>
               </div>
@@ -137,27 +197,46 @@
             <div class="flex gap-5 bg-slate-300 p-4 rounded-lg gap-3">
               <div class="flex flex-col">
                 <label for="phone">Số điện thoại: </label>
-                <InputNumber v-bind="phoneAttrs" :invalid="errors.phone" v-model="phone" placeholder="Vui lòng nhập" />
-                <span style="color: #d81221">{{ errors.phone }}</span>
+                <InputMask
+                  v-bind="phoneAttrs"
+                  id="phone"
+                  v-model="phone"
+                  mask="(999) 999-9999"
+                  placeholder="(999) 999-9999"
+                  :invalid="errors.phone"
+                  fluid
+                />
+                <span class="h-6" style="color: #d81221">{{ errors.phone }}</span>
               </div>
 
               <div class="flex flex-col">
                 <label for="email">Email: </label>
-                <InputText type="text" v-bind="emailAttrs" v-model="email" placeholder="Vui lòng nhập"
-                  :invalid="errors.email" />
-                <span style="color: #d81221">{{ errors.email }}</span>
+                <InputText
+                  type="text"
+                  v-bind="emailAttrs"
+                  v-model="email"
+                  placeholder="Vui lòng nhập"
+                  :invalid="errors.email"
+                />
+                <span class="h-6" style="color: #d81221">{{ errors.email }}</span>
               </div>
             </div>
           </div>
         </div>
       </div>
-      <div class="backdrop-blur-md flex !bg-white/50 border gap-7 h-20 justify-center fixed inset-x-0 bottom-0">
+      <div
+        class="backdrop-blur-md flex !bg-white/50 border gap-7 h-20 justify-center fixed inset-x-0 bottom-0"
+      >
         <Button
           class="!bg-gradient-to-r from-orange-500 from-10% !rounded-2xl h-10 flex items-center shadow-2xl justify-center mt-5"
-          label="Quay lại" @click="backBooking"></Button>
+          label="Quay lại"
+          @click="backBooking"
+        ></Button>
         <Button
           class="!bg-gradient-to-r shadow-2xl from-orange-500 from-10% !rounded-2xl h-10 flex items-center justify-center mt-5"
-          label="Giữ chỗ" @click="holdBooking"></Button>
+          label="Giữ chỗ"
+          @click="holdBooking"
+        ></Button>
       </div>
     </form>
   </div>
@@ -172,7 +251,7 @@ import { useRouter } from 'vue-router'
 import { useToast } from 'primevue/usetoast'
 import { useConfirm } from 'primevue/useconfirm'
 
-import {formatDate,formatPrice,genBookingCode} from '../utils/format'
+import { formatDate, formatPrice, genBookingCode } from '../utils/format'
 
 const loading = ref(false)
 const toast = useToast()
@@ -215,7 +294,6 @@ const [titleName, titleNameAttrs] = defineField('titleName')
 const [email, emailAttrs] = defineField('email')
 const [birthday, birthdayAttrs] = defineField('birthday')
 const [phone, phoneAttrs] = defineField('phone')
-
 
 // const bookingFlightHandel = handleSubmit((values) => {
 //   confirm.require({
@@ -325,10 +403,9 @@ const holdBooking = handleSubmit((values) => {
       })
 
       loading.value = true
-      const req =
-      {
-        bookingCode :genBookingCode(),
-        createdAt :(new Date()).getTime(),
+      const req = {
+        bookingCode: genBookingCode(),
+        createdAt: new Date().getTime(),
         flight: {
           id: information.value?.id,
           airline: information.value?.airline,
@@ -363,7 +440,7 @@ const holdBooking = handleSubmit((values) => {
       // call api
       if (req) {
         reservationStore.holdBooking(req)
-        router.push({ path: '/' })
+        router.push({ path: '/detail' })
       } else {
         alert('Đặt Thất bại')
       }
@@ -384,7 +461,6 @@ const holdBooking = handleSubmit((values) => {
     }
   })
 })
-
 
 onMounted(() => {
   planeStore.fetchAirports()
@@ -418,6 +494,5 @@ onMounted(() => {
     }
   }
 })
-
 </script>
 <style lang="css" scoped></style>

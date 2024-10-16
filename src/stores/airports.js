@@ -16,6 +16,18 @@ export const usePlaneStore = defineStore('planeStore', {
     filteredFlights: [],
     total: 0, // Tổng số sản phẩm
     first: 0
+    // priceOptions: [
+    //   {
+    //     id: 1,
+    //     class: 'Economy',
+    //     price: 5000000
+    //   },
+    //   {
+    //     id: 2,
+    //     memory: 'Business',
+    //     price: 10000000
+    //   }
+    // ]
   }),
   actions: {
     async fetchAirports(params) {

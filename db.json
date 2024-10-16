@@ -648,31 +648,6 @@
       ]
     },
     {
-      "id": "11",
-      "airline": "VJ",
-      "bookingCode": "R3LK78",
-      "departure": {
-        "time": "2024-10-25T05:30:00.000Z",
-        "airport": "HAN"
-      },
-      "arrival": {
-        "time": "2024-10-25T07:30:00.000Z",
-        "airport": "CXR"
-      },
-      "flightNumber": "654",
-      "aircraft": "Airbus A320",
-      "fareOptions": [
-        {
-          "class": "Economy",
-          "price": 900000
-        },
-        {
-          "class": "Business",
-          "price": 2800000
-        }
-      ]
-    },
-    {
       "id": "12",
       "airline": "VN",
       "bookingCode": "S4KP81",
@@ -1848,54 +1823,14 @@
       ]
     },
     {
-      "id": "59",
-      "airline": "VN",
-      "bookingCode": "N7LP90",
-      "departure": {
-        "time": "2024-12-14T08:15:00.000Z",
-        "airport": "SGN"
-      },
-      "arrival": {
-        "time": "2024-12-14T10:15:00.000Z",
-        "airport": "CXR"
-      },
-      "flightNumber": "105",
-      "aircraft": "Boeing 777",
-      "fareOptions": [
-        {
-          "class": "Economy",
-          "price": 1400000
-        },
-        {
-          "class": "Business",
-          "price": 3500000
-        }
-      ]
-    },
-    {
-      "id": "60",
-      "airline": "QH",
-      "bookingCode": "S8LP32",
-      "departure": {
-        "time": "2024-12-15T15:30:00.000Z",
-        "airport": "HAN"
-      },
-      "arrival": {
-        "time": "2024-12-15T17:30:00.000Z",
-        "airport": "NHA"
-      },
-      "flightNumber": "606",
-      "aircraft": "Airbus A320",
-      "fareOptions": [
-        {
-          "class": "Economy",
-          "price": 970000
-        },
-        {
-          "class": "Business",
-          "price": 2800000
-        }
-      ]
+      "id": "cb1a",
+      "airline": "VJ",
+      "flightNumber": "sss",
+      "aircraft": "Airbus A321333",
+      "departureAirport": "VCA",
+      "arrivalAirport": "VCA",
+      "departureTime": "2024-10-23T02:59:16.000Z",
+      "arrivalTime": "2024-10-23T03:59:16.000Z"
     }
   ],
   "reservations": [
@@ -2106,6 +2041,76 @@
           "lastName": "Kien",
           "titleName": "MR",
           "birthday": "2024-10-05T17:00:00.000Z"
+        }
+      ]
+    },
+    {
+      "id": "b52f",
+      "bookingCode": "W8JM0UDQ",
+      "createdAt": 1728981668049,
+      "flight": {
+        "id": "22",
+        "airline": "QH",
+        "departure": {
+          "time": "2024-11-07T08:00:00.000Z",
+          "airport": "HAN"
+        },
+        "arrival": {
+          "time": "2024-11-07T10:00:00.000Z",
+          "airport": "SGN"
+        },
+        "flightNumber": "503",
+        "aircraft": "Airbus A321",
+        "fareOptions": {
+          "class": "Economy",
+          "price": 935000
+        }
+      },
+      "contact": {
+        "email": "1222@gmial.com",
+        "phone": 111
+      },
+      "paxLists": [
+        {
+          "firstName": "sss",
+          "lastName": "ss",
+          "titleName": "MR",
+          "birthday": "2024-10-06T17:00:00.000Z"
+        }
+      ]
+    },
+    {
+      "id": "3299",
+      "bookingCode": "MIWIXFHR",
+      "createdAt": 1728982363479,
+      "flight": {
+        "id": "36",
+        "airline": "VJ",
+        "departure": {
+          "time": "2024-11-21T16:00:00.000Z",
+          "airport": "HAN"
+        },
+        "arrival": {
+          "time": "2024-11-21T18:00:00.000Z",
+          "airport": "SGN"
+        },
+        "flightNumber": "718",
+        "aircraft": "Boeing 787",
+        "fareOptions": {
+          "class": "Economy",
+          "price": 1155000
+        }
+      },
+      "contact": {
+        "email": "22222@gmail.com",
+        "phone": 22222
+      },
+      "paxLists": [
+        {
+          "firstName": "ssss",
+          "lastName": "sss",
+          "titleName": "MRS",
+          "birthday": "2024-10-13T17:00:00.000Z"
         }
       ]
     }
