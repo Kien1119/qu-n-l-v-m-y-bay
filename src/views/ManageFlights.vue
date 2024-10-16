@@ -111,19 +111,13 @@
         <div class="flex flex-col gap-3 gap-6">
           <div>
             <label for="airline" class="block font-bold mb-3">Hãng Bay</label>
-            <InputText
-              id="airline"
-              v-model.trim="flights.airline"
-              required="true"
-              autofocus
-              fluid
-            />
+            <InputText id="airline" v-model="flights.airline" required="true" autofocus fluid />
           </div>
           <div>
             <label for="flightNumber" class="block font-bold mb-3">Số hiệu chuyến bay</label>
             <InputText
               id="flightNumber"
-              v-model.trim="flights.flightNumber"
+              v-model="flights.flightNumber"
               required="true"
               autofocus
               fluid
@@ -131,13 +125,7 @@
           </div>
           <div>
             <label for="aircraft" class="block font-bold mb-3">Phi cơ</label>
-            <InputText
-              id="aircraft"
-              v-model.trim="flights.aircraft"
-              required="true"
-              autofocus
-              fluid
-            />
+            <InputText id="aircraft" v-model="flights.aircraft" required="true" autofocus fluid />
           </div>
           <div class="flex justify-between gap-3">
             <div class="">
@@ -235,9 +223,10 @@
             <!-- Hãng bay -->
             <div>
               <label for="airline" class="block font-bold mb-3">Hãng Bay</label>
+              {{ airline }}
               <InputText
                 id="airline"
-                v-model.trim="airline"
+                v-model="airline"
                 :class="{ 'p-invalid': errors.airline }"
                 required
                 autofocus
@@ -250,9 +239,10 @@
             <!-- Số hiệu chuyến bay -->
             <div>
               <label for="flightNumber" class="block font-bold mb-3">Số hiệu chuyến bay</label>
+              {{ flightNumber }}
               <InputText
                 id="flightNumber"
-                v-model.trim="flightNumber"
+                v-model="flightNumber"
                 :class="{ 'p-invalid': errors.flightNumber }"
                 required
                 fluid
@@ -264,9 +254,10 @@
             <!-- Phi cơ -->
             <div>
               <label for="aircraft" class="block font-bold mb-3">Phi cơ</label>
+              {{ aircraft }}
               <InputText
                 id="aircraft"
-                v-model.trim="aircraft"
+                v-model="aircraft"
                 :class="{ 'p-invalid': errors.aircraft }"
                 required
                 fluid
@@ -275,7 +266,8 @@
               <span style="color: #d81221">{{ errors.aircraft }}</span>
             </div>
             <div class="flex flex-col gap-3">
-              <label for="fareOptions" class="block font-bold mb-3">Giá cả </label>
+              <label for="fareOptions" class="block font-bold mb-3">Giá cả</label>
+              {{ ClassFareOptions }} {{ numberFareOptions }}
               <MultiSelect
                 v-model="ClassFareOptions"
                 :options="selectedFlightFareOptions"
@@ -298,6 +290,7 @@
             </div>
             <div class="flex flex-col gap-3">
               <label for="aircraft" class="block font-bold mb-3">Hệ thống</label>
+              {{ multiselectValue }}
               <MultiSelect
                 v-model="multiselectValue"
                 v-bind="multiselectValueAttrs"
@@ -338,6 +331,7 @@
             <div class="flex justify-between gap-3">
               <div class="flex flex-col gap-3">
                 <label for="departureAirport" class="block font-bold mb-3">Điểm đi</label>
+                {{ departureAirport }}
                 <Select
                   id="departureAirport"
                   v-model="departureAirport"
@@ -362,6 +356,7 @@
 
               <div class="flex flex-col gap-3">
                 <label for="arrivalAirport" class="block font-bold mb-3">Điểm đến</label>
+                {{ arrivalAirport }}
                 <Select
                   id="arrivalAirport"
                   v-model="arrivalAirport"
@@ -389,6 +384,7 @@
             <div class="flex justify-between">
               <div class="flex flex-col gap-3">
                 <label for="departureTime" class="block font-bold mb-3">Thời Gian đi</label>
+                {{ departureTime }}
                 <DatePicker
                   id="departureTime"
                   v-model="departureTime"
@@ -403,6 +399,7 @@
 
               <div class="flex flex-col gap-3">
                 <label for="arrivalTime" class="block font-bold mb-3">Thời gian đến</label>
+                {{ arrivalTime }}
                 <DatePicker
                   id="arrivalTime"
                   v-model="arrivalTime"
@@ -481,9 +478,16 @@ const { handleSubmit, errors, defineField } = useForm({
       .required('Điểm đến là bắt buộc')
       .matches(/^[A-Z]{3}$/, 'Mã sân bay phải có chính xác 3 chữ in hoa'),
     arrivalTime: yup.string().required('Thời gian bắt buộc'),
-    ClassFareOptions: yup.string().required(),
-    numberFareOptions: yup.number().required(),
-    multiselectValue: yup.number().required()
+    fareOptions: yup
+      .array()
+      .of(
+        yup.object().shape({
+          ClassFareOptions: yup.string().required(),
+          numberFareOptions: yup.string().email().required()
+        })
+      )
+      .strict(),
+    multiselectValue: yup.string().required()
   })
 })
 
@@ -494,11 +498,12 @@ const [departureAirport, departureAirportAttrs] = defineField('departureAirport'
 const [arrivalAirport, arrivalAirportAttrs] = defineField('arrivalAirport')
 const [departureTime, departureTimeAttrs] = defineField('departureTime')
 const [arrivalTime, arrivalTimeAttrs] = defineField('arrivalTime')
-const [ClassFareOptions, ClassFareOptionsAttrs] = defineField('ClassFareOptions')
-const [numberFareOptions, numberFareOptionsAttrs] = defineField('numberFareOptions')
+const [ClassFareOptions, ClassFareOptionsAttrs] = defineField('class')
+const [numberFareOptions, numberFareOptionsAttrs] = defineField('price')
 const [multiselectValue, multiselectValueAttrs] = defineField('multiselectValue')
 
 const handleAddFlights = handleSubmit((values) => {
+  console.log(1)
   confirm.require({
     message: 'Bạn có chắc chắn muốn tiếp tục không?',
     header: 'Xác nhận',
