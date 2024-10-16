@@ -4,19 +4,13 @@
       <Toolbar class="mb-6">
         <template #start>
           <Button
-            label="New"
+            label="Thêm"
             icon="pi pi-plus"
             severity="secondary"
             class="mr-2"
             @click="airportAddDialog = true"
           />
-          <Button
-            label="Delete"
-            icon="pi pi-trash"
-            severity="secondary"
-            @click="confirmDeleteSelected"
-            :disabled="!selectionAirports || !selectionAirports.length"
-          />
+          <Button disabled label="Xóa" icon="pi pi-trash" severity="secondary" />
         </template>
 
         <template #end>
@@ -29,11 +23,11 @@
         :loading="loading"
         :rows="planeStore.params._per_page"
         lazy
-        v-model:selection="selectionAirports"
+        v-model="selectionAirports"
         :totalRecords="planeStore.total"
         paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
         :rowsPerPageOptions="[5, 10, 36]"
-        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} airports"
+        currentPageReportTemplate="Hiển thị {first} đến {last} trong số {totalRecords} sân bay"
         selectionMode="single"
         :value="planeStore.airports"
         tableStyle="min-width: 50rem"
@@ -131,7 +125,6 @@
         </div>
 
         <template #footer>
-          <Button label="Cancel" icon="pi pi-times" text @click="hideDialog" />
           <Button label="Save" icon="pi pi-check" @click="handleUpdateAirport" />
         </template>
       </Dialog>
@@ -196,7 +189,6 @@
         </div>
 
         <template #footer>
-          <Button label="Cancel" icon="pi pi-times" text @click="hideDialog" />
           <Button label="Save" icon="pi pi-check" @click="handleAddAirport" />
         </template>
       </Dialog>
@@ -218,7 +210,7 @@ const loading = ref(false)
 const startIndex = computed(() => {
   return planeStore.params._page * planeStore.params._per_page - planeStore.params._per_page
 })
-
+const selectionAirports = ref()
 const onPage = async (event) => {
   loading.value = true
   planeStore.params._page = event.page + 1 || event

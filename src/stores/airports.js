@@ -189,16 +189,22 @@ export const usePlaneStore = defineStore('planeStore', {
       }
     },
     async getFilteredFlights(req) {
+      console.log(req)
       try {
         const response = await axios.get('http://localhost:3000/flights')
-
         const flights = response.data
 
-        this.filteredFlights = flights.filter(
-          (flight) =>
-            flight.departure.airport === req.departure && flight.arrival.airport === req.arrival
-        )
+        this.filteredFlights = flights
+          .filter(
+            (flight) =>
+              flight.departure?.airport === req.departure && flight.arrival?.airport === req.arrival
+          )
+          .map((flight) => ({
+            ...flight,
+            count: req.count || 1
+          }))
         localStorage.setItem('filteredFlights', JSON.stringify(this.filteredFlights))
+
         return this.filteredFlights
       } catch (error) {
         console.error('Không thể hiển thị data:', error)

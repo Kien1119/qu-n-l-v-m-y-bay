@@ -43,14 +43,15 @@ export const useReservationStore = defineStore('reservationStore', {
     },
     async holdBooking(req) {
       const { data } = await axios.post(`http://localhost:3000/reservations`, req)
+
       return data
     },
 
     async detailTicket(id) {
+      console.log({ id })
       try {
         const { data } = await axios.get(`http://localhost:3000/reservations/${id}`)
 
-        console.log('🚀 ~ detailTicket ~ data:', data)
         this.detail = {
           ...data
         }

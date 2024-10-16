@@ -106,7 +106,7 @@
               <div class="grow">
                 <InputGroup>
                   <Button icon="pi pi-plus" severity="success" @click="increment" />
-                  <InputNumber v-model="count" placeholder="0" />
+                  <InputNumber v-model="count" :min="0" placeholder="1" />
                   <Button icon="pi pi-minus" severity="danger" @click="decrement" />
                 </InputGroup>
               </div>
@@ -130,14 +130,12 @@
 import AddressPage from '@/component/AddressPage.vue'
 import { onMounted, ref } from 'vue'
 import { usePlaneStore } from '@/stores/airports'
-import { useConfirm } from 'primevue/useconfirm'
-import { useToast } from 'primevue/usetoast'
+
 import { useRouter } from 'vue-router'
 
 const router = useRouter()
 const planeStore = usePlaneStore()
-const confirm = useConfirm()
-const toast = useToast()
+
 const loading = ref(false)
 const formatDate = () => {
   const date = new Date()
@@ -201,49 +199,31 @@ const decrement = () => {
 }
 
 const handleSubmit = async () => {
-  confirm.require({
-    header: 'Bạn có chắc không?',
-    message: 'Vui lòng xác nhận để tiếp tục.',
-    accept: async () => {
-      toast.add({
-        severity: 'info',
-        summary: 'Đang cập nhật',
-        detail: 'Đang tiến hành cập nhật sân bay...',
-        life: 3000
-      })
-      loading.value = true
-      const req = {
-        departure: departures.value.airportCode,
-        arrival: arrival.value.airportCode,
-        startedDate: startedDate.value
-      }
-      if (req) {
-        try {
-          await planeStore.getFilteredFlights(req)
-          router.push({ path: '/booking' })
-        } catch (error) {
-          console.error('lỗi data')
-        } finally {
-          loading.value = false
-        }
-      }
-      toast.add({
-        severity: 'success',
-        summary: 'Thành công',
-        detail: 'Chuyến bay đã được cập nhật!',
-        life: 3000
-      })
-    },
-    reject: () => {
-      toast.add({
-        severity: 'error',
-        summary: 'Đã hủy',
-        detail: 'Bạn đã từ chối cập nhật.',
-        life: 3000
-      })
+  loading.value = true
+
+  const req = {
+    departure: departures.value?.airportCode || '',
+    arrival: arrival.value?.airportCode || '',
+    startedDate: startedDate.value || null,
+    count: count.value || 1
+  }
+
+  if (req.departure && req.arrival) {
+    console.log(req)
+    try {
+      await planeStore.getFilteredFlights(req)
+      router.push({ path: '/booking' })
+    } catch (error) {
+      console.error('Lỗi data:', error)
+    } finally {
+      loading.value = false
     }
-  })
+  } else {
+    console.error('Departure and arrival airport codes are required.')
+    loading.value = false
+  }
 }
+
 onMounted(() => {
   planeStore.fetchFlights
 })

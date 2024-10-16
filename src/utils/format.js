@@ -14,9 +14,10 @@ export function formatPrice(price) {
   if (price == null || isNaN(price)) {
     return 'N/A'
   }
-  return price.toLocaleString('en-US', {
+  return price.toLocaleString('vi-VN', {
     style: 'currency',
-    currency: 'USD'
+    currency: 'VND',
+    minimumFractionDigits: 0 // No decimal places for VND
   })
 }
 

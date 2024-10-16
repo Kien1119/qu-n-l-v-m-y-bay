@@ -215,8 +215,9 @@ const bookingFlightHandel = () => {
       if (flightTicket.value && priceTicket.value) {
         const priceDetails = {
           ...priceTicket.value,
-          tax: (priceTicket.value.price * 10) / 100,
-          total: Math.floor(priceTicket.value.price * 1.1)
+          count: flightTicket.value.count,
+          tax: (priceTicket.value.price * flightTicket.value.count * 10) / 100,
+          total: Math.floor(priceTicket.value.price * 1.1 * flightTicket.value.count)
         }
         localStorage.setItem('flightTicket', JSON.stringify(flightTicket.value))
         localStorage.setItem('priceTicket', JSON.stringify([priceDetails]))

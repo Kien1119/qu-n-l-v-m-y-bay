@@ -13,12 +13,12 @@
           >
           <div class="flex items-center">
             <span class="text-stone-950 font-bold"
-              >{{ formatDate(information?.departure.time) }}-
+              >{{ formatDate(information?.departure?.time) }}-
             </span>
-            {{ formatDate(information?.arrival.time) }}
+            {{ formatDate(information?.arrival?.time) }}
           </div>
           <span class="flex items-center font-bold text-amber-500">
-            {{ information?.departure.airport }} - {{ information?.arrival.airport }}
+            {{ information?.departure?.airport }} - {{ information?.arrival?.airport }}
           </span>
         </div>
         <div class="m-7 h-1/3 border-2 rounded-lg border-cyan-700 bg-slate-50 p-4">
@@ -57,15 +57,15 @@
                   <template #header>
                     <div class="flex flex-wrap items-center justify-center gap-2">
                       <span class="text-xl font-bold !text-orange-400"
-                        >{{ getAirportName(information?.departure.airport) }} ({{
-                          information?.departure.airport
-                        }}) - {{ getAirportName(information?.arrival.airport) }} ({{
-                          information?.arrival.airport
+                        >{{ getAirportName(information?.departure?.airport) }} ({{
+                          information?.departure?.airport
+                        }}) - {{ getAirportName(information?.arrival?.airport) }} ({{
+                          information?.arrival?.airport
                         }})</span
                       >
                     </div>
                   </template>
-
+                  <Column class="!rounded-lg" field="count" header="Hành khách"></Column>
                   <Column class="!rounded-lg" field="class" header="Hạng"></Column>
                   <Column field="price" header="GIÁ"></Column>
                   <Column field="tax" header="Thuế"></Column>
@@ -121,37 +121,45 @@
                   >
                 </div>
               </div>
+
               <div class="flex flex-col card border-2 !border-gray-500 rounded-lg mx-5 my-5 gap-5">
                 <div class="flex flex-wrap items-center pl-4 gap-2">
-                  <span class="text-xl font-bold !text-gray-900 uppercase"
-                    >{{ firstName }} {{ lastName }} {{ titleName }}</span
-                  >
+                  <span class="text-xl font-bold !text-gray-900 uppercase">
+                    {{ firstName }} {{ lastName }} {{ titleName }}
+                  </span>
                 </div>
                 <div class="bg-red-200 text-red-600 mx-4 font-bold rounded-lg p-3">
-                  <span class=""
-                    >Lưu ý: "Theo yêu cầu của VietjetAir tất cả hành khách phải nhập ngày sinh.
-                    Trong trường hợp Quý AG để trống chúng tôi sẽ cung cấp dữ liệu ngẫu nhiên. BGT
-                    không chịu trách nhiệm nếu quý AG không nhập đầy đủ thông tin !"</span
-                  >
+                  <span>
+                    Lưu ý: "Theo yêu cầu của VietjetAir tất cả hành khách phải nhập ngày sinh. Trong
+                    trường hợp Quý AG để trống chúng tôi sẽ cung cấp dữ liệu ngẫu nhiên. BGT không
+                    chịu trách nhiệm nếu quý AG không nhập đầy đủ thông tin !"
+                  </span>
                 </div>
-                <div class="card flex gap-4 px-4 bg-slate-200 p-6 m-4 rounded-lg py-4">
+                <div
+                  v-for="(item, index) in passengers"
+                  :key="index"
+                  class="card flex gap-4 px-4 bg-slate-200 p-6 m-4 rounded-lg py-4"
+                >
+                  firstName {{ item.firstName }} firstNameAttrs {{ item.firstNameAttrs }}
                   <div class="flex-1 flex flex-col gap-1">
                     <div>
                       <InputText
                         class="w-full uppercase"
-                        :invalid="errors.firstName"
-                        v-bind="firstNameAttrs"
+                        v-bind="item.firstNameAttrs"
                         type="text"
-                        v-model="firstName"
+                        v-model="item.firstName"
                         placeholder="Họ (*)"
+                        :class="{ 'p-invalid': errors[`passengers.${index}.firstName`] }"
                       />
                     </div>
-                    <span class="h-6" style="color: #d81221">{{ errors.firstName }}</span>
+                    <span class="h-6" style="color: #d81221">{{
+                      errors[`passengers.${index}.firstName`]
+                    }}</span>
 
                     <div>
                       <Select
-                        v-model="titleName"
-                        v-bind="titleNameAttrs"
+                        v-model="item.titleName"
+                        v-bind="item.titleNameAttrs"
                         :options="title"
                         optionLabel="name"
                         optionValue="code"
@@ -159,32 +167,38 @@
                         class="w-full"
                       />
                     </div>
-                    <span class="h-6" style="color: #d81221">{{ errors.titleName }}</span>
+                    <span class="h-6" style="color: #d81221">{{
+                      errors[`passengers.${index}.titleName`]
+                    }}</span>
                   </div>
                   <div class="flex-1 flex flex-col gap-1">
                     <div>
                       <InputText
-                        v-bind="lastNameAttrs"
+                        v-bind="item.lastNameAttrs"
                         class="w-full uppercase"
-                        :invalid="errors.lastName"
+                        v-model="item.lastName"
                         type="text"
-                        v-model="lastName"
                         placeholder="Tên đệm & Tên (*)"
+                        :class="{ 'p-invalid': errors[`passengers.${index}.lastName`] }"
                       />
                     </div>
-                    <span class="h-6" style="color: #d81221">{{ errors.lastName }}</span>
+                    <span class="h-6" style="color: #d81221">{{
+                      errors[`passengers.${index}.lastName`]
+                    }}</span>
                     <div>
                       <DatePicker
-                        v-bind="birthdayAttrs"
-                        v-model="birthday"
-                        :invalid="errors.birthday"
+                        v-bind="item.birthdayAttrs"
+                        v-model="item.birthday"
                         birthdayFormat="dd/mm/yy"
                         placeholder="Ngày sinh (DD-MM-YYYY)"
                         class="w-full"
                         :maxDate="new Date()"
+                        :class="{ 'p-invalid': errors[`passengers.${index}.birthday`] }"
                       />
                     </div>
-                    <span class="h-6" style="color: #d81221">{{ errors.birthday }}</span>
+                    <span class="h-6" style="color: #d81221">{{
+                      errors[`passengers.${index}.birthday`]
+                    }}</span>
                   </div>
                 </div>
               </div>
@@ -208,7 +222,6 @@
                 />
                 <span class="h-6" style="color: #d81221">{{ errors.phone }}</span>
               </div>
-
               <div class="flex flex-col">
                 <label for="email">Email: </label>
                 <InputText
@@ -242,7 +255,7 @@
   </div>
 </template>
 <script setup lang="js">
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, watch } from 'vue'
 import { usePlaneStore } from '@/stores/airports'
 import { useReservationStore } from '@/stores/reservation'
 import { useForm } from 'vee-validate'
@@ -260,6 +273,26 @@ const router = useRouter()
 const confirm = useConfirm()
 const reservationStore = useReservationStore()
 const planeStore = usePlaneStore()
+const price = ref([{ count: 0 }])
+
+watch(
+  () => price.value[0]?.count,
+  (newCount) => {
+    if (newCount && newCount > 0) {
+      passengers.value = Array.from({ length: newCount }, () => ({
+        firstName: '',
+        lastName: '',
+        titleName: '',
+        birthday: '',
+        firstNameAttrs: {},
+        lastNameAttrs: {},
+        titleNameAttrs: {},
+        birthdayAttrs: {}
+      }))
+    }
+  },
+  { immediate: true }
+)
 
 const getAirportName = (code) => {
   const airport = planeStore.airports.find((airport) => {
@@ -276,109 +309,33 @@ const title = ref([
   { name: 'Cô', code: 'MS' }
 ])
 
-const information = ref()
-const price = ref([])
-const { errors, handleSubmit, defineField } = useForm({
+const information = ref([])
+
+const passengers = ref([
+  {
+    firstName: '',
+    lastName: '',
+    titleName: '',
+    birthday: '',
+    firstNameAttrs: {},
+    lastNameAttrs: {},
+    titleNameAttrs: {},
+    birthdayAttrs: {}
+  }
+])
+
+const { errors, handleSubmit } = useForm({
   validationSchema: yup.object({
-    firstName: yup.string().required('Bắt buộc nhập họ'),
-    lastName: yup.string().required('Trường tên đệm Và tên bắt buộc'),
-    titleName: yup.string().required('Trường tên đệm Và tên bắt buộc'),
-    email: yup.string().required('example@gmail.com').email('Email không hợp lệ'),
-    birthday: yup.string().required('Ngày là bắt buộc'),
-    phone: yup.string().required('Số điện thoại là bắt buộc')
+    passengers: yup.array().of(
+      yup.object().shape({
+        firstName: yup.string().required('Bắt buộc nhập họ'),
+        lastName: yup.string().required('Trường tên đệm và tên là bắt buộc'),
+        titleName: yup.string().required('Trường danh xưng là bắt buộc'),
+        birthday: yup.string().required('Ngày sinh là bắt buộc')
+      })
+    )
   })
 })
-const [firstName, firstNameAttrs] = defineField('firstName')
-const [lastName, lastNameAttrs] = defineField('lastName')
-const [titleName, titleNameAttrs] = defineField('titleName')
-const [email, emailAttrs] = defineField('email')
-const [birthday, birthdayAttrs] = defineField('birthday')
-const [phone, phoneAttrs] = defineField('phone')
-
-// const bookingFlightHandel = handleSubmit((values) => {
-//   confirm.require({
-//     message: 'Bạn có chắc chắn muốn tiếp tục không?',
-//     header: 'Xác nhận',
-//     icon: 'pi pi-exclamation-triangle',
-//     rejectProps: {
-//       label: 'Hủy bỏ',
-//       severity: 'secondary',
-//       outlined: true
-//     },
-//     acceptProps: {
-//       label: 'Save'
-//     },
-
-//     accept: async () => {
-//       toast.add({
-//         severity: 'info',
-//         summary: 'Đang cập nhật',
-//         detail: 'Đang tiến hành cập nhật sân bay...',
-//         life: 3000
-//       })
-
-//       loading.value = true
-//       const req =
-//       {
-//         bookingCode:genBookingCode(),
-//         flight: {
-//           id: information.value?.id,
-//           airline: information.value?.airline,
-//           departure: {
-//             time: information.value?.departure.time,
-//             airport: information.value?.departure.airport
-//           },
-//           arrival: {
-//             time: information.value?.arrival.time,
-//             airport: information.value?.arrival.airport
-//           },
-//           flightNumber: information.value?.flightNumber,
-//           aircraft: information.value?.aircraft,
-//           fareOptions: {
-//             class: price.value[0]?.class,
-//             price: price.value[0]?.total
-//           }
-//         },
-//         contact: {
-//           email: values.email,
-//           phone: values.phone
-//         },
-//         paxLists: [
-//           {
-//             firstName: values.firstName,
-//             lastName: values.lastName,
-//             titleName: values.titleName,
-//             birthday: values.birthday
-//           }
-//         ]
-//       }
-//       if (req) {
-//         const existingBookings = JSON.parse(localStorage.getItem('bookingsReservation')) || []
-//         existingBookings.push(req)
-
-//         localStorage.setItem('bookingsReservation', JSON.stringify(existingBookings))
-
-//         // router.push({ path: '/' })
-//       } else {
-//         alert('Đặt Thất bại')
-//       }
-//       toast.add({
-//         severity: 'success',
-//         summary: 'Thành công',
-//         detail: 'Đặt vé thành công!',
-//         life: 3000
-//       })
-//     },
-//     reject: () => {
-//       toast.add({
-//         severity: 'Lỗi',
-//         summary: 'Vật bị loại bỏ',
-//         detail: 'Bạn đã từ chối',
-//         life: 3000
-//       })
-//     }
-//   })
-// })
 
 const holdBooking = handleSubmit((values) => {
   confirm.require({
@@ -440,7 +397,7 @@ const holdBooking = handleSubmit((values) => {
       // call api
       if (req) {
         reservationStore.holdBooking(req)
-        router.push({ path: '/detail' })
+        router.push({ path: '/bookings' })
       } else {
         alert('Đặt Thất bại')
       }
