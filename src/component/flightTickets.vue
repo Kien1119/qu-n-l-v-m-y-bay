@@ -123,11 +123,7 @@
               </div>
 
               <div class="flex flex-col card border-2 !border-gray-500 rounded-lg mx-5 my-5 gap-5">
-                <div class="flex flex-wrap items-center pl-4 gap-2">
-                  <span class="text-xl font-bold !text-gray-900 uppercase">
-                    {{ firstName }} {{ lastName }} {{ titleName }}
-                  </span>
-                </div>
+                <div class="flex flex-wrap items-center pl-4 gap-2"></div>
                 <div class="bg-red-200 text-red-600 mx-4 font-bold rounded-lg p-3">
                   <span>
                     Lưu ý: "Theo yêu cầu của VietjetAir tất cả hành khách phải nhập ngày sinh. Trong
@@ -138,85 +134,92 @@
                 <div
                   v-for="(item, index) in passengers"
                   :key="index"
-                  class="card flex gap-4 px-4 bg-slate-200 p-6 m-4 rounded-lg py-4"
+                  class="card flex flex-col gap-4 px-4 bg-slate-200 p-6 m-4 rounded-lg py-4"
                 >
-                  firstName {{ item.firstName }} firstNameAttrs {{ item.firstNameAttrs }}
-                  <div class="flex-1 flex flex-col gap-1">
-                    <div>
-                      <InputText
-                        class="w-full uppercase"
-                        v-bind="item.firstNameAttrs"
-                        type="text"
-                        v-model="item.firstName"
-                        placeholder="Họ (*)"
-                        :class="{ 'p-invalid': errors[`passengers.${index}.firstName`] }"
-                      />
-                    </div>
-                    <span class="h-6" style="color: #d81221">{{
-                      errors[`passengers.${index}.firstName`]
-                    }}</span>
-
-                    <div>
-                      <Select
-                        v-model="item.titleName"
-                        v-bind="item.titleNameAttrs"
-                        :options="title"
-                        optionLabel="name"
-                        optionValue="code"
-                        placeholder="Danh xưng"
-                        class="w-full"
-                      />
-                    </div>
-                    <span class="h-6" style="color: #d81221">{{
-                      errors[`passengers.${index}.titleName`]
-                    }}</span>
+                  <div class="h-7">
+                    <span class="text-xl font-bold !text-gray-900 uppercase">
+                      Hành Khách {{ item.firstName }} {{ item.lastName }}{{ item.titleName }}
+                    </span>
                   </div>
-                  <div class="flex-1 flex flex-col gap-1">
-                    <div>
-                      <InputText
-                        v-bind="item.lastNameAttrs"
-                        class="w-full uppercase"
-                        v-model="item.lastName"
-                        type="text"
-                        placeholder="Tên đệm & Tên (*)"
-                        :class="{ 'p-invalid': errors[`passengers.${index}.lastName`] }"
-                      />
+
+                  <div>
+                    <div class="flex-1 flex flex-col gap-1">
+                      <div>
+                        <InputText
+                          class="w-full uppercase"
+                          v-bind="item.firstNameAttrs"
+                          type="text"
+                          v-model="item.firstName"
+                          placeholder="Họ (*)"
+                          :class="{ 'p-invalid': errors[`passengers.${index}.firstName`] }"
+                        />
+                      </div>
+                      <span class="h-6" style="color: #d81221">{{
+                        errors[`passengers.${index}.firstName`]
+                      }}</span>
+
+                      <div>
+                        <Select
+                          v-model="item.titleName"
+                          v-bind="item.titleNameAttrs"
+                          :options="title"
+                          optionLabel="name"
+                          optionValue="code"
+                          placeholder="Danh xưng"
+                          class="w-full"
+                        />
+                      </div>
+                      <span class="h-6" style="color: #d81221">{{
+                        errors[`passengers.${index}.titleName`]
+                      }}</span>
                     </div>
-                    <span class="h-6" style="color: #d81221">{{
-                      errors[`passengers.${index}.lastName`]
-                    }}</span>
-                    <div>
-                      <DatePicker
-                        v-bind="item.birthdayAttrs"
-                        v-model="item.birthday"
-                        birthdayFormat="dd/mm/yy"
-                        placeholder="Ngày sinh (DD-MM-YYYY)"
-                        class="w-full"
-                        :maxDate="new Date()"
-                        :class="{ 'p-invalid': errors[`passengers.${index}.birthday`] }"
-                      />
+                    <div class="flex-1 flex flex-col gap-1">
+                      <div>
+                        <InputText
+                          v-bind="item.lastNameAttrs"
+                          class="w-full uppercase"
+                          v-model="item.lastName"
+                          type="text"
+                          placeholder="Tên đệm & Tên (*)"
+                          :class="{ 'p-invalid': errors[`passengers.${index}.lastName`] }"
+                        />
+                      </div>
+                      <span class="h-6" style="color: #d81221">{{
+                        errors[`passengers.${index}.lastName`]
+                      }}</span>
+                      <div>
+                        <DatePicker
+                          v-bind="item.birthdayAttrs"
+                          v-model="item.birthday"
+                          birthdayFormat="dd/mm/yy"
+                          placeholder="Ngày sinh (DD-MM-YYYY)"
+                          class="w-full"
+                          :maxDate="new Date()"
+                          :class="{ 'p-invalid': errors[`passengers.${index}.birthday`] }"
+                        />
+                      </div>
+                      <span class="h-6" style="color: #d81221">{{
+                        errors[`passengers.${index}.birthday`]
+                      }}</span>
                     </div>
-                    <span class="h-6" style="color: #d81221">{{
-                      errors[`passengers.${index}.birthday`]
-                    }}</span>
                   </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-        <div class="p-5">
+        <div class="p-7">
           <div class="flex flex-col p-4 border-2 border-cyan-700 rounded-lg bg-slate-50 gap-3">
             <div><span class="font-bold text-cyan-700">Thông tin liên hệ khách hàng</span></div>
-            <div class="flex gap-5 bg-slate-300 p-4 rounded-lg gap-3">
+            <div class="flex gap-5 bg-slate-300 p-4 rounded-lg">
               <div class="flex flex-col">
                 <label for="phone">Số điện thoại: </label>
                 <InputMask
                   v-bind="phoneAttrs"
                   id="phone"
                   v-model="phone"
-                  mask="(999) 999-9999"
-                  placeholder="(999) 999-9999"
+                  mask="(84) 999-9999"
+                  placeholder="(84) 999-9999"
                   :invalid="errors.phone"
                   fluid
                 />
