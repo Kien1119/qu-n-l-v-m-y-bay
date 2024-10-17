@@ -1,3 +1,4 @@
+<!-- eslint-disable no-undef -->
 <template>
   <div class="relative pb-20">
     <form action="">
@@ -154,9 +155,7 @@
                           :class="{ 'p-invalid': errors[`passengers.${item}.firstName`] }"
                         />
                       </div>
-                      <span class="h-6" style="color: #d81221">{{
-                        errors[`passengers.${item}.firstName`]
-                      }}</span>
+                      <span class="text-red-600">{{ errors?.passengers?.[index]?.firstName }}</span>
 
                       <div>
                         <Select
@@ -169,9 +168,7 @@
                           class="w-full"
                         />
                       </div>
-                      <span class="h-6" style="color: #d81221">{{
-                        errors[`passengers.${index}.titleName`]
-                      }}</span>
+                      <span class="text-red-600">{{ errors?.passengers?.[index]?.titleName }}</span>
                     </div>
                     <div class="flex-1 flex flex-col gap-1">
                       <div>
@@ -184,9 +181,7 @@
                           :class="{ 'p-invalid': errors[`passengers.${index}.lastName`] }"
                         />
                       </div>
-                      <span class="h-6" style="color: #d81221">{{
-                        errors[`passengers.${index}.lastName`]
-                      }}</span>
+                      <span class="text-red-600">{{ errors?.passengers?.[index]?.lastName }}</span>
                       <div>
                         <DatePicker
                           v-bind="item.birthdayAttrs"
@@ -198,9 +193,7 @@
                           :class="{ 'p-invalid': errors[`passengers.${index}.birthday`] }"
                         />
                       </div>
-                      <span class="h-6" style="color: #d81221">{{
-                        errors[`passengers.${index}.birthday`]
-                      }}</span>
+                      <span class="text-red-600">{{ errors?.passengers?.[index]?.birthday }}</span>
                     </div>
                   </div>
                 </div>
@@ -277,6 +270,19 @@ const confirm = useConfirm()
 const reservationStore = useReservationStore()
 const planeStore = usePlaneStore()
 const price = ref([{ count: 0 }])
+const information = ref([])
+const passengers = ref([
+  {
+    firstName: '',
+    lastName: '',
+    titleName: '',
+    birthday: '',
+    firstNameAttrs: {},
+    lastNameAttrs: {},
+    titleNameAttrs: {},
+    birthdayAttrs: {}
+  }
+])
 
 watch(
   () => price.value[0]?.count,
@@ -292,42 +298,15 @@ watch(
         titleNameAttrs: {},
         birthdayAttrs: {}
       }))
+    } else {
+      passengers.value = []
     }
   },
   { immediate: true }
 )
 
-const getAirportName = (code) => {
-  const airport = planeStore.airports.find((airport) => {
-    return airport.airportCode === code
-  })
-  return `${airport ? airport.name : code}`
-}
-const backBooking = () => {
-  router.push({ path: '/booking' })
-}
-const title = ref([
-  { name: 'Ông', code: 'MR' },
-  { name: 'Bà', code: 'MRS' },
-  { name: 'Cô', code: 'MS' }
-])
-
-const information = ref([])
-
-const passengers = ref([
-  {
-    firstName: '',
-    lastName: '',
-    titleName: '',
-    birthday: '',
-    firstNameAttrs: {},
-    lastNameAttrs: {},
-    titleNameAttrs: {},
-    birthdayAttrs: {}
-  }
-])
-
-const { errors, handleSubmit } = useForm({
+// Định nghĩa form validation với vee-validate
+const { errors, handleSubmit, defineField } = useForm({
   validationSchema: yup.object({
     passengers: yup.array().of(
       yup.object().shape({
@@ -336,92 +315,106 @@ const { errors, handleSubmit } = useForm({
         titleName: yup.string().required('Trường danh xưng là bắt buộc'),
         birthday: yup.string().required('Ngày sinh là bắt buộc')
       })
-    )
+    ),
+    email: yup.string().required('Email bắt buộc'),
+    phone: yup.string().required('Phone bắt buộc').min(8)
   })
 })
 
+// Định nghĩa các field trong form
+const [email, emailAttrs] = defineField('email')
+const [phone, phoneAttrs] = defineField('phone')
+
+// Hàm để xử lý dữ liệu booking
 const holdBooking = handleSubmit((values) => {
-  confirm.require({
-    message: 'Bạn có chắc chắn muốn tiếp tục không?',
-    header: 'Xác nhận',
-    icon: 'pi pi-exclamation-triangle',
-    rejectProps: {
-      label: 'Hủy bỏ',
-      severity: 'secondary',
-      outlined: true
-    },
-    acceptProps: {
-      label: 'Save'
-    },
+  // Kiểm tra nếu passengers tồn tại và là một mảng trước khi gọi .map()
+  if (Array.isArray(values.passengers)) {
+    confirm.require({
+      message: 'Bạn có chắc chắn muốn tiếp tục không?',
+      header: 'Xác nhận',
+      icon: 'pi pi-exclamation-triangle',
+      rejectProps: { label: 'Hủy bỏ', severity: 'secondary', outlined: true },
+      acceptProps: { label: 'Save' },
+      accept: async () => {
+        toast.add({
+          severity: 'info',
+          summary: 'Đang cập nhật',
+          detail: 'Đang tiến hành cập nhật sân bay...',
+          life: 3000
+        })
 
-    accept: async () => {
-      toast.add({
-        severity: 'info',
-        summary: 'Đang cập nhật',
-        detail: 'Đang tiến hành cập nhật sân bay...',
-        life: 3000
-      })
+        const req = {
+          bookingCode: genBookingCode(),
+          createdAt: new Date().getTime(),
+          flight: {
+            id: information.value?.id,
+            airline: information.value?.airline,
+            departure: {
+              time: information.value?.departure.time,
+              airport: information.value?.departure.airport
+            },
+            arrival: {
+              time: information.value?.arrival.time,
+              airport: information.value?.arrival.airport
+            },
+            flightNumber: information.value?.flightNumber,
+            aircraft: information.value?.aircraft,
+            fareOptions: {
+              class: price.value[0]?.class,
+              price: price.value[0]?.total
+            }
+          },
+          contact: {
+            email: values.email,
+            phone: values.phone
+          },
+          // Sử dụng map chỉ khi passengers có giá trị
+          paxLists: values.passengers.map((pax) => ({
+            firstName: pax.firstName,
+            lastName: pax.lastName,
+            titleName: pax.titleName,
+            birthday: pax.birthday
+          }))
+        }
 
-      loading.value = true
-      const req = {
-        bookingCode: genBookingCode(),
-        createdAt: new Date().getTime(),
-        flight: {
-          id: information.value?.id,
-          airline: information.value?.airline,
-          departure: {
-            time: information.value?.departure.time,
-            airport: information.value?.departure.airport
-          },
-          arrival: {
-            time: information.value?.arrival.time,
-            airport: information.value?.arrival.airport
-          },
-          flightNumber: information.value?.flightNumber,
-          aircraft: information.value?.aircraft,
-          fareOptions: {
-            class: price.value[0]?.class,
-            price: price.value[0]?.total
-          }
-        },
-        contact: {
-          email: values.email,
-          phone: values.phone
-        },
-        paxLists: [
-          {
-            firstName: values.firstName,
-            lastName: values.lastName,
-            titleName: values.titleName,
-            birthday: values.birthday
-          }
-        ]
+        if (req) {
+          reservationStore.holdBooking(req) // Gọi API
+          router.push({ path: '/bookings' })
+        } else {
+          alert('Đặt Thất bại')
+        }
+
+        toast.add({
+          severity: 'success',
+          summary: 'Thành công',
+          detail: 'Đặt vé thành công!',
+          life: 3000
+        })
+      },
+      reject: () => {
+        toast.add({
+          severity: 'error',
+          summary: 'Lỗi',
+          detail: 'Bạn đã từ chối',
+          life: 3000
+        })
       }
-      // call api
-      if (req) {
-        reservationStore.holdBooking(req)
-        router.push({ path: '/bookings' })
-      } else {
-        alert('Đặt Thất bại')
-      }
-      toast.add({
-        severity: 'success',
-        summary: 'Thành công',
-        detail: 'Đặt vé thành công!',
-        life: 3000
-      })
-    },
-    reject: () => {
-      toast.add({
-        severity: 'Lỗi',
-        summary: 'Vật bị loại bỏ',
-        detail: 'Bạn đã từ chối',
-        life: 3000
-      })
-    }
-  })
+    })
+  } else {
+    console.error('passengers không phải là mảng hoặc không tồn tại.')
+  }
 })
 
+// Hàm để quay lại trang booking
+const backBooking = () => {
+  router.push({ path: '/booking' })
+}
+
+// Hàm lấy tên sân bay từ code
+const getAirportName = (code) => {
+  const airport = planeStore.airports.find((airport) => airport.airportCode === code)
+  return airport ? airport.name : code
+}
 onMounted(() => {
   planeStore.fetchAirports()
 
