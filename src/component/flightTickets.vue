@@ -138,7 +138,7 @@
                 >
                   <div class="h-7">
                     <span class="text-xl font-bold !text-gray-900 uppercase">
-                      Hành Khách {{ item.firstName }} {{ item.lastName }}{{ item.titleName }}
+                      Hành Khách: {{ item.firstName }} {{ item.lastName }}{{ item.titleName }}
                     </span>
                   </div>
 
@@ -151,11 +151,11 @@
                           type="text"
                           v-model="item.firstName"
                           placeholder="Họ (*)"
-                          :class="{ 'p-invalid': errors[`passengers.${index}.firstName`] }"
+                          :class="{ 'p-invalid': errors[`passengers.${item}.firstName`] }"
                         />
                       </div>
                       <span class="h-6" style="color: #d81221">{{
-                        errors[`passengers.${index}.firstName`]
+                        errors[`passengers.${item}.firstName`]
                       }}</span>
 
                       <div>
