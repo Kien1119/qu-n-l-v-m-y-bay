@@ -2104,364 +2104,124 @@
       ]
     },
     {
-      "id": "3299",
-      "bookingCode": "MIWIXFHR",
-      "createdAt": 1728982363479,
+      "id": "7e9f",
+      "bookingCode": "9A61A3S9",
+      "createdAt": 1729223840115,
       "flight": {
-        "id": "36",
-        "airline": "VJ",
+        "id": "19",
+        "airline": "QH",
         "departure": {
-          "time": "2024-11-21T16:00:00.000Z",
+          "time": "2024-12-17T08:00:00.000Z",
           "airport": "HAN"
         },
         "arrival": {
-          "time": "2024-11-21T18:00:00.000Z",
+          "time": "2024-12-17T10:00:00.000Z",
           "airport": "SGN"
         },
-        "flightNumber": "718",
-        "aircraft": "Boeing 787",
+        "flightNumber": "200",
+        "aircraft": "Airbus A320",
         "fareOptions": {
           "class": "Economy",
-          "price": 1155000
+          "price": 2156000
         }
       },
-      "contact": {
-        "email": "22222@gmail.com",
-        "phone": 22222
-      },
+      "contact": {},
       "paxLists": [
         {
-          "firstName": "ssss",
-          "lastName": "sss",
           "titleName": "MRS",
+          "firstName": "sdsđ",
+          "lastName": "sdsds",
           "birthday": "2024-10-13T17:00:00.000Z"
+        },
+        {
+          "titleName": "MRS",
+          "firstName": "dsds",
+          "lastName": "dsds",
+          "birthday": "2024-10-05T17:00:00.000Z"
         }
       ]
     },
     {
-      "id": "aa67",
-      "bookingCode": "7L065VMP",
-      "createdAt": 1729070356008,
+      "id": "deeb",
+      "bookingCode": "DDNUP9Y9",
+      "createdAt": 1729224058406,
       "flight": {
-        "id": "15",
-        "airline": "VN",
-        "departure": {
-          "time": "2024-10-29T12:00:00.000Z",
-          "airport": "HAN"
-        },
-        "arrival": {
-          "time": "2024-10-29T14:00:00.000Z",
-          "airport": "SGN"
-        },
-        "flightNumber": "507",
-        "aircraft": "Boeing 777",
-        "fareOptions": {
-          "class": "Business",
-          "price": 17325000
-        }
-      },
-      "contact": {},
-      "paxLists": [{}]
-    },
-    {
-      "id": "a59b",
-      "bookingCode": "2W1YVPNC",
-      "createdAt": 1729071276109,
-      "flight": {
-        "id": "15",
-        "airline": "VN",
-        "departure": {
-          "time": "2024-10-29T12:00:00.000Z",
-          "airport": "HAN"
-        },
-        "arrival": {
-          "time": "2024-10-29T14:00:00.000Z",
-          "airport": "SGN"
-        },
-        "flightNumber": "507",
-        "aircraft": "Boeing 777",
-        "fareOptions": {
-          "class": "Business",
-          "price": 10395000
-        }
-      },
-      "contact": {},
-      "paxLists": [{}]
-    },
-    {
-      "id": "a91a",
-      "bookingCode": "1QBB9IJZ",
-      "createdAt": 1729071425170,
-      "flight": {
-        "id": "15",
-        "airline": "VN",
-        "departure": {
-          "time": "2024-10-29T12:00:00.000Z",
-          "airport": "HAN"
-        },
-        "arrival": {
-          "time": "2024-10-29T14:00:00.000Z",
-          "airport": "SGN"
-        },
-        "flightNumber": "507",
-        "aircraft": "Boeing 777",
-        "fareOptions": {
-          "class": "Business",
-          "price": 10395000
-        }
-      },
-      "contact": {},
-      "paxLists": [{}]
-    },
-    {
-      "id": "b55a",
-      "bookingCode": "AN3RB7GM",
-      "createdAt": 1729071451277,
-      "flight": {
-        "id": "15",
-        "airline": "VN",
-        "departure": {
-          "time": "2024-10-29T12:00:00.000Z",
-          "airport": "HAN"
-        },
-        "arrival": {
-          "time": "2024-10-29T14:00:00.000Z",
-          "airport": "SGN"
-        },
-        "flightNumber": "507",
-        "aircraft": "Boeing 777",
-        "fareOptions": {
-          "class": "Business",
-          "price": 10395000
-        }
-      },
-      "contact": {},
-      "paxLists": [{}]
-    },
-    {
-      "id": "fdfa",
-      "bookingCode": "2X5UTF2R",
-      "createdAt": 1729071486189,
-      "flight": {
-        "id": "15",
-        "airline": "VN",
-        "departure": {
-          "time": "2024-10-29T12:00:00.000Z",
-          "airport": "HAN"
-        },
-        "arrival": {
-          "time": "2024-10-29T14:00:00.000Z",
-          "airport": "SGN"
-        },
-        "flightNumber": "507",
-        "aircraft": "Boeing 777",
-        "fareOptions": {
-          "class": "Business",
-          "price": 10395000
-        }
-      },
-      "contact": {},
-      "paxLists": [{}]
-    },
-    {
-      "id": "d3d3",
-      "bookingCode": "59YOGDOJ",
-      "createdAt": 1729071588218,
-      "flight": {
-        "id": "15",
-        "airline": "VN",
-        "departure": {
-          "time": "2024-10-29T12:00:00.000Z",
-          "airport": "HAN"
-        },
-        "arrival": {
-          "time": "2024-10-29T14:00:00.000Z",
-          "airport": "SGN"
-        },
-        "flightNumber": "507",
-        "aircraft": "Boeing 777",
-        "fareOptions": {
-          "class": "Business",
-          "price": 10395000
-        }
-      },
-      "contact": {},
-      "paxLists": [{}]
-    },
-    {
-      "id": "6291",
-      "bookingCode": "JT3BWRSK",
-      "createdAt": 1729071660021,
-      "flight": {
-        "id": "15",
-        "airline": "VN",
-        "departure": {
-          "time": "2024-10-29T12:00:00.000Z",
-          "airport": "HAN"
-        },
-        "arrival": {
-          "time": "2024-10-29T14:00:00.000Z",
-          "airport": "SGN"
-        },
-        "flightNumber": "507",
-        "aircraft": "Boeing 777",
-        "fareOptions": {
-          "class": "Business",
-          "price": 10395000
-        }
-      },
-      "contact": {},
-      "paxLists": [{}]
-    },
-    {
-      "id": "36ad",
-      "bookingCode": "TJIFQ91Z",
-      "createdAt": 1729071929053,
-      "flight": {
-        "id": "15",
-        "airline": "VN",
-        "departure": {
-          "time": "2024-10-29T12:00:00.000Z",
-          "airport": "HAN"
-        },
-        "arrival": {
-          "time": "2024-10-29T14:00:00.000Z",
-          "airport": "SGN"
-        },
-        "flightNumber": "507",
-        "aircraft": "Boeing 777",
-        "fareOptions": {
-          "class": "Business",
-          "price": 10395000
-        }
-      },
-      "contact": {},
-      "paxLists": [{}]
-    },
-    {
-      "id": "9f28",
-      "bookingCode": "L1KILLCH",
-      "createdAt": 1729072001952,
-      "flight": {
-        "id": "15",
-        "airline": "VN",
-        "departure": {
-          "time": "2024-10-29T12:00:00.000Z",
-          "airport": "HAN"
-        },
-        "arrival": {
-          "time": "2024-10-29T14:00:00.000Z",
-          "airport": "SGN"
-        },
-        "flightNumber": "507",
-        "aircraft": "Boeing 777",
-        "fareOptions": {
-          "class": "Business",
-          "price": 10395000
-        }
-      },
-      "contact": {},
-      "paxLists": [{}]
-    },
-    {
-      "id": "ee1a",
-      "bookingCode": "EL2H615N",
-      "createdAt": 1729072030198,
-      "flight": {
-        "id": "15",
-        "airline": "VN",
-        "departure": {
-          "time": "2024-10-29T12:00:00.000Z",
-          "airport": "HAN"
-        },
-        "arrival": {
-          "time": "2024-10-29T14:00:00.000Z",
-          "airport": "SGN"
-        },
-        "flightNumber": "507",
-        "aircraft": "Boeing 777",
-        "fareOptions": {
-          "class": "Business",
-          "price": 10395000
-        }
-      },
-      "contact": {},
-      "paxLists": [{}]
-    },
-    {
-      "id": "c11d",
-      "bookingCode": "KFK0D63K",
-      "createdAt": 1729072042421,
-      "flight": {
-        "id": "15",
-        "airline": "VN",
-        "departure": {
-          "time": "2024-10-29T12:00:00.000Z",
-          "airport": "HAN"
-        },
-        "arrival": {
-          "time": "2024-10-29T14:00:00.000Z",
-          "airport": "SGN"
-        },
-        "flightNumber": "507",
-        "aircraft": "Boeing 777",
-        "fareOptions": {
-          "class": "Business",
-          "price": 10395000
-        }
-      },
-      "contact": {},
-      "paxLists": [{}]
-    },
-    {
-      "id": "745f",
-      "bookingCode": "TLM2OQCA",
-      "createdAt": 1729072168314,
-      "flight": {
-        "id": "10",
-        "airline": "VN",
-        "departure": {
-          "time": "2024-10-24T08:00:00.000Z",
-          "airport": "HAN"
-        },
-        "arrival": {
-          "time": "2024-10-24T10:00:00.000Z",
-          "airport": "SGN"
-        },
-        "flightNumber": "901",
-        "aircraft": "Boeing 787",
-        "fareOptions": {
-          "class": "Business",
-          "price": 10560000
-        }
-      },
-      "contact": {},
-      "paxLists": [{}]
-    },
-    {
-      "id": "2ad8",
-      "bookingCode": "VQ4VEJVZ",
-      "createdAt": 1729072715795,
-      "flight": {
-        "id": "48",
+        "id": "19",
         "airline": "QH",
         "departure": {
-          "time": "2024-12-03T18:30:00.000Z",
+          "time": "2024-12-17T08:00:00.000Z",
           "airport": "HAN"
         },
         "arrival": {
-          "time": "2024-12-03T20:30:00.000Z",
+          "time": "2024-12-17T10:00:00.000Z",
           "airport": "SGN"
         },
-        "flightNumber": "203",
-        "aircraft": "Airbus A321",
+        "flightNumber": "200",
+        "aircraft": "Airbus A320",
         "fareOptions": {
           "class": "Economy",
-          "price": 2310000
+          "price": 2156000
         }
       },
-      "contact": {},
-      "paxLists": [{}]
+      "contact": {
+        "email": "sđa@gmail.com",
+        "phone": "(84) 222-2222"
+      },
+      "paxLists": [
+        {
+          "titleName": "",
+          "firstName": "",
+          "lastName": "",
+          "birthday": ""
+        },
+        {
+          "titleName": "",
+          "firstName": "",
+          "lastName": "",
+          "birthday": ""
+        }
+      ]
+    },
+    {
+      "id": "06a4",
+      "bookingCode": "5RH6FNN4",
+      "createdAt": 1729224149487,
+      "flight": {
+        "id": "19",
+        "airline": "QH",
+        "departure": {
+          "time": "2024-12-17T08:00:00.000Z",
+          "airport": "HAN"
+        },
+        "arrival": {
+          "time": "2024-12-17T10:00:00.000Z",
+          "airport": "SGN"
+        },
+        "flightNumber": "200",
+        "aircraft": "Airbus A320",
+        "fareOptions": {
+          "class": "Economy",
+          "price": 2156000
+        }
+      },
+      "contact": {
+        "email": "22222@gmail.com",
+        "phone": "(84) 222-2222"
+      },
+      "paxLists": [
+        {
+          "titleName": "",
+          "firstName": "",
+          "lastName": "",
+          "birthday": ""
+        },
+        {
+          "titleName": "",
+          "firstName": "",
+          "lastName": "",
+          "birthday": ""
+        }
+      ]
     }
   ]
 }
