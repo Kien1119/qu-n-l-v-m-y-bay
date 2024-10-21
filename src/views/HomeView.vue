@@ -74,13 +74,13 @@
           >
             <template #value="slotProps">
               <div
-                class="inline-flex items-center py-1 px-2 bg-primary text-primary-contrast rounded-border mr-2"
+                class="inline-flex items-center py-1 px-2 bg-primary text-primary-contrast rounded-border mr-2 border rounded bg-gray-100"
                 v-for="option of slotProps.value"
                 :key="option.code"
               >
+                <div><img style="width: 24px" :src="option.img" alt="" /></div>
                 <span
                   :class="'mr-2 flag flag-' + option.code.toLowerCase()"
-                  style="width: 18px; height: 12px"
                 />
                 <div>{{ option.code }}</div>
               </div>

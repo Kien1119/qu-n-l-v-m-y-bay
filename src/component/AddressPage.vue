@@ -86,7 +86,6 @@ onMounted(() => {
 })
 
 function onChangeAirports(val) {
-  console.log('KANE:: ~ onChangeAirports ~ val:', val);
   emit('update:airports', val)
 }
 </script>
