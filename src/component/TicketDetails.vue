@@ -29,11 +29,7 @@
               <div class="border-r-2"></div>
 
               <div>
-                <img
-                  style="width: 70px"
-                  src="https://airdata-cms-dev.sgp1.cdn.digitaloceanspaces.com/airlines/VN.png"
-                  alt=""
-                />
+                <img :src="reservationStore?.detail?.flight?.img" alt="" />
               </div>
             </div>
           </div>
@@ -93,10 +89,8 @@
             <AccordionContent>
               <div class="flex gap-5 border-2 border-zinc-500 rounded-lg justify-between p-6">
                 <div class="flex gap-2 w-1/4 items-center justify-center">
-                  <img
-                    src="https://airdata-cms-dev.sgp1.cdn.digitaloceanspaces.com/airlines/VN.png"
-                    alt=""
-                  />
+                  <img :src="reservationStore?.detail?.flight?.img" alt="" />
+
                   <div class="flex flex-col items-center justify-center font-bold">
                     <span class="text-2xl">{{ reservationStore?.detail?.flight?.airline }}</span>
                     <span class="text-base">{{ reservationStore?.detail?.flight?.aircraft }}</span>
@@ -114,7 +108,7 @@
                   </div>
                   <div class="flex flex-col justify-center">
                     <span class="flex justify-center">2h15p</span>
-                    <img src="https://dev.airdata.site/img/line-flight.222ef73e.svg" alt="" />
+                    <img src="" alt="" />
                   </div>
                   <div class="flex flex-col justify-between">
                     <span class="font-bold text-orange-400 text-2xl flex justify-center">
@@ -193,7 +187,6 @@
                     alt=""
                   />
                 </div>
-
                 <div class="flex flex-col p-3">
                   <span class="font-bol text-2xl text-cyan-900">Chi tiết giá</span>
                 </div>
@@ -201,8 +194,14 @@
             </AccordionHeader>
             <AccordionContent>
               <div class="flex text-2xl gap-3">
-                <span>1.</span><span class="font-medium">VU</span><span class="font-medium">/</span
-                ><span class="font-medium">LINH MR</span>
+                <span>1.</span
+                ><span class="font-medium">{{
+                  reservationStore.detail.flight.fareOptions.class
+                }}</span
+                ><span class="font-medium">/</span
+                ><span class="font-medium">{{
+                  reservationStore.detail.flight.fareOptions.price
+                }}</span>
               </div>
             </AccordionContent>
           </AccordionPanel>

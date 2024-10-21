@@ -16,6 +16,7 @@ export const usePlaneStore = defineStore('planeStore', {
     filteredFlights: [],
     total: 0, // Tổng số sản phẩm
     first: 0
+
     // priceOptions: [
     //   {
     //     id: 1,
@@ -189,27 +190,36 @@ export const usePlaneStore = defineStore('planeStore', {
       }
     },
     async getFilteredFlights(req) {
-      console.log(req)
+      console.log('Request:', req)
       try {
         const response = await axios.get('http://localhost:3000/flights')
         const flights = response.data
 
         this.filteredFlights = flights
-          .filter(
-            (flight) =>
-              flight.departure?.airport === req.departure && flight.arrival?.airport === req.arrival
-          )
+          .filter((flight) => {
+            const flightDepartureTime = new Date(flight.departure?.time).getTime()
+            const reqStartedDateTime = new Date(req.startedDate).getTime()
+
+            return (
+              flight.departure?.airport === req.departure &&
+              flight.arrival?.airport === req.arrival &&
+              flightDepartureTime === reqStartedDateTime &&
+              req.airlines.includes(flight.airline)
+            )
+          })
           .map((flight) => ({
             ...flight,
             count: req.count || 1
           }))
+
         localStorage.setItem('filteredFlights', JSON.stringify(this.filteredFlights))
 
         return this.filteredFlights
       } catch (error) {
-        console.error('Không thể hiển thị data:', error)
+        console.error('Không thể hiển thị dữ liệu:', error)
         throw error
       }
     }
-  }
+  },
+  getters: {}
 })

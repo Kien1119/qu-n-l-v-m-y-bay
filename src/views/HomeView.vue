@@ -62,12 +62,13 @@
         <div class="border-r-2"></div>
         <div class="flex gap-3 items-center">
           <img src="https://dev.airdata.site/img/plane-ticket.c034a5ca.svg" width="24px" alt="" />
+          <pre></pre>
           <MultiSelect
             v-model="multiselectValue"
             :options="multiselectValues"
             optionLabel="name"
             placeholder="Chọn hệ thống đặt vé"
-            class="!min-w-80"
+            class="!min-w-96"
             :filter="true"
           >
             <template #value="slotProps">
@@ -82,17 +83,10 @@
                 />
                 <div>{{ option.code }}</div>
               </div>
-              <template v-if="!slotProps.value || slotProps.value.length === 0">
-                <div class="p-1">Chọn hệ thống đặt vé</div>
-              </template>
             </template>
             <template #option="slotProps">
               <div class="flex items-center gap-3">
-                <!-- <span
-                  :class="'mr-2 flag flag-' + slotProps.option.code.toLowerCase()"
-                  style="width: 18px; height: 12px"
-                /> -->
-                <!-- <div><img style="width: 24px" :src="slotProps.option.img" alt="" /></div> -->
+                <div><img style="width: 24px" :src="slotProps.option.img" alt="" /></div>
                 <div>{{ slotProps.option.name }}</div>
               </div>
             </template>
@@ -117,7 +111,7 @@
           </div>
         </div>
       </div>
-      <div class="flex items-center items-center justify-center">
+      <div class="flex items-center justify-center">
         <Button
           class="!rounded-3xl"
           icon="pi pi-search"
@@ -147,13 +141,20 @@ const formatDate = () => {
   const year = date.getFullYear()
   return new Date(`${year}-${month}-${day}`) // Return today's date as a Date object
 }
+
 // const startedDate = formatDate()
 const startedDate = ref()
 startedDate.value = formatDate()
 
 const ingredient = ref(1)
 
-const multiselectValue = ref()
+const multiselectValue = ref([
+  {
+    name: 'Vietnam Airlines',
+    code: 'VN',
+    img: 'https://www.vnas.vn/public/upload/files/29.9.2020/%E1%BA%A3nh%20vinayuuki%20vinh/04.10/06.10/10.10/%C4%91%E1%BA%A1i%20h%E1%BB%8Dc%20vinh/16.10/trang%20nh%C6%B0/ng%C3%A0y%2018.10/%C4%90%E1%BA%A1i%20h%20vinh/ng%C3%A0y%2030.10/th%C3%A1ng%2011/logo%2C/vietnam-airline-logo.jpg'
+  }
+])
 const multiselectValues = ref([
   {
     name: 'Vietnam Airlines',
@@ -176,7 +177,6 @@ const multiselectValues = ref([
     img: 'https://media.loveitopcdn.com/3807/logo-vietravel-airlines.png'
   }
 ])
-
 const departures = ref({
   title: 'Khởi hành',
   airportCode: 'HAN',
@@ -207,14 +207,13 @@ const decrement = () => {
 
 const handleSubmit = async () => {
   loading.value = true
-
   const req = {
     departure: departures.value?.airportCode || '',
     arrival: arrival.value?.airportCode || '',
     startedDate: startedDate.value || null,
-    count: count.value || 1
+    count: count.value || 1,
+    airlines: multiselectValue.value.map((item) => item.code) || null
   }
-
   if (req.departure && req.arrival) {
     console.log(req)
     try {

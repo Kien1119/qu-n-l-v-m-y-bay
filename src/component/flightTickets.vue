@@ -1,14 +1,10 @@
 <!-- eslint-disable no-undef -->
 <template>
   <div class="relative pb-20">
-    <Form :initial-values="initialData" :validation-schema="schema">
+    <form>
       <div class="bg-slate-300 pt-5">
         <div class="flex h-14 rounded-lg bg-slate-50 justify-around border-2 my-3 mx-5 w-full">
-          <img
-            style="border-radius: 5px"
-            src="https://www.vnas.vn/public/upload/files/29.9.2020/%E1%BA%A3nh%20vinayuuki%20vinh/04.10/06.10/10.10/%C4%91%E1%BA%A1i%20h%E1%BB%8Dc%20vinh/16.10/trang%20nh%C6%B0/ng%C3%A0y%2018.10/%C4%90%E1%BA%A1i%20h%20vinh/ng%C3%A0y%2030.10/th%C3%A1ng%2011/logo%2C/vietnam-airline-logo.jpg"
-            alt=""
-          />
+          <img style="border-radius: 5px" :src="information?.img" alt="" />
           <span class="flex items-center text-orange-600 font-bold">
             {{ information?.bookingCode }}</span
           >
@@ -255,7 +251,7 @@
           @click="holdBooking"
         ></Button>
       </div>
-    </Form>
+    </form>
   </div>
 </template>
 <script setup lang="js">
@@ -359,6 +355,7 @@ const holdBooking = handleSubmit((values) => {
         bookingCode: genBookingCode(),
         createdAt: new Date().getTime(),
         flight: {
+          img: information.value?.img,
           id: information.value?.id,
           airline: information.value?.airline,
           departure: {

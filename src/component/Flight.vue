@@ -82,21 +82,16 @@
     </div> -->
     <div class="w-full">
       <Accordion value="0" expandIcon="none" collapseIcon="none">
-        <AccordionPanel
-          v-for="flight in storedFilteredFlights"
-          :key="flight.id"
-          :value="flight.id"
-          v-model="flightTicket"
-        >
+        <AccordionPanel v-for="flight in storedFilteredFlights" :key="flight.id" :value="flight.id">
           <AccordionHeader class="">
             <div
-              class="flex w-full h-14 rounded-lg border-2 bg-slate-50 justify-between focus:outline-none"
+              class="flex w-full h-14 rounded-lg border-2 bg-slate-50 justify-around focus:outline-none"
               @click="handleFlightSelect(flight)"
             >
               <img
-                style="border-radius: 5px"
-                src="https://www.vnas.vn/public/upload/files/29.9.2020/%E1%BA%A3nh%20vinayuuki%20vinh/04.10/06.10/10.10/%C4%91%E1%BA%A1i%20h%E1%BB%8Dc%20vinh/16.10/trang%20nh%C6%B0/ng%C3%A0y%2018.10/%C4%90%E1%BA%A1i%20h%20vinh/ng%C3%A0y%2030.10/th%C3%A1ng%2011/logo%2C/vietnam-airline-logo.jpg"
-                alt=""
+                :src="flight.img"
+                alt="Không có cảnh
+              "
               />
               <span class="flex items-center text-orange-600 font-bold">{{ flight.airline }}</span>
               <div class="flex items-center">
@@ -113,14 +108,6 @@
               <span class="flex items-center text-red-600 font-bold">{{
                 formatPrice(flight.fareOptions[0].price)
               }}</span>
-              <div class="flex items-center mr-3">
-                <!-- <RadioButton
-                  v-model="flightTicket"
-                  inputId="ingredient1"
-                  name="flightTicket"
-                  :value="flight"
-                /> -->
-              </div>
             </div>
           </AccordionHeader>
           <AccordionContent>
@@ -131,7 +118,7 @@
                 @click="priceTicket = price"
                 class="flex items-center gap-5 bg-slate-200 h-12 p-5 border-2 rounded-lg"
               >
-                <RadioButton v-model="priceTicket" :inputId="price" :value="price" />
+                <RadioButton v-model="priceTicket" :inputId="`${price}`" :value="price" />
                 <span class="text-orange-500"> {{ price.class }}</span>
                 <span class=""
                   >Giá:
@@ -161,7 +148,7 @@
   </div>
 </template>
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, nextTick } from 'vue'
 import { useRouter } from 'vue-router'
 import { usePlaneStore } from '@/stores/airports'
 import { useToast } from 'primevue/usetoast'
@@ -178,12 +165,13 @@ const formatPrice = (price) => {
 }
 
 const loading = ref(false)
-const handleFlightSelect = (flight) => {
-  if (flight.id) {
-    flightTicket.value = flight
-
-    priceTicket.value = flight.fareOptions?.[0] || null
-  }
+const handleFlightSelect = async (flight) => {
+  console.log('🚀 ~ handleFlightSelect ~ flight:', flight)
+  priceTicket.value = null
+  flightTicket.value = flight
+  console.log('flight.id', flight.fareOptions[0])
+  priceTicket.value = flight.fareOptions[0]
+  await nextTick()
 }
 
 const priceTicket = ref()
