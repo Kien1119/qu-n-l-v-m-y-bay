@@ -1,7 +1,7 @@
 <!-- eslint-disable no-undef -->
 <template>
   <div class="relative pb-20">
-    <form action="">
+    <Form :initial-values="initialData" :validation-schema="schema">
       <div class="bg-slate-300 pt-5">
         <div class="flex h-14 rounded-lg bg-slate-50 justify-around border-2 my-3 mx-5 w-full">
           <img
@@ -66,9 +66,17 @@
                       >
                     </div>
                   </template>
-                  <Column class="!rounded-lg" field="count" header="Hành khách"></Column>
+                  <Column class="!rounded-lg" field="count" header="Hành khách">
+                    <template #body="slotProps">
+                      {{ slotProps.data.count }}
+                    </template></Column
+                  >
                   <Column class="!rounded-lg" field="class" header="Hạng"></Column>
-                  <Column field="price" header="GIÁ"></Column>
+                  <Column field="price" header="Giá">
+                    <template #body="slotProps">
+                      {{ formatPrice(slotProps.data.price) }}
+                    </template>
+                  </Column>
                   <Column field="tax" header="Thuế"></Column>
                   <Column field="total" header="total"></Column>
 
@@ -125,76 +133,76 @@
 
               <div class="flex flex-col card border-2 !border-gray-500 rounded-lg mx-5 my-5 gap-5">
                 <div class="flex flex-wrap items-center pl-4 gap-2"></div>
-                <div class="bg-red-200 text-red-600 mx-4 font-bold rounded-lg p-3">
+                <!-- <div class="bg-red-200 text-red-600 mx-4 font-bold rounded-lg p-3">
                   <span>
                     Lưu ý: "Theo yêu cầu của VietjetAir tất cả hành khách phải nhập ngày sinh. Trong
                     trường hợp Quý AG để trống chúng tôi sẽ cung cấp dữ liệu ngẫu nhiên. BGT không
                     chịu trách nhiệm nếu quý AG không nhập đầy đủ thông tin !"
                   </span>
-                </div>
+                </div> -->
+
                 <div
                   v-for="(item, index) in passengers"
                   :key="index"
                   class="card flex flex-col gap-4 px-4 bg-slate-200 p-6 m-4 rounded-lg py-4"
                 >
+                  <legend class="text-xl font-bold !text-orange-500 uppercase">
+                    Hành Khách #{{ index + 1 }}
+                  </legend>
                   <div class="h-7">
-                    <span class="text-xl font-bold !text-gray-900 uppercase">
-                      Hành Khách: {{ item.firstName }} {{ item.lastName }}{{ item.titleName }}
+                    <span class="text-xl font-medium !text-gray-900 uppercase">
+                      {{ item.firstName }} {{ item.lastName }} {{ item.titleName }}
                     </span>
                   </div>
-
-                  <div>
-                    <div class="flex-1 flex flex-col gap-1">
-                      <div>
-                        <InputText
-                          class="w-full uppercase"
-                          v-bind="item.firstNameAttrs"
-                          type="text"
-                          v-model="item.firstName"
-                          placeholder="Họ (*)"
-                          :class="{ 'p-invalid': errors[`passengers.${item}.firstName`] }"
-                        />
-                      </div>
-                      <span class="text-red-600">{{ errors?.passengers?.[index]?.firstName }}</span>
-
-                      <div>
-                        <Select
-                          v-model="item.titleName"
-                          v-bind="item.titleNameAttrs"
-                          :options="title"
-                          optionLabel="name"
-                          optionValue="code"
-                          placeholder="Danh xưng"
-                          class="w-full"
-                        />
-                      </div>
-                      <span class="text-red-600">{{ errors?.passengers?.[index]?.titleName }}</span>
+                  <div class="flex-1 grid grid-cols-4 gap-4">
+                    <div>
+                      <InputText
+                        class="w-full uppercase"
+                        v-bind="item.firstNameAttrs"
+                        type="text"
+                        v-model="item.firstName"
+                        placeholder="Họ (*)"
+                        :class="{ 'p-invalid': errors[`passengers.${item}.firstName`] }"
+                      />
                     </div>
-                    <div class="flex-1 flex flex-col gap-1">
-                      <div>
-                        <InputText
-                          v-bind="item.lastNameAttrs"
-                          class="w-full uppercase"
-                          v-model="item.lastName"
-                          type="text"
-                          placeholder="Tên đệm & Tên (*)"
-                          :class="{ 'p-invalid': errors[`passengers.${index}.lastName`] }"
-                        />
-                      </div>
-                      <span class="text-red-600">{{ errors?.passengers?.[index]?.lastName }}</span>
-                      <div>
-                        <DatePicker
-                          v-bind="item.birthdayAttrs"
-                          v-model="item.birthday"
-                          birthdayFormat="dd/mm/yy"
-                          placeholder="Ngày sinh (DD-MM-YYYY)"
-                          class="w-full"
-                          :maxDate="new Date()"
-                          :class="{ 'p-invalid': errors[`passengers.${index}.birthday`] }"
-                        />
-                      </div>
-                      <span class="text-red-600">{{ errors?.passengers?.[index]?.birthday }}</span>
+                    <span class="text-red-600">{{ errors?.passengers?.[index]?.firstName }}</span>
+
+                    <div>
+                      <InputText
+                        v-bind="item.lastNameAttrs"
+                        class="w-full uppercase"
+                        v-model="item.lastName"
+                        type="text"
+                        placeholder="Tên đệm & Tên (*)"
+                        :class="{ 'p-invalid': errors[`passengers.${index}.lastName`] }"
+                      />
                     </div>
+                    <span class="text-red-600">{{ errors?.passengers?.[index]?.lastName }}</span>
+
+                    <div>
+                      <Select
+                        v-model="item.titleName"
+                        v-bind="item.titleNameAttrs"
+                        :options="title"
+                        optionLabel="name"
+                        optionValue="code"
+                        placeholder="Danh xưng"
+                        class="w-full"
+                      />
+                    </div>
+                    <span class="text-red-600">{{ errors?.passengers?.[index]?.titleName }}</span>
+                    <div class="">
+                      <DatePicker
+                        v-bind="item.birthdayAttrs"
+                        v-model="item.birthday"
+                        birthdayFormat="dd/mm/yy"
+                        placeholder="Ngày sinh (DD-MM-YYYY)"
+                        class="w-full"
+                        :maxDate="new Date()"
+                        :class="{ 'p-invalid': errors[`passengers.${index}.birthday`] }"
+                      />
+                    </div>
+                    <span class="text-red-600">{{ errors?.passengers?.[index]?.birthday }}</span>
                   </div>
                 </div>
               </div>
@@ -247,7 +255,7 @@
           @click="holdBooking"
         ></Button>
       </div>
-    </form>
+    </Form>
   </div>
 </template>
 <script setup lang="js">
@@ -262,7 +270,7 @@ import { useConfirm } from 'primevue/useconfirm'
 
 import { formatDate, formatPrice, genBookingCode } from '../utils/format'
 
-const loading = ref(false)
+// const loading = ref(false)
 const toast = useToast()
 
 const router = useRouter()

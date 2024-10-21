@@ -36,13 +36,14 @@
           </div>
         </div>
       </div>
-      <div class="flex h-1/3 justify-center">
+      <div class="flex gap-5 h-1/3 justify-center">
         <AddressPage v-model:airports="departures" />
         <div class="mx-3 my-3 flex items-center">
           <Button
             type="button"
             class="!bg-orange-400 hover:shadow-xl !hover:bg-black"
             icon="pi pi-arrow-right-arrow-left"
+            @click="swapAirports"
           />
         </div>
         <AddressPage v-model:airports="arrival" />
@@ -55,6 +56,7 @@
             dateFormat="dd/mm/yy"
             v-model="startedDate"
             :minDate="startedDate"
+            :locale="viLocale"
           ></DatePicker>
         </div>
         <div class="border-r-2"></div>
@@ -65,6 +67,7 @@
             :options="multiselectValues"
             optionLabel="name"
             placeholder="Chọn hệ thống đặt vé"
+            class="!min-w-80"
             :filter="true"
           >
             <template #value="slotProps">
@@ -130,7 +133,7 @@
 import AddressPage from '@/component/AddressPage.vue'
 import { onMounted, ref } from 'vue'
 import { usePlaneStore } from '@/stores/airports'
-
+import { viLocale } from '@/utils/format'
 import { useRouter } from 'vue-router'
 
 const router = useRouter()
@@ -173,7 +176,9 @@ const multiselectValues = ref([
     img: 'https://media.loveitopcdn.com/3807/logo-vietravel-airlines.png'
   }
 ])
+
 const departures = ref({
+  title: 'Khởi hành',
   airportCode: 'HAN',
   name: 'Sân bay Nội Bài',
   city: 'Hà Nội',
@@ -181,12 +186,14 @@ const departures = ref({
   id: '1'
 })
 const arrival = ref({
+  title: 'Kết thúc',
   airportCode: 'SGN',
   name: 'Sân bay Tân Sơn Nhất',
   city: 'Hồ Chí Minh',
   country: 'Việt Nam',
   id: '2'
 })
+
 const count = ref(1)
 const increment = () => {
   count.value += 1
@@ -223,7 +230,12 @@ const handleSubmit = async () => {
     loading.value = false
   }
 }
-
+const swapAirports = () => {
+  // Logic to swap departure and arrival airports
+  const temp = departures.value
+  departures.value = arrival.value
+  arrival.value = temp
+}
 onMounted(() => {
   planeStore.fetchFlights
 })

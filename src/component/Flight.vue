@@ -213,11 +213,13 @@ const bookingFlightHandel = () => {
       })
       loading.value = true
       if (flightTicket.value && priceTicket.value) {
+        const taxPercent = 0.1 * 100
+        const tax = (priceTicket.value.price * taxPercent) / 100
         const priceDetails = {
           ...priceTicket.value,
           count: flightTicket.value.count,
-          tax: (priceTicket.value.price * flightTicket.value.count * 10) / 100,
-          total: Math.floor(priceTicket.value.price * 1.1 * flightTicket.value.count)
+          tax,
+          total: (priceTicket.value.price + tax) * flightTicket.value.count
         }
         localStorage.setItem('flightTicket', JSON.stringify(flightTicket.value))
         localStorage.setItem('priceTicket', JSON.stringify([priceDetails]))
@@ -246,6 +248,7 @@ const bookingFlightHandel = () => {
       })
     }
   })
+  console.log('🚀 ~ accept: ~ flightTicket:', flightTicket)
 }
 
 const backBooking = () => {

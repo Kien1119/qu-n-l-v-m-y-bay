@@ -24,7 +24,7 @@
             :key="index"
             class="flex flex-col gap-2"
           >
-            <span>Hành khách:</span>
+            <span>Hành khách# {{ index + 1 }}</span>
             <span class="uppercase">{{ index + 1 }}. {{ pax.firstName }} {{ pax.lastName }}</span>
           </div>
           <div>

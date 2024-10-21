@@ -46,7 +46,27 @@
         </div>
       </div>
       <div>
-        <DataTable :value="reservationStore.reservations" tableStyle="min-width: 50rem">
+        <DataTable
+          :paginator="true"
+          :loading="loading"
+          :rows="reservationStore.params._per_page"
+          lazy
+          v-model="selectionAirports"
+          :totalRecords="reservationStore.total"
+          paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
+          :rowsPerPageOptions="[5, 10, 36]"
+          currentPageReportTemplate="Hiển thị {first} đến {last} trong số {totalRecords} Đặt chỗ"
+          selectionMode="single"
+          @page="onPage"
+          @sort="onSort"
+          :value="reservationStore.reservations"
+          tableStyle="min-width: 50rem"
+        >
+          <Column class="text-orange-600" field="stt" header="STT" style="width: 10rem">
+            <template #body="{ index }">
+              {{ startIndex + index + 1 }}
+            </template>
+          </Column>
           <Column field="flight.airline" header="Hệ Thống" class="font-bold text-teal-900"></Column>
           <Column field="bookingCode" header="Mã đặt chỗ">
             <template #body="slotProps">
@@ -102,7 +122,7 @@
   </div>
 </template>
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 import { usePlaneStore } from '../stores/airports.js'
 import { useReservationStore } from '@/stores/reservation'
 import { formatDate } from '../utils/format'
@@ -110,6 +130,13 @@ import { useRouter } from 'vue-router'
 const reservationStore = useReservationStore()
 const planeStore = usePlaneStore()
 const router = useRouter()
+const loading = ref(false)
+const startIndex = computed(() => {
+  return (
+    reservationStore.params._page * reservationStore.params._per_page -
+    reservationStore.params._per_page
+  )
+})
 const getAirportName = (code) => {
   const airport = planeStore.airports.find((airport) => airport.airportCode === code)
   return `${airport ? airport.name : code} (${code})`
@@ -131,9 +158,15 @@ const handleDetail = (id) => {
     console.error('lỗi không có data')
   }
 }
+const onPage = async (event) => {
+  loading.value = true
+  reservationStore.params._page = event.page + 1 || event
+  await reservationStore.fetchBooking()
+  loading.value = false
+}
 onMounted(() => {
   planeStore.fetchAirports()
-  reservationStore.fetchBooking()
+  onPage(1, 10)
   // const bookingFlight = localStorage.getItem('bookingsReservation')
   // if (bookingFlight) {
   //   try {
