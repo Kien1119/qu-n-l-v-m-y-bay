@@ -51,6 +51,7 @@
       <div class="flex justify-around gap-3">
         <div class="flex gap-3">
           <img src="https://dev.airdata.site/img/airplane-up.50b67a05.svg" width="24px" alt="" />
+          {{ startedDate }}
           <DatePicker
             placeholder="Chọn ngày đi"
             dateFormat="dd/mm/yy"

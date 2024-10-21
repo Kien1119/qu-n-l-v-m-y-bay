@@ -197,13 +197,32 @@ export const usePlaneStore = defineStore('planeStore', {
 
         this.filteredFlights = flights
           .filter((flight) => {
-            const flightDepartureTime = new Date(flight.departure?.time).getTime()
-            const reqStartedDateTime = new Date(req.startedDate).getTime()
+            const reqStartedDate = req.startedDate ? new Date(req.startedDate) : null
+            const flightDepartureTime = flight.departure?.time
+              ? new Date(flight.departure?.time)
+              : null
+
+            if (
+              !reqStartedDate ||
+              isNaN(reqStartedDate.getTime()) ||
+              !flightDepartureTime ||
+              isNaN(flightDepartureTime.getTime())
+            ) {
+              return false
+            }
+
+            const reqStartedDateISO = reqStartedDate.toISOString().split('T')[0]
+            const flightDepartureTimeISO = flightDepartureTime.toISOString().split('T')[0]
+            console.log('🚀  flightDepartureTimeISO:', {
+              reqStartedDateISO,
+              flightDepartureTimeISO,
+              ok: reqStartedDateISO === flightDepartureTimeISO ? 'ZZZZZZZZZZZZZZZZZZ' : 'LLL'
+            })
 
             return (
               flight.departure?.airport === req.departure &&
               flight.arrival?.airport === req.arrival &&
-              flightDepartureTime === reqStartedDateTime &&
+              // flightDepartureTimeISO === reqStartedDateISO &&
               req.airlines.includes(flight.airline)
             )
           })
