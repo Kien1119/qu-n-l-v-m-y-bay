@@ -37,7 +37,7 @@
         </div>
       </div>
       <div class="flex gap-5 h-1/3 justify-center">
-        <AddressPage v-model:airports="departures" />
+        <AddressPage :title="`Khởi hành`" v-model:airports="departures" />
         <div class="mx-3 my-3 flex items-center">
           <Button
             type="button"
@@ -46,7 +46,7 @@
             @click="swapAirports"
           />
         </div>
-        <AddressPage v-model:airports="arrival" />
+        <AddressPage  :title="`Kết thúc`"  v-model:airports="arrival" />
       </div>
       <div class="flex justify-around gap-3">
         <div class="flex gap-3">
@@ -180,7 +180,6 @@ const multiselectValues = ref([
   }
 ])
 const departures = ref({
-  title: 'Khởi hành',
   airportCode: 'HAN',
   name: 'Sân bay Nội Bài',
   city: 'Hà Nội',
@@ -188,7 +187,6 @@ const departures = ref({
   id: '1'
 })
 const arrival = ref({
-  title: 'Kết thúc',
   airportCode: 'SGN',
   name: 'Sân bay Tân Sơn Nhất',
   city: 'Hồ Chí Minh',
