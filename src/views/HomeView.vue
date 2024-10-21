@@ -51,7 +51,7 @@
       <div class="flex justify-around gap-3">
         <div class="flex gap-3">
           <img src="https://dev.airdata.site/img/airplane-up.50b67a05.svg" width="24px" alt="" />
-          {{ startedDate }}
+
           <DatePicker
             placeholder="Chọn ngày đi"
             dateFormat="dd/mm/yy"
@@ -130,7 +130,8 @@ import { onMounted, ref } from 'vue'
 import { usePlaneStore } from '@/stores/airports'
 import { viLocale } from '@/utils/format'
 import { useRouter } from 'vue-router'
-
+import { useToast } from 'primevue/usetoast'
+const toast = useToast()
 const router = useRouter()
 const planeStore = usePlaneStore()
 
@@ -197,11 +198,13 @@ const arrival = ref({
 
 const count = ref(1)
 const increment = () => {
-  count.value += 1
+  if (count.value < 9) {
+    count.value += 1
+  }
 }
 
 const decrement = () => {
-  if (count.value > 0) {
+  if (count.value > 1) {
     count.value -= 1
   }
 }
@@ -214,6 +217,15 @@ const handleSubmit = async () => {
     startedDate: startedDate.value || null,
     count: count.value || 1,
     airlines: multiselectValue.value.map((item) => item.code) || null
+  }
+  if (req.departure === req.arrival) {
+    toast.add({
+      severity: 'error',
+      summary: 'Điểm khởi hành và điểm kết thúc không giống nhau!',
+      detail: 'Bạn đã bị từ chối',
+      life: 3000
+    })
+    return
   }
   if (req.departure && req.arrival) {
     console.log(req)

@@ -201,7 +201,8 @@ export const usePlaneStore = defineStore('planeStore', {
             const flightDepartureTime = flight.departure?.time
               ? new Date(flight.departure?.time)
               : null
-
+            if (flight.departure?.airport === flight.departure?.airport) {
+            }
             if (
               !reqStartedDate ||
               isNaN(reqStartedDate.getTime()) ||
@@ -211,8 +212,8 @@ export const usePlaneStore = defineStore('planeStore', {
               return false
             }
 
-            const reqStartedDateISO = reqStartedDate.toISOString().split('T')[0]
-            const flightDepartureTimeISO = flightDepartureTime.toISOString().split('T')[0]
+            const reqStartedDateISO = reqStartedDate.getDate()
+            const flightDepartureTimeISO = flightDepartureTime.getDate()
             console.log('🚀  flightDepartureTimeISO:', {
               reqStartedDateISO,
               flightDepartureTimeISO,
@@ -222,7 +223,7 @@ export const usePlaneStore = defineStore('planeStore', {
             return (
               flight.departure?.airport === req.departure &&
               flight.arrival?.airport === req.arrival &&
-              // flightDepartureTimeISO === reqStartedDateISO &&
+              flightDepartureTimeISO === reqStartedDateISO &&
               req.airlines.includes(flight.airline)
             )
           })
