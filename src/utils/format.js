@@ -10,6 +10,7 @@ export function formatDate(_date) {
 
   return `${hours}:${minutes} ${day}/${month}/${year} `
 }
+
 export function formatPrice(price) {
   if (price == null || isNaN(price)) {
     return 'N/A'
@@ -21,6 +22,10 @@ export function formatPrice(price) {
   })
 }
 
+export function getAirportName(code) {
+  const airport = planeStore.airports.find((airport) => airport.airportCode === code)
+  return `${airport ? airport.name : code} (${code})`
+}
 export const genBookingCode = (length = 8) => {
   const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
   let result = ''

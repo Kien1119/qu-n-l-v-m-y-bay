@@ -46,7 +46,7 @@
             @click="swapAirports"
           />
         </div>
-        <AddressPage  :title="`Kết thúc`"  v-model:airports="arrival" />
+        <AddressPage :title="`Kết thúc`" v-model:airports="arrival" />
       </div>
       <div class="flex justify-around gap-3">
         <div class="flex gap-3">
@@ -79,9 +79,7 @@
                 :key="option.code"
               >
                 <div><img style="width: 24px" :src="option.img" alt="" /></div>
-                <span
-                  :class="'mr-2 flag flag-' + option.code.toLowerCase()"
-                />
+                <span :class="'mr-2 flag flag-' + option.code.toLowerCase()" />
                 <div>{{ option.code }}</div>
               </div>
             </template>

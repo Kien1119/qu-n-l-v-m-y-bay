@@ -6,7 +6,13 @@
         <div class="flex h-14 rounded-lg bg-slate-50 justify-around border-2 my-3 mx-5 w-full">
           <img style="border-radius: 5px" :src="information?.img" alt="" />
           <span class="flex items-center text-orange-600 font-bold">
-            {{ information?.bookingCode }}</span
+            {{ information?.airline }}</span
+          >
+          <span class="flex items-center text-black-600 font-bold">
+            {{ information?.aircraft }}</span
+          >
+          <span class="flex items-center text-gray-600 font-bold">
+            {{ information?.flightNumber }}</span
           >
           <div class="flex items-center">
             <span class="text-stone-950 font-bold"
@@ -70,11 +76,19 @@
                   <Column class="!rounded-lg" field="class" header="Hạng"></Column>
                   <Column field="price" header="Giá">
                     <template #body="slotProps">
-                      {{ formatPrice(slotProps.data.price) }}
+                      {{ formatPrice(slotProps.data.price * 0.9) }}
                     </template>
                   </Column>
-                  <Column field="tax" header="Thuế"></Column>
-                  <Column field="total" header="total"></Column>
+                  <Column field="tax" header="Thuế">
+                    <template #body="slotProps">
+                      {{ formatPrice(slotProps.data.tax) }}
+                    </template>
+                  </Column>
+                  <Column field="total" header="total">
+                    <template #body="slotProps">
+                      {{ formatPrice(slotProps.data.total) }}
+                    </template>
+                  </Column>
 
                   <template #footer>
                     <span class="text-red-400 font-bold w-full flex flex-row-reverse"
@@ -336,7 +350,6 @@ const [phone, phoneAttrs] = defineField('phone')
 
 // Hàm để xử lý dữ liệu booking
 const holdBooking = handleSubmit((values) => {
-  console.log('🚀 ~ holdBooking ~ values:', values)
   confirm.require({
     message: 'Bạn có chắc chắn muốn tiếp tục không?',
     header: 'Xác nhận',
@@ -384,8 +397,6 @@ const holdBooking = handleSubmit((values) => {
           birthday: passenger.birthday
         }))
       }
-      console.log({ passengers: values.passengers })
-      console.log({ req })
 
       if (req) {
         reservationStore.holdBooking(req) // Gọi API

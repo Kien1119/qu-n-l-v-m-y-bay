@@ -47,7 +47,7 @@ import { usePlaneStore } from '@/stores/airports'
 import { onMounted, computed } from 'vue'
 
 const props = defineProps({
-  title:{type:String,required:true},
+  title: { type: String, required: true },
   airports: {
     type: Object,
     required: true

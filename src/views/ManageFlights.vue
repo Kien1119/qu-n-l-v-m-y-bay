@@ -525,7 +525,6 @@ const addFareOption = () => {
   fareOptions.value.push({ class: '', price: null })
 }
 const handleAddFlights = handleSubmit((values) => {
-  console.log(1)
   confirm.require({
     message: 'Bạn có chắc chắn muốn tiếp tục không?',
     header: 'Xác nhận',

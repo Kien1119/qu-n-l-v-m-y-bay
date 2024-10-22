@@ -33,7 +33,12 @@
         <div class="flex-1">
           <InputGroup>
             <InputText v-model="filter.bookingCode" placeholder="Tìm kiếm PNR trong hệ thống" />
-            <Button icon="pi pi-search" class="!bg-gray-300 !border-none" severity="warn" />
+            <Button
+              icon="pi pi-search"
+              class="!bg-gray-300 !border-none"
+              severity="warn"
+              @click="handleSearch"
+            />
           </InputGroup>
         </div>
         <div class="search">
@@ -54,7 +59,7 @@
           v-model="selectionAirports"
           :totalRecords="reservationStore.total"
           paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
-          :rowsPerPageOptions="[5, 10, 36]"
+          :rowsPerPageOptions="[5, 10, reservationStore.total]"
           currentPageReportTemplate="Hiển thị {first} đến {last} trong số {totalRecords} Đặt chỗ"
           selectionMode="single"
           @page="onPage"

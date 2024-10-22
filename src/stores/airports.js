@@ -41,7 +41,6 @@ export const usePlaneStore = defineStore('planeStore', {
         const response = await axios.get(`http://localhost:3000/plane`, { params: temp })
         this.airports = response.data.data
         // .data.map((e, i) => {
-        //   console.log(e.instances?.[0] ? i : '')
         //   return {
         //     ...e,
         //     memorySelected: e.memoryButton.find((i) => i.default),
@@ -57,8 +56,8 @@ export const usePlaneStore = defineStore('planeStore', {
     async deleteAirport(id) {
       try {
         const deleteAirport = await axios.delete(`http://localhost:3000/plane/${id}`)
-        console.log('Sản phẩm đã xóa thành công:', deleteAirport.data)
         await this.fetchAirports()
+        console.log('🚀 ~ deleteAirport ~ deleteAirport:', deleteAirport)
       } catch (error) {
         console.error('data Error')
       }
@@ -78,8 +77,8 @@ export const usePlaneStore = defineStore('planeStore', {
       try {
         // Gọi API để cập nhật sân bay
         const response = await axios.patch(`http://localhost:3000/plane/${id}`, data)
-        console.log('Sân bay đã cập nhật thành công:', response)
 
+        console.log('🚀 ~ updateAirport ~ response:', response)
         // Sau khi cập nhật, tải lại danh sách sân bay
         await this.fetchAirports()
       } catch (error) {
@@ -190,7 +189,6 @@ export const usePlaneStore = defineStore('planeStore', {
       }
     },
     async getFilteredFlights(req) {
-      console.log('Request:', req)
       try {
         const response = await axios.get('http://localhost:3000/flights')
         const flights = response.data
@@ -201,8 +199,7 @@ export const usePlaneStore = defineStore('planeStore', {
             const flightDepartureTime = flight.departure?.time
               ? new Date(flight.departure?.time)
               : null
-            if (flight.departure?.airport === flight.departure?.airport) {
-            }
+
             if (
               !reqStartedDate ||
               isNaN(reqStartedDate.getTime()) ||
@@ -214,11 +211,6 @@ export const usePlaneStore = defineStore('planeStore', {
 
             const reqStartedDateISO = reqStartedDate.getDate()
             const flightDepartureTimeISO = flightDepartureTime.getDate()
-            console.log('🚀  flightDepartureTimeISO:', {
-              reqStartedDateISO,
-              flightDepartureTimeISO,
-              ok: reqStartedDateISO === flightDepartureTimeISO ? 'ZZZZZZZZZZZZZZZZZZ' : 'LLL'
-            })
 
             return (
               flight.departure?.airport === req.departure &&
