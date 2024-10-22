@@ -78,7 +78,7 @@
             :value="flight.id"
             class="!bg-orange-500 w-full rounded-lg p-3"
           >
-            <AccordionHeader class="!bg-orange-500 w-full !p-none">
+            <AccordionHeader class="!bg-orange-500 w-full !p-0">
               <div class="bg-orange-500 w-full">
                 <span class="text-white">Chuyến bay</span>
                 <div class="bg-white">

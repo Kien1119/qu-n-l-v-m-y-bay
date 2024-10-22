@@ -56,14 +56,12 @@
           :loading="loading"
           :rows="reservationStore.params._per_page"
           lazy
-          v-model="selectionAirports"
           :totalRecords="reservationStore.total"
           paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
           :rowsPerPageOptions="[5, 10, reservationStore.total]"
           currentPageReportTemplate="Hiển thị {first} đến {last} trong số {totalRecords} Đặt chỗ"
           selectionMode="single"
           @page="onPage"
-          @sort="onSort"
           :value="reservationStore.reservations"
           tableStyle="min-width: 50rem"
         >
@@ -166,6 +164,7 @@ const handleDetail = (id) => {
 const onPage = async (event) => {
   loading.value = true
   reservationStore.params._page = event.page + 1 || event
+  reservationStore.params._per_page = event.rows  || 10
   await reservationStore.fetchBooking()
   loading.value = false
 }
