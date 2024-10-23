@@ -36,7 +36,7 @@
                 >
                 <span class="flex items-center">{{ flight.aircraft }}</span>
                 <span class="flex items-center text-red-600 font-bold">{{
-                  formatPrice(flight?.fareOptions[0].price)
+                  formatPrice(flight?.fareOptions[0]?.price)
                 }}</span>
               </div>
             </AccordionHeader>

@@ -23,7 +23,6 @@
           <Button disabled label="Export" icon="pi pi-upload" severity="secondary" />
         </template>
       </Toolbar>
-
       <DataTable
         :paginator="true"
         :loading="loading"
@@ -36,7 +35,7 @@
         currentPageReportTemplate="Hiển thị {first} đến {last} trong số {totalRecords} chuyến bay"
         selectionMode="single"
         :value="planeStore.flights"
-        tableStyle="min-width: 50rem"
+        tableStyle="min-width: 40rem"
         @page="onPage"
         @sort="onSort"
       >
@@ -83,6 +82,20 @@
             {{ formatDate(slotProps.data.arrival.time) }}
           </template>
         </Column>
+        <Column header="Hạng vé">
+          <template #body="slotProps">
+            <div v-for="(priceFlight, index) in slotProps.data.fareOptions" :key="index">
+              {{ priceFlight.class }}
+            </div>
+          </template></Column
+        >
+        <Column header="Giá vé">
+          <template #body="slotProps">
+            <div v-for="(priceFlight, index) in slotProps.data.fareOptions" :key="index">
+              {{ priceFlight.price }}
+            </div>
+          </template></Column
+        >
         <Column class="" :exportable="false" style="min-width: 12rem">
           <template #body="{ data }">
             <Button
@@ -110,7 +123,7 @@
         header="Flights Details"
         :modal="true"
       >
-        <div class="flex flex-col gap-3 gap-6">
+        <div class="flex flex-col gap-6">
           <div>
             <label for="airline" class="block font-bold mb-3">Hãng Bay</label>
             <InputText id="airline" v-model="flights.airline" required="true" autofocus fluid />
@@ -242,9 +255,9 @@
         :modal="true"
       >
         <form>
-          <div class="flex flex-col gap-3 gap-6">
+          <div class="flex flex-col gap-6">
             <!-- Hãng bay -->
-            <div>
+            <!-- <div>
               <label for="airline" class="block font-bold mb-3">Hãng Bay</label>
               <InputText
                 id="airline"
@@ -256,7 +269,7 @@
                 v-bind="airlineAttrs"
               />
               <span style="color: #d81221">{{ errors.airline }}</span>
-            </div>
+            </div> -->
 
             <!-- Số hiệu chuyến bay -->
             <div>
@@ -319,7 +332,7 @@
                 v-bind="multiselectValueAttrs"
                 :options="multiselectValues"
                 optionLabel="name"
-                placeholder="Chọn hệ thống đặt vé"
+                placeholder="Chọn hệ thống hãng vé"
                 :filter="true"
               >
                 <template #value="slotProps">
@@ -517,9 +530,6 @@ const [departureAirport, departureAirportAttrs] = defineField('departureAirport'
 const [arrivalAirport, arrivalAirportAttrs] = defineField('arrivalAirport')
 const [departureTime, departureTimeAttrs] = defineField('departureTime')
 const [arrivalTime, arrivalTimeAttrs] = defineField('arrivalTime')
-// const [fareOptions] = defineField('fareOptions')
-// const [ClassFareOptions, ClassFareOptionsAttrs] = defineField('class')
-// const [numberFareOptions, numberFareOptionsAttrs] = defineField('price')
 const [multiselectValue, multiselectValueAttrs] = defineField('multiselectValue')
 const addFareOption = () => {
   fareOptions.value.push({ class: '', price: null })
@@ -564,6 +574,7 @@ const handleAddFlights = handleSubmit((values) => {
       }
 
       if (req) {
+        console.log('🚀 ~ accept: ~ req:', req)
         try {
           await planeStore.addFlights(req)
 

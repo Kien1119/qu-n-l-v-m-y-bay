@@ -51,13 +51,13 @@
       <div class="flex justify-around gap-3">
         <div class="flex gap-3">
           <img src="https://dev.airdata.site/img/airplane-up.50b67a05.svg" width="24px" alt="" />
-
           <DatePicker
             placeholder="Chọn ngày đi"
             dateFormat="dd/mm/yy"
             v-model="startedDate"
-            :minDate="startedDate"
+            :minDate="minDate"
             :locale="viLocale"
+            @change="onDateSelect(newDate)"
           ></DatePicker>
         </div>
         <div class="border-r-2"></div>
@@ -131,6 +131,7 @@ import { useRouter } from 'vue-router'
 import { useToast } from 'primevue/usetoast'
 const toast = useToast()
 const router = useRouter()
+
 const planeStore = usePlaneStore()
 
 const loading = ref(false)
@@ -139,13 +140,18 @@ const formatDate = () => {
   const day = String(date.getDate()).padStart(2, '0')
   const month = String(date.getMonth() + 1).padStart(2, '0')
   const year = date.getFullYear()
-  return new Date(`${year}-${month}-${day}`) // Return today's date as a Date object
+  return new Date(`${year}-${month}-${day}`)
 }
 
 // const startedDate = formatDate()
+const minDate = ref(formatDate())
 const startedDate = ref()
 startedDate.value = formatDate()
-
+const onDateSelect = (newDate) => {
+  if (newDate) {
+    startedDate.value = newDate
+  }
+}
 const ingredient = ref(1)
 
 const multiselectValue = ref([
@@ -204,13 +210,18 @@ const decrement = () => {
     count.value -= 1
   }
 }
-
 const handleSubmit = async () => {
   loading.value = true
   const req = {
     departure: departures.value?.airportCode || '',
     arrival: arrival.value?.airportCode || '',
     startedDate: startedDate.value || null,
+    cityDeparture: departures.value.city || '',
+    cityArrival: arrival.value.city || '',
+    countryDeparture: departures.value.country || '',
+    countryArrival: arrival.value.country || '',
+    idDeparture: departures.value.id || '',
+    idArrival: arrival.value.id || '',
     count: count.value || 1,
     airlines: multiselectValue.value.map((item) => item.code) || null
   }
@@ -226,6 +237,7 @@ const handleSubmit = async () => {
   if (req.departure && req.arrival) {
     console.log(req)
     try {
+      localStorage.setItem('searchFlights', JSON.stringify(req))
       await planeStore.getFilteredFlights(req)
       router.push({ path: '/booking' })
     } catch (error) {
@@ -246,5 +258,39 @@ const swapAirports = () => {
 }
 onMounted(() => {
   planeStore.fetchFlights
+  const savedSearch = localStorage.getItem('searchFlights')
+  if (savedSearch) {
+    const parsedSearch = JSON.parse(savedSearch)
+    const departureAirport = planeStore.airports.find(
+      (airport) => airport.airportCode === parsedSearch.departure
+    )
+    departures.value = departureAirport || {
+      airportCode: parsedSearch.departure,
+      name: parsedSearch.departure,
+      city: parsedSearch.cityDeparture,
+      country: parsedSearch.countryDeparture,
+      id: parsedSearch.idDeparture
+    }
+
+    const arrivalAirport = planeStore.airports.find(
+      (airport) => airport.airportCode === parsedSearch.arrival
+    )
+    arrival.value = arrivalAirport || {
+      airportCode: parsedSearch.arrival,
+      name: parsedSearch.arrival,
+      city: parsedSearch.cityArrival,
+      country: parsedSearch.countryArrival,
+      id: parsedSearch.idArrival
+    }
+    startedDate.value = new Date(parsedSearch.startedDate)
+    count.value = parsedSearch.count
+    multiselectValue.value = multiselectValues.value.filter((option) =>
+      parsedSearch.airlines.includes(option.code)
+    )
+  } else {
+    planeStore.fetchFlights
+  }
 })
+//  const airport = planeStore.airports.find((airport) => airport.airportCode === code)
+//   return `${airport ? airport.name : code} (${code})`
 </script>

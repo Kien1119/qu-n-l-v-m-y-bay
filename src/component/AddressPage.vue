@@ -44,7 +44,7 @@
 
 <script setup>
 import { usePlaneStore } from '@/stores/airports'
-import { onMounted, computed } from 'vue'
+import { onMounted, computed, watchEffect } from 'vue'
 
 const props = defineProps({
   title: { type: String, required: true },
@@ -52,6 +52,9 @@ const props = defineProps({
     type: Object,
     required: true
   }
+})
+watchEffect(() => {
+  console.log(props.airports)
 })
 
 const customFilter = (option, searchText) => {
