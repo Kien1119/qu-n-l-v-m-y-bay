@@ -48,7 +48,6 @@ export const useReservationStore = defineStore('reservationStore', {
     },
 
     async detailTicket(id) {
-      console.log({ id })
       try {
         const { data } = await axios.get(`http://localhost:3000/reservations/${id}`)
 
@@ -58,6 +57,25 @@ export const useReservationStore = defineStore('reservationStore', {
         return data
       } catch (error) {
         console.error('data lỗi')
+      }
+    },
+    async sortAirport() {
+      try {
+        const sortData = await axios.get(
+          `http://localhost:3000/plane?_sort=-id,name,city,country,airportCode`
+        )
+        this.airports = sortData.data
+      } catch (error) {
+        console.error('Error sorting airports:', error)
+      }
+    },
+    async sortFlightBooking() {
+      try {
+        const sortData = await axios.get(
+          'http://localhost:3000/plane?_sort=-id,name,city,country,airportCode'
+        )
+      } catch (error) {
+        console.error('Lỗi data')
       }
     }
   }

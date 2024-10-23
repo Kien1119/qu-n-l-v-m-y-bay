@@ -164,7 +164,7 @@ const handleDetail = (id) => {
 const onPage = async (event) => {
   loading.value = true
   reservationStore.params._page = event.page + 1 || event
-  reservationStore.params._per_page = event.rows  || 10
+  reservationStore.params._per_page = event.rows || 10
   await reservationStore.fetchBooking()
   loading.value = false
 }

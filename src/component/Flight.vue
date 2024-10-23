@@ -1,13 +1,8 @@
 <template>
   <div class="relative pb-20 pt-10 pl-10 pr-0">
-    <div class="flex justify-center">
-      <div class="w-3/5">
-        <Accordion
-          v-if="storedFilteredFlights.length > 0"
-          value="0"
-          expandIcon="none"
-          collapseIcon="none"
-        >
+    <div v-if="storedFilteredFlights.length > 0" class="flex justify-center">
+      <div class="w-2/3">
+        <Accordion value="0" expandIcon="none" collapseIcon="none">
           <AccordionPanel
             v-for="flight in storedFilteredFlights"
             :key="flight.id"
@@ -41,7 +36,7 @@
                 >
                 <span class="flex items-center">{{ flight.aircraft }}</span>
                 <span class="flex items-center text-red-600 font-bold">{{
-                  formatPrice(flight.fareOptions[0].price)
+                  formatPrice(flight?.fareOptions[0].price)
                 }}</span>
               </div>
             </AccordionHeader>
@@ -64,23 +59,13 @@
             </AccordionContent>
           </AccordionPanel>
         </Accordion>
-        <div v-else>
-          <p class="flex justify-center items-center">
-            Không có kết quả nào tìm thấy chuyến bay phù hợp
-          </p>
-        </div>
       </div>
-      <div class="w-2/5">
+      <div class="w-2/6">
         <Accordion expandIcon="none" collapseIcon="none">
-          <AccordionPanel
-            v-for="flight in storedFilteredFlights"
-            :key="flight.id"
-            :value="flight.id"
-            class="!bg-orange-500 w-full rounded-lg p-3"
-          >
+          <AccordionPanel v-if="flightTicket" class="!bg-orange-500 w-full rounded-lg p-3">
             <AccordionHeader class="!bg-orange-500 w-full !p-0">
               <div class="bg-orange-500 w-full">
-                <span class="text-white">Chuyến bay</span>
+                <span class="text-white flex mb-3">Chuyến bay</span>
                 <div class="bg-white">
                   <div class="flex">
                     <span
@@ -89,9 +74,8 @@
                       1</span
                     >
                     <span class="flex w-11/12 items-center gap-3 text-orange-500 font-medium"
-                      >{{ getAirportName(flight.departure.airport) }}
+                      >{{ getAirportName(flightTicket.departure.airport) }}
                       <svg
-                        data-v-1ade9211=""
                         xmlns="http://www.w3.org/2000/svg"
                         width="20px"
                         height="20px"
@@ -104,38 +88,39 @@
                         class="feather feather-arrow-right mx-25 text-warning"
                         style="stroke-width: 3"
                       >
-                        <line data-v-1ade9211="" x1="5" y1="12" x2="19" y2="12"></line>
-                        <polyline data-v-1ade9211="" points="12 5 19 12 12 19"></polyline>
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                        <polyline points="12 5 19 12 12 19"></polyline>
                       </svg>
-
-                      {{ getAirportName(flight.arrival.airport) }}</span
+                      {{ getAirportName(flightTicket.arrival.airport) }}</span
                     >
                   </div>
                   <div class="flex items-center px-3">
                     <span class="text-stone-950 font-bold">{{
-                      formatDate(flight.departure.time)
+                      formatDate(flightTicket.departure.time)
                     }}</span>
                     -
-                    {{ formatDate(flight.arrival.time) }}
+                    {{ formatDate(flightTicket.arrival.time) }}
                   </div>
                 </div>
               </div>
             </AccordionHeader>
-            <AccordionContent class="">
+            <AccordionContent>
               <div v-if="flightTicket && priceTicket">
                 <div class="flex gap-3 justify-between">
                   <div class="flex gap-1">
-                    <span class="flex items-center text-black font-bold">{{ flight.airline }}</span>
+                    <span class="flex items-center text-black font-bold">{{
+                      flightTicket.airline
+                    }}</span>
                     <img class="w-2" src="https://dev.airdata.site/img/dot.2aa51c9a.svg" alt="" />
                     <span class="flex items-center text-black font-bold">{{
-                      flight.aircraft
+                      flightTicket.aircraft
                     }}</span>
                     <img class="w-2" src="https://dev.airdata.site/img/dot.2aa51c9a.svg" alt="" />
                     <span class="flex items-center text-black font-bold">{{
                       priceTicket.class
                     }}</span>
                   </div>
-                  <img :src="flight.img" class="w-1/4" alt="" />
+                  <img :src="flightTicket.img" class="w-1/4" alt="" />
                 </div>
                 <Accordion>
                   <AccordionPanel>
@@ -146,11 +131,11 @@
                     </AccordionHeader>
                     <AccordionContent>
                       <div class="flex text-blue-900 justify-between font-thin">
-                        <span>ADT</span>
+                        <span>KH</span>
                         <span>x{{ priceDetails.count }}</span>
                         <span>{{ formatPrice(priceDetails.tax) }}</span>
-                        <span>{{ formatPrice(priceDetails.price) }}</span>
-                        <span class="text-yellow-600">{{ formatPrice(priceDetails.total) }}</span>
+                        <span>{{ formatPrice(priceDetails.price * 0.9) }}</span>
+                        <span class="text-yellow-600">{{ formatPrice(priceDetails.price) }}</span>
                       </div>
                     </AccordionContent>
                   </AccordionPanel>
@@ -164,17 +149,113 @@
               class="float-left bg-white font-bold text-orange-600 p-3 flex justify-end border-dashed border-stone-950 border-t-4 gap-3"
             >
               <span>Tổng tiền:</span>
-              <span v-if="priceDetails">{{ formatPrice(priceDetails.total) }}</span>
+              <span v-if="priceDetails">{{
+                formatPrice(priceTicket.price * flightTicket.count)
+              }}</span>
               <span v-else>0</span>
             </div>
           </AccordionPanel>
+
+          <!-- Thẻ mặc định nếu không có chuyến bay nào được chọn -->
+          <AccordionPanel v-else class="!bg-orange-500 w-full rounded-lg p-3">
+            <AccordionHeader class="!bg-orange-500 w-full !p-0">
+              <div class="bg-orange-500 w-full">
+                <span class="text-white flex mb-3">Không có chuyến bay được chọn</span>
+                <div class="bg-white p-3">
+                  <p class="text-gray-600">Vui lòng chọn chuyến bay để hiển thị chi tiết.</p>
+                </div>
+              </div>
+            </AccordionHeader>
+          </AccordionPanel>
         </Accordion>
+        <div class="mt-3">
+          <div class="flex p-3 gap-3">
+            <div class="!flex justify-center gap-3" v-for="(sort, index) in sortValue" :key="index">
+              <Button class="!bg-orange-500 !flex" @click="sort.sortFun">{{ sort.name }}</Button>
+              <!-- <Button class="!bg-orange-500" label="Đắt nhất" @click="ticketExpensive"></Button>
+                    <Button class="!bg-orange-500" label="Muộn nhất" @click="ticketFastest"></Button>
+                    <Button class="!bg-orange-500" label="Sớm nhất" @click="ticketSoonest"></Button> -->
+            </div>
+          </div>
+          <Accordion>
+            <AccordionPanel>
+              <AccordionHeader>
+                <div class="flex gap-3">
+                  <svg
+                    style="color: currentColor"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M11 8L20 8"
+                      stroke="#EFAD02"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                    ></path>
+                    <path
+                      d="M4 16L14 16"
+                      stroke="#EFAD02"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                    ></path>
+                    <ellipse
+                      cx="7"
+                      cy="8"
+                      rx="3"
+                      ry="3"
+                      transform="rotate(90 7 8)"
+                      stroke="#EFAD02"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                    ></ellipse>
+                    <ellipse
+                      cx="17"
+                      cy="16"
+                      rx="3"
+                      ry="3"
+                      transform="rotate(90 17 16)"
+                      stroke="#EFAD02"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                    ></ellipse>
+                  </svg>
+                  <span class="text-black font-bold">Hiển thị</span>
+                </div>
+              </AccordionHeader>
+              <AccordionContent class="flex" style="padding: 0">
+                <div class="flex flex-col gap-3">
+                  <label for="" class="font-bold">Sắp xếp theo:</label>
+                  <Select
+                    v-model="sortSelect"
+                    :options="sortValue"
+                    optionLabel="name"
+                    optionValue="sortFun"
+                    placeholder="Select a sort"
+                    class="w-full md:w-56"
+                  />
+                </div>
+              </AccordionContent>
+            </AccordionPanel>
+          </Accordion>
+        </div>
       </div>
     </div>
-
+    <div v-else>
+      <p class="flex justify-center items-center">
+        Không có kết quả nào tìm thấy chuyến bay phù hợp
+      </p>
+    </div>
     <div
       class="backdrop-blur-md flex !bg-white/50 rounded-2xl border gap-7 h-20 justify-center fixed inset-x-0 bottom-0"
     >
+      <Button
+        class="!bg-gradient-to-r from-orange-500 from-10% !rounded-2xl h-10 flex items-center shadow-2xl justify-center mt-5"
+        label="Làm mới"
+        @click="resetBooking"
+      ></Button>
       <Button
         class="!bg-gradient-to-r from-orange-500 from-10% !rounded-2xl h-10 flex items-center shadow-2xl justify-center mt-5"
         label="Quay lại"
@@ -189,7 +270,7 @@
   </div>
 </template>
 <script setup>
-import { ref, onMounted, nextTick } from 'vue'
+import { ref, onMounted, nextTick, computed, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import { usePlaneStore } from '@/stores/airports'
 import { useToast } from 'primevue/usetoast'
@@ -199,8 +280,37 @@ const toast = useToast()
 const planeStore = usePlaneStore()
 const router = useRouter()
 const storedFilteredFlights = ref([])
+const sortSelect = ref()
 const formatPrice = (price) => {
-  return price.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })
+  if (!price) return '0'
+
+  return price.toLocaleString('vi-VN', {
+    style: 'currency',
+    currency: 'VND'
+  })
+}
+
+const ticketCheapest = () => {
+  storedFilteredFlights.value.sort((a, b) => a.fareOptions[0].price - b.fareOptions[0].price)
+}
+const ticketExpensive = () => {
+  storedFilteredFlights.value.sort((a, b) => b.fareOptions[0].price - a.fareOptions[0].price)
+}
+const ticketFastest = () => {
+  storedFilteredFlights.value.sort(
+    (a, b) => new Date(a.departure.time) - new Date(b.departure.time)
+  )
+}
+const ticketSoonest = () => {
+  storedFilteredFlights.value.sort(
+    (a, b) => new Date(b.departure.time) - new Date(a.departure.time)
+  )
+}
+const ticketLanding = () => {
+  storedFilteredFlights.value.sort((a, b) => new Date(a.arrival.time) - new Date(b.arrival.time))
+}
+const ticketLateLanding = () => {
+  storedFilteredFlights.value.sort((a, b) => new Date(b.arrival.time) - new Date(a.arrival.time))
 }
 
 const loading = ref(false)
@@ -208,22 +318,42 @@ const handleFlightSelect = async (flight) => {
   priceTicket.value = null
   flightTicket.value = flight
   priceTicket.value = flight.fareOptions[0]
+  await nextTick()
+}
+
+const priceDetails = computed(() => {
+  if (!priceTicket.value || !flightTicket.value) return null
+  if (!priceTicket.value.price) return null
   const taxPercent = 0.1 * 100
   const tax = (priceTicket.value.price * taxPercent) / 100
-  priceDetails.value = {
+
+  return {
     ...priceTicket.value,
     count: flightTicket.value.count,
     tax,
     total: priceTicket.value.price * flightTicket.value.count
   }
-  await nextTick()
-}
+})
 const getAirportName = (code) => {
   const airport = planeStore.airports.find((airport) => airport.airportCode === code)
   return `${airport ? airport.name : code} `
 }
+
+const sortValue = ref([
+  { name: 'Giá đắt nhất', sortFun: ticketExpensive },
+  { name: 'Giá rẻ nhất', sortFun: ticketCheapest },
+  { name: 'Khởi hành sớm nhất', sortFun: ticketFastest },
+  { name: 'Khởi hành muộn nhất', sortFun: ticketSoonest },
+  { name: 'Hạ cánh sớm nhất', sortFun: ticketLanding },
+  { name: 'Hạ cánh muộn nhất', sortFun: ticketLateLanding }
+])
+watch(sortSelect, (newSortFun) => {
+  if (newSortFun) {
+    newSortFun()
+  }
+})
+
 const priceTicket = ref()
-const priceDetails = ref()
 const flightTicket = ref()
 const bookingFlightHandel = () => {
   toast.add({
@@ -251,6 +381,11 @@ const bookingFlightHandel = () => {
       life: 3000
     })
   }
+}
+const resetBooking = () => {
+  flightTicket.value = null
+  priceTicket.value = null
+  priceDetails.value = null
 }
 
 const backBooking = () => {

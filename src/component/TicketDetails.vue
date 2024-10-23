@@ -8,24 +8,7 @@
               <span class="font-bold text-indigo-600 text-4xl">{{
                 reservationStore.detail.bookingCode
               }}</span>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="18"
-                height="18"
-                viewBox="0 0 24 24"
-                fill="none"
-              >
-                <path
-                  d="M15 3H9C6.79086 3 5 4.79086 5 7V15"
-                  stroke="#2FA4E5"
-                  stroke-width="2"
-                ></path>
-                <path
-                  d="M9 11.5C9 10.304 9.00149 9.49062 9.0712 8.87226C9.13864 8.27406 9.25916 7.98334 9.41329 7.78248C9.51969 7.64381 9.64381 7.51969 9.78248 7.41329C9.98334 7.25916 10.2741 7.13864 10.8723 7.0712C11.4906 7.00149 12.304 7 13.5 7C14.696 7 15.5094 7.00149 16.1277 7.0712C16.7259 7.13864 17.0167 7.25916 17.2175 7.41329C17.3562 7.51969 17.4803 7.64381 17.5867 7.78248C17.7408 7.98334 17.8614 8.27406 17.9288 8.87226C17.9985 9.49062 18 10.304 18 11.5V15.5C18 16.696 17.9985 17.5094 17.9288 18.1277C17.8614 18.7259 17.7408 19.0167 17.5867 19.2175C17.4803 19.3562 17.3562 19.4803 17.2175 19.5867C17.0167 19.7408 16.7259 19.8614 16.1277 19.9288C15.5094 19.9985 14.696 20 13.5 20C12.304 20 11.4906 19.9985 10.8723 19.9288C10.2741 19.8614 9.98334 19.7408 9.78248 19.5867C9.64381 19.4803 9.51969 19.3562 9.41329 19.2175C9.25916 19.0167 9.13864 18.7259 9.0712 18.1277C9.00149 17.5094 9 16.696 9 15.5V11.5Z"
-                  stroke="#2FA4E5"
-                  stroke-width="2"
-                ></path>
-              </svg>
+
               <div class="border-r-2"></div>
 
               <div>
@@ -202,87 +185,6 @@
                 ><span class="font-medium">{{
                   reservationStore.detail.flight.fareOptions.price
                 }}</span>
-              </div>
-            </AccordionContent>
-          </AccordionPanel>
-        </Accordion>
-      </div>
-      <div class="rounded-lg border-2 border-sky-400 my-7">
-        <Accordion value="0">
-          <AccordionPanel value="0">
-            <AccordionHeader>
-              <div class="flex gap-3 bg-gradient-to-r rounded-2xl from-cyan-300 from-10%">
-                <div class="flex bg-sky-500 rounded-lg">
-                  <img
-                    style="width: 40px"
-                    src="https://dev.airdata.site/img/eticket-list.28544c71.svg"
-                    alt=""
-                  />
-                </div>
-
-                <div class="flex flex-col p-3">
-                  <span class="font-bol text-2xl text-cyan-900">Danh sách vé</span>
-                </div>
-              </div>
-            </AccordionHeader>
-            <AccordionContent>
-              <div class="flex text-2xl gap-3">
-                <span>1.</span><span class="font-medium">VU</span><span class="font-medium">/</span
-                ><span class="font-medium">LINH MR</span>
-              </div>
-            </AccordionContent>
-          </AccordionPanel>
-        </Accordion>
-      </div>
-      <div class="rounded-lg border-2 border-sky-400 my-7">
-        <Accordion value="0">
-          <AccordionPanel value="0">
-            <AccordionHeader>
-              <div class="flex gap-3 bg-gradient-to-r rounded-2xl from-cyan-300 from-10%">
-                <div class="flex bg-sky-500 rounded-lg">
-                  <img
-                    style="width: 40px"
-                    src="https://dev.airdata.site/img/suitcase.d11fc685.svg"
-                    alt=""
-                  />
-                </div>
-
-                <div class="flex flex-col p-3">
-                  <span class="font-bol text-2xl text-cyan-900">Sản phẩm khác</span>
-                </div>
-              </div>
-            </AccordionHeader>
-            <AccordionContent>
-              <div class="flex text-2xl gap-3">
-                <span>1.</span><span class="font-medium">VU</span><span class="font-medium">/</span
-                ><span class="font-medium">LINH MR</span>
-              </div>
-            </AccordionContent>
-          </AccordionPanel>
-        </Accordion>
-      </div>
-      <div class="rounded-lg border-2 border-sky-400 my-7">
-        <Accordion value="0">
-          <AccordionPanel value="0">
-            <AccordionHeader>
-              <div class="flex gap-3 bg-gradient-to-r rounded-2xl from-cyan-300 from-10%">
-                <div class="flex bg-sky-500 rounded-lg">
-                  <img
-                    style="width: 40px"
-                    src="https://dev.airdata.site/img/warning.24b6be15.svg"
-                    alt=""
-                  />
-                </div>
-
-                <div class="flex flex-col p-3">
-                  <span class="font-bol text-2xl text-cyan-900">Thông báo từ hệ thống</span>
-                </div>
-              </div>
-            </AccordionHeader>
-            <AccordionContent>
-              <div class="flex text-2xl gap-3">
-                <span>1.</span><span class="font-medium">VU</span><span class="font-medium">/</span
-                ><span class="font-medium">LINH MR</span>
               </div>
             </AccordionContent>
           </AccordionPanel>
