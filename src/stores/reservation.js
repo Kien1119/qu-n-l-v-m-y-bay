@@ -69,14 +69,5 @@ export const useReservationStore = defineStore('reservationStore', {
         console.error('Error sorting airports:', error)
       }
     }
-    // async sortFlightBooking() {
-    //   try {
-    //     const sortData = await axios.get(
-    //       'http://localhost:3000/?_sort=-id,name,city,country,airportCode'
-    //     )
-    //   } catch (error) {
-    //     console.error('Lỗi data')
-    //   }
-    // }
   }
 })

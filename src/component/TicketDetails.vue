@@ -71,9 +71,8 @@
             </AccordionHeader>
             <AccordionContent>
               <div class="flex gap-5 border-2 border-zinc-500 rounded-lg justify-between p-6">
+                <img :src="reservationStore?.detail?.flight?.img" alt="" />
                 <div class="flex gap-2 w-1/4 items-center justify-center">
-                  <img :src="reservationStore?.detail?.flight?.img" alt="" />
-
                   <div class="flex flex-col items-center justify-center font-bold">
                     <span class="text-2xl">{{ reservationStore?.detail?.flight?.airline }}</span>
                     <span class="text-base">{{ reservationStore?.detail?.flight?.aircraft }}</span>
@@ -103,7 +102,7 @@
                     <span></span>
                   </div>
                 </div>
-                <div class="flex flex-col gap-3 w-1/4 bg-slate-200 p-3 rounded-lg">
+                <!-- <div class="flex flex-col gap-3 w-1/4 bg-slate-200 p-3 rounded-lg">
                   <div class="flex justify-between">
                     <span>Tình trạng chỗ</span
                     ><span class="text-green-400 font-semibold text-xl">HK</span>
@@ -119,7 +118,7 @@
                   <div class="flex justify-between">
                     <span>Hành lý ký gửi</span><span class="font-medium">1 kiện (23KG)</span>
                   </div>
-                </div>
+                </div> -->
               </div>
             </AccordionContent>
           </AccordionPanel>
@@ -179,11 +178,11 @@
               <div class="flex text-2xl gap-3">
                 <span>1.</span
                 ><span class="font-medium">{{
-                  reservationStore.detail.flight.fareOptions.class
+                  reservationStore.detail.flight?.fareOptions.class
                 }}</span
                 ><span class="font-medium">/</span
                 ><span class="font-medium">{{
-                  reservationStore.detail.flight.fareOptions.price
+                  formatPrice(reservationStore.detail.flight?.fareOptions.price)
                 }}</span>
               </div>
             </AccordionContent>
@@ -196,7 +195,8 @@
 <script setup>
 import { useReservationStore } from '@/stores/reservation'
 import { onMounted } from 'vue'
-import { formatDate } from '@/utils/format'
+import { formatDate, formatPrice } from '@/utils/format'
+
 const reservationStore = useReservationStore()
 console.log(reservationStore.detail)
 onMounted(() => {

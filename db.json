@@ -2218,6 +2218,30 @@
       "flightNumber": "dsds",
       "aircraft": "Airbus A321s",
       "fareOptions": []
+    },
+    {
+      "id": "c30a",
+      "airline": "VJ",
+      "departure": {
+        "time": "2024-10-23T10:22:24.492Z",
+        "airport": "SGN"
+      },
+      "arrival": {
+        "time": "2024-10-23T10:21:48.221Z",
+        "airport": "DAD"
+      },
+      "flightNumber": "dsds",
+      "aircraft": "Airbus A321333",
+      "fareOptions": [
+        {
+          "class": "Eco",
+          "price": 11111111111
+        },
+        {
+          "class": "Bussiness",
+          "price": 111111111
+        }
+      ]
     }
   ],
   "reservations": [
@@ -2981,6 +3005,47 @@
           "titleName": "MR",
           "firstName": "ee",
           "lastName": "eee",
+          "birthday": "2024-09-30T17:00:00.000Z"
+        }
+      ]
+    },
+    {
+      "id": "e909",
+      "bookingCode": "RQ0SS49I",
+      "createdAt": 1729671921983,
+      "flight": {
+        "id": "c30a",
+        "airline": "VJ",
+        "departure": {
+          "time": "2024-10-23T10:22:24.492Z",
+          "airport": "SGN"
+        },
+        "arrival": {
+          "time": "2024-10-23T10:21:48.221Z",
+          "airport": "DAD"
+        },
+        "flightNumber": "dsds",
+        "aircraft": "Airbus A321333",
+        "fareOptions": {
+          "class": "Eco",
+          "price": 22222222222
+        }
+      },
+      "contact": {
+        "email": "Sdioankhsda fdsdsd",
+        "phone": "(84) 111-1111"
+      },
+      "paxLists": [
+        {
+          "titleName": "MR",
+          "firstName": "Kien",
+          "lastName": "Pham",
+          "birthday": "2024-09-30T17:00:00.000Z"
+        },
+        {
+          "titleName": "MS",
+          "firstName": "OOOOO",
+          "lastName": "WWWW",
           "birthday": "2024-09-30T17:00:00.000Z"
         }
       ]

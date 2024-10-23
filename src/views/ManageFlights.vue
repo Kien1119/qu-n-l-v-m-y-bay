@@ -256,21 +256,43 @@
       >
         <form>
           <div class="flex flex-col gap-6">
+            {{ selectValue }}
             <!-- Hãng bay -->
-            <!-- <div>
-              <label for="airline" class="block font-bold mb-3">Hãng Bay</label>
-              <InputText
-                id="airline"
-                v-model="airline"
-                :class="{ 'p-invalid': errors.airline }"
-                required
-                autofocus
-                fluid
-                v-bind="airlineAttrs"
-              />
-              <span style="color: #d81221">{{ errors.airline }}</span>
-            </div> -->
-
+            <Select
+              v-model="selectValue"
+              v-bind="selectValueAttrs"
+              :options="selectValues"
+              optionLabel="code"
+              placeholder="Chọn hệ thống hãng vé"
+              :filter="true"
+            >
+              <template #value="slotProps">
+                <div
+                  class="inline-flex items-center py-1 px-2 bg-primary text-primary-contrast rounded-border mr-2"
+                  v-for="option of slotProps.value"
+                  :key="option.code"
+                >
+                  <span
+                    :class="'mr-2 flag flag-' + option.code?.toLowerCase()"
+                    style="width: 18px; height: 12px"
+                  />
+                  <div>{{ option.name }}</div>
+                </div>
+                <template v-if="!slotProps.value || slotProps.value.length === 0">
+                  <div class="p-1">Chọn hệ thống đặt vé</div>
+                </template>
+              </template>
+              <template #option="slotProps">
+                <div class="flex items-center gap-3">
+                  <span
+                    :class="'mr-2 flag flag-' + slotProps.option.code?.toLowerCase()"
+                    style="width: 18px; height: 12px"
+                  />
+                  <div><img style="width: 24px" :src="slotProps.option.img" alt="" /></div>
+                  <div>{{ slotProps.option.name }}</div>
+                </div>
+              </template>
+            </Select>
             <!-- Số hiệu chuyến bay -->
             <div>
               <label for="flightNumber" class="block font-bold mb-3">Số hiệu chuyến bay</label>
@@ -327,41 +349,6 @@
 
             <div class="flex flex-col gap-3">
               <label for="aircraft" class="block font-bold mb-3">Hệ thống</label>
-              <MultiSelect
-                v-model="multiselectValue"
-                v-bind="multiselectValueAttrs"
-                :options="multiselectValues"
-                optionLabel="name"
-                placeholder="Chọn hệ thống hãng vé"
-                :filter="true"
-              >
-                <template #value="slotProps">
-                  <div
-                    class="inline-flex items-center py-1 px-2 bg-primary text-primary-contrast rounded-border mr-2"
-                    v-for="option of slotProps.value"
-                    :key="option.code"
-                  >
-                    <span
-                      :class="'mr-2 flag flag-' + option.code.toLowerCase()"
-                      style="width: 18px; height: 12px"
-                    />
-                    <div>{{ option.name }}</div>
-                  </div>
-                  <template v-if="!slotProps.value || slotProps.value.length === 0">
-                    <div class="p-1">Chọn hệ thống đặt vé</div>
-                  </template>
-                </template>
-                <template #option="slotProps">
-                  <div class="flex items-center gap-3">
-                    <span
-                      :class="'mr-2 flag flag-' + slotProps.option.code.toLowerCase()"
-                      style="width: 18px; height: 12px"
-                    />
-                    <div><img style="width: 24px" :src="slotProps.option.img" alt="" /></div>
-                    <div>{{ slotProps.option.name }}</div>
-                  </div>
-                </template>
-              </MultiSelect>
             </div>
             <!-- Điểm đi và Điểm đến -->
             <div class="flex justify-around gap-3">
@@ -466,7 +453,7 @@ import { useForm } from 'vee-validate'
 import * as yup from 'yup'
 const selectionFlights = ref()
 const confirmDeleteSelected = () => {}
-const multiselectValues = ref([
+const selectValues = ref([
   {
     name: 'Vietnam Airlines',
     code: 'VN',
@@ -488,16 +475,12 @@ const multiselectValues = ref([
     img: 'https://media.loveitopcdn.com/3807/logo-vietravel-airlines.png'
   }
 ])
-// const multiselectValue = ref([])
+// const selectValue = ref([])
 const { handleSubmit, errors, defineField } = useForm({
   initialValues: {
     fareOptions: []
   },
   validationSchema: yup.object({
-    airline: yup
-      .string()
-      .required('Hãng bay là bắt buộc')
-      .oneOf(['VN', 'VJ', 'VU', 'QH'], 'Hãng bay không hợp lệ'),
     flightNumber: yup.string().required('Số hiệu chuyến bay là bắt buộc'),
     aircraft: yup.string().required('Phi cơ là bắt buộc'),
 
@@ -523,14 +506,13 @@ const { handleSubmit, errors, defineField } = useForm({
 const fareOptions = ref([{}])
 const levelOptions = ref(['Eco', 'Bussiness'])
 
-const [airline, airlineAttrs] = defineField('airline')
 const [flightNumber, flightNumberAttrs] = defineField('flightNumber')
 const [aircraft, aircraftAttrs] = defineField('aircraft')
 const [departureAirport, departureAirportAttrs] = defineField('departureAirport')
 const [arrivalAirport, arrivalAirportAttrs] = defineField('arrivalAirport')
 const [departureTime, departureTimeAttrs] = defineField('departureTime')
 const [arrivalTime, arrivalTimeAttrs] = defineField('arrivalTime')
-const [multiselectValue, multiselectValueAttrs] = defineField('multiselectValue')
+const [selectValue, selectValueAttrs] = defineField('selectValue')
 const addFareOption = () => {
   fareOptions.value.push({ class: '', price: null })
 }
@@ -567,7 +549,7 @@ const handleAddFlights = handleSubmit((values) => {
         },
         flightNumber: values.flightNumber,
         aircraft: values.aircraft,
-        fareOptions: values.fareOptions.map((item) => ({
+        fareOptions: fareOptions.value.map((item) => ({
           class: item.class,
           price: item.price
         }))
