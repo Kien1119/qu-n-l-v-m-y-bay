@@ -4,36 +4,36 @@
       <div class="flex justify-between rounded-lg border-2 border-cyan-500 p-5">
         <div>
           <div class="flex gap-3 items-center">
-            <div class="flex gap-3 items-center bg-sky-100 p-4 rounded-lg border-2 border-sky-400">
+            <div
+              class="flex gap-3 justify-between items-center bg-sky-100 p-4 rounded-lg border-2 border-sky-400"
+            >
               <span class="font-bold text-indigo-600 text-4xl">{{
                 reservationStore.detail.bookingCode
               }}</span>
 
               <div class="border-r-2"></div>
 
-              <div>
-                <img :src="reservationStore?.detail?.flight?.img" alt="" />
-              </div>
+              <img :src="reservationStore?.detail?.flight?.img" class="w-52" alt="" />
             </div>
           </div>
           <div class="flex flex-col gap-3 mt-3">
             <div class="flex gap-3">
               <span class="text-base font-sans text-gray-950">Thời gian giữ chỗ: </span>
               <span class="text-red-500">
-                {{ formatDate(reservationStore?.detail?.createdAt) }}</span
+                {{ formatDate(addHours(reservationStore?.detail?.createdAt, 8)) }}</span
               >
             </div>
             <div class="flex gap-3">
               <span>Thời hạn giữ giá: </span>
               <span class="text-red-500">
-                {{ formatDate(reservationStore?.detail?.flight?.departure?.time) }}</span
+                {{ formatDate(addDays(reservationStore?.detail?.createdAt, 1)) }}</span
               >
             </div>
             <div class="flex gap-3">
               <span>Ngày đặt chỗ: </span
-              ><span class="text-red-500">
-                {{ formatDate(reservationStore?.detail?.flight?.arrival?.time) }}</span
-              >
+              ><span class="text-black font-bold">
+                {{ formatDate(reservationStore?.detail?.createdAt) }}
+              </span>
             </div>
           </div>
         </div>
@@ -71,35 +71,33 @@
             </AccordionHeader>
             <AccordionContent>
               <div class="flex gap-5 border-2 border-zinc-500 rounded-lg justify-between p-6">
-                <img :src="reservationStore?.detail?.flight?.img" alt="" />
+                <img :src="reservationStore?.detail?.flight?.img" class="w-96" alt="" />
                 <div class="flex gap-2 w-1/4 items-center justify-center">
                   <div class="flex flex-col items-center justify-center font-bold">
-                    <span class="text-2xl">{{ reservationStore?.detail?.flight?.airline }}</span>
-                    <span class="text-base">{{ reservationStore?.detail?.flight?.aircraft }}</span>
+                    <span class="text-7xl">{{ reservationStore?.detail?.flight?.airline }}</span>
+                    <span class="text-5xl">{{ reservationStore?.detail?.flight?.aircraft }}</span>
                   </div>
                 </div>
                 <div class="flex gap-5 w-3/6 justify-center">
                   <div class="flex flex-col justify-between">
-                    <span class="font-bold text-orange-400 text-2xl flex justify-center">
+                    <span class="font-bold text-orange-400 text-4xl flex justify-center">
                       {{ reservationStore?.detail?.flight?.departure?.airport }}</span
                     >
-                    <span class="text-gray-950 text-lg font-medium flex justify-center">
+                    <span class="text-gray-950 text-3xl font-medium flex justify-center">
                       {{ formatDate(reservationStore?.detail?.flight?.departure?.time) }}
                     </span>
-                    <span> </span>
                   </div>
                   <div class="flex flex-col justify-center">
-                    <span class="flex justify-center">2h15p</span>
-                    <img src="" alt="" />
+                    <span class="flex text-2xl justify-center">2h15p</span>
+                    <img src="https://dev.airdata.site/img/line-flight.222ef73e.svg" alt="" />
                   </div>
                   <div class="flex flex-col justify-between">
-                    <span class="font-bold text-orange-400 text-2xl flex justify-center">
+                    <span class="font-bold text-orange-400 text-4xl flex justify-center">
                       {{ reservationStore?.detail?.flight?.arrival?.airport }}</span
                     >
-                    <span class="text-gray-950 text-lg font-medium flex justify-center">
+                    <span class="text-gray-950 text-3xl font-medium flex justify-center">
                       {{ formatDate(reservationStore?.detail?.flight?.arrival?.time) }}</span
                     >
-                    <span></span>
                   </div>
                 </div>
                 <!-- <div class="flex flex-col gap-3 w-1/4 bg-slate-200 p-3 rounded-lg">
@@ -196,7 +194,17 @@
 import { useReservationStore } from '@/stores/reservation'
 import { onMounted } from 'vue'
 import { formatDate, formatPrice } from '@/utils/format'
+function addHours(date, hours) {
+  const result = new Date(date)
+  result.setHours(result.getHours() + hours)
+  return result
+}
 
+function addDays(date, days) {
+  const result = new Date(date)
+  result.setDate(result.getDate() + days)
+  return result
+}
 const reservationStore = useReservationStore()
 console.log(reservationStore.detail)
 onMounted(() => {

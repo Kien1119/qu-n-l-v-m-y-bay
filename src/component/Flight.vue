@@ -3,11 +3,7 @@
     <div v-if="storedFilteredFlights.length > 0" class="flex justify-center">
       <div class="w-2/3">
         <Accordion value="0" expandIcon="none" collapseIcon="none">
-          <AccordionPanel
-            v-for="flight in storedFilteredFlights"
-            :key="flight.id"
-            :value="flight.id"
-          >
+          <AccordionPanel v-for="flight in filteredFlights" :key="flight.id" :value="flight.id">
             <AccordionHeader class="">
               <div
                 class="flex w-full h-14 rounded-lg border-2 bg-slate-50 justify-around focus:outline-none"
@@ -60,7 +56,7 @@
           </AccordionPanel>
         </Accordion>
       </div>
-      <div class="w-2/6">
+      <div class="w-2/6 sticky top-0">
         <Accordion expandIcon="none" collapseIcon="none">
           <AccordionPanel v-if="flightTicket" class="!bg-orange-500 w-full rounded-lg p-3">
             <AccordionHeader class="!bg-orange-500 w-full !p-0">
@@ -142,7 +138,9 @@
                 </Accordion>
               </div>
               <div v-else>
-                <p class="text-red-600 font-normal font-mono text-lg">Vui lòng chọn chuyến bay!</p>
+                <p class="text-red-600 font-normal font-mono rounded-lg text-lg">
+                  Vui lòng chọn chuyến bay!
+                </p>
               </div>
             </AccordionContent>
             <div
@@ -159,9 +157,9 @@
           <!-- Thẻ mặc định nếu không có chuyến bay nào được chọn -->
           <AccordionPanel v-else class="!bg-orange-500 w-full rounded-lg p-3">
             <AccordionHeader class="!bg-orange-500 w-full !p-0">
-              <div class="bg-orange-500 w-full">
+              <div class="bg-orange-500 w-full rounded-lg">
                 <span class="text-white flex mb-3">Không có chuyến bay được chọn</span>
-                <div class="bg-white p-3">
+                <div class="bg-white p-3 rounded-lg">
                   <p class="text-gray-600">Vui lòng chọn chuyến bay để hiển thị chi tiết.</p>
                 </div>
               </div>
@@ -169,12 +167,17 @@
           </AccordionPanel>
         </Accordion>
         <div class="mt-3">
-          <div class="flex p-3 gap-3">
-            <div class="!flex justify-center gap-3" v-for="(sort, index) in sortValue" :key="index">
-              <Button class="!bg-orange-500 !flex" @click="sort.sortFun">{{ sort.name }}</Button>
-              <!-- <Button class="!bg-orange-500" label="Đắt nhất" @click="ticketExpensive"></Button>
-                    <Button class="!bg-orange-500" label="Muộn nhất" @click="ticketFastest"></Button>
-                    <Button class="!bg-orange-500" label="Sớm nhất" @click="ticketSoonest"></Button> -->
+          <div class="flex flex-wrap gap-2">
+            <div
+              class="!flex flex-wrap justify-center gap-3 text-nowrap"
+              v-for="(sort, index) in sortValue"
+              :key="index"
+            >
+              <Button
+                class="!text-black !bg-gradient-to-r from-yellow-200 from-30% via-yellow-200 via-10% to-orange-400 to-90% !rounded-full"
+                @click="sort.sortFun"
+                >{{ sort.name }}</Button
+              >
             </div>
           </div>
           <Accordion>
@@ -241,6 +244,133 @@
             </AccordionPanel>
           </Accordion>
         </div>
+        <div class="mt-3">
+          <Accordion>
+            <AccordionPanel>
+              <AccordionHeader>
+                <div class="flex justify-center">
+                  <img src="https://dev.airdata.site/img/filters.6d47c4a4.svg" alt="" />
+                  <span>Bộ lọc</span>
+                </div>
+              </AccordionHeader>
+              <AccordionContent>
+                <Accordion value="0">
+                  <AccordionPanel value="0">
+                    <AccordionHeader>Hệ thống đặt vé</AccordionHeader>
+                    <AccordionContent>
+                      <div class="flex items-center gap-3 my-4">
+                        <Checkbox
+                          v-model="filterFlight"
+                          inputId="ingredient1"
+                          name="airlineVN"
+                          value="VN"
+                        />
+                        <img
+                          class="w-16"
+                          src="https://www.vnas.vn/public/upload/files/29.9.2020/%E1%BA%A3nh%20vinayuuki%20vinh/04.10/06.10/10.10/%C4%91%E1%BA%A1i%20h%E1%BB%8Dc%20vinh/16.10/trang%20nh%C6%B0/ng%C3%A0y%2018.10/%C4%90%E1%BA%A1i%20h%20vinh/ng%C3%A0y%2030.10/th%C3%A1ng%2011/logo%2C/vietnam-airline-logo.jpg"
+                          alt=""
+                        />
+                        <label for="ingredient1" class="ml-2"> Vietnam Airlines </label>
+                      </div>
+                      <div class="flex items-center gap-3 my-4">
+                        <Checkbox
+                          v-model="filterFlight"
+                          inputId="ingredient2"
+                          name="pizza"
+                          value="VJ"
+                        />
+                        <img
+                          class="w-16"
+                          src="https://www.vnas.vn/public/upload/files/29.9.2020/%E1%BA%A3nh%20vinayuuki%20vinh/04.10/06.10/10.10/%C4%91%E1%BA%A1i%20h%E1%BB%8Dc%20vinh/16.10/trang%20nh%C6%B0/ng%C3%A0y%2018.10/%C4%90%E1%BA%A1i%20h%20vinh/ng%C3%A0y%2030.10/th%C3%A1ng%2011/logo%2C/logo%2C%2C%2C/y-nghia-logo-vietjet.jpg"
+                          alt=""
+                        />
+                        <label for="ingredient2" class="ml-2"> Vietjet Air </label>
+                      </div>
+                      <div class="flex items-center gap-3 my-4">
+                        <Checkbox
+                          v-model="filterFlight"
+                          inputId="ingredient3"
+                          name="pizza"
+                          value="QH"
+                        />
+                        <img
+                          class="w-16"
+                          src="https://www.vnas.vn/public/upload/files/29.9.2020/%E1%BA%A3nh%20vinayuuki%20vinh/04.10/06.10/10.10/%C4%91%E1%BA%A1i%20h%E1%BB%8Dc%20vinh/16.10/trang%20nh%C6%B0/ng%C3%A0y%2018.10/%C4%90%E1%BA%A1i%20h%20vinh/ng%C3%A0y%2030.10/th%C3%A1ng%2011/logo%2C/3e4ba930-ea1f-4a72-a8b1-252a62cdde6b.jpg"
+                          alt=""
+                        />
+                        <label for="ingredient3" class="ml-2"> Bambo Airways </label>
+                      </div>
+                      <div class="flex items-center gap-3 my-4">
+                        <Checkbox
+                          v-model="filterFlight"
+                          inputId="ingredient4"
+                          name="airlineVU"
+                          value="VU"
+                        />
+                        <img
+                          class="w-16"
+                          src="https://media.loveitopcdn.com/3807/logo-vietravel-airlines.png"
+                          alt=""
+                        />
+                        <label for="ingredient4" class="ml-2"> Viettravel Arilines </label>
+                      </div>
+                    </AccordionContent>
+                  </AccordionPanel>
+                  <AccordionPanel value="1">
+                    <AccordionHeader>Loại vé</AccordionHeader>
+                    <AccordionContent>
+                      <div class="grid gap-2">
+                        <div class="flex gap-3">
+                          <Checkbox
+                            v-model="filterClassTicket"
+                            input-id="Eco"
+                            name="Economy"
+                            value="Economy"
+                          />
+                          <label for="Eco">Economy</label>
+                        </div>
+                        <div class="flex gap-3">
+                          <Checkbox
+                            v-model="filterClassTicket"
+                            input-id="Bus"
+                            name="Business"
+                            value="Business"
+                          />
+                          <label for="Bus">Business</label>
+                        </div>
+                      </div>
+                    </AccordionContent>
+                  </AccordionPanel>
+                  <AccordionPanel value="2">
+                    <AccordionHeader>Khoảng giá</AccordionHeader>
+                    <AccordionContent>
+                      <div class="card flex justify-center">
+                        <div class="w-56">
+                          <InputNumber v-model.number="valueMin" class="w-full mb-4" />
+                          <InputNumber v-model.number="valueMax" class="w-full mb-4" />
+                          <Slider
+                            :model-value="[valueMin, valueMax]"
+                            range
+                            class="w-full"
+                            :min="minValue"
+                            :max="maxValue"
+                            :step="100000"
+                            @update:model-value="
+                              ([min, max]) => {
+                                valueMin = min
+                                valueMax = max
+                              }
+                            "
+                          />
+                        </div>
+                      </div>
+                    </AccordionContent>
+                  </AccordionPanel>
+                </Accordion>
+              </AccordionContent>
+            </AccordionPanel>
+          </Accordion>
+        </div>
       </div>
     </div>
     <div v-else>
@@ -275,12 +405,53 @@ import { useRouter } from 'vue-router'
 import { usePlaneStore } from '@/stores/airports'
 import { useToast } from 'primevue/usetoast'
 import { formatDate } from '@/utils/format'
-
+import InputNumber from 'primevue/inputnumber'
+const valueMin = ref(0)
+const valueMax = ref(1000000)
 const toast = useToast()
 const planeStore = usePlaneStore()
 const router = useRouter()
 const storedFilteredFlights = ref([])
 const sortSelect = ref()
+const filterFlight = ref([])
+const filterClassTicket = ref([])
+const filteredFlights = computed(() => {
+  if (!storedFilteredFlights.value || storedFilteredFlights.value.length === 0) {
+    return []
+  }
+
+  if (filterFlight.value.length === 0 && filterClassTicket.value.length === 0) {
+    return storedFilteredFlights.value
+  }
+
+  return storedFilteredFlights.value.filter((flight) => {
+    let matchFlight = true
+    let matchClass = true
+
+    if (filterFlight.value.length > 0) {
+      matchFlight = filterFlight.value.includes(flight.airline)
+    }
+    if (filterClassTicket.value.length > 0) {
+      matchClass = flight.fareOptions.some((fareOption) =>
+        filterClassTicket.value.includes(fareOption.class)
+      )
+    }
+
+    return matchFlight && matchClass
+  })
+})
+const allPrices = computed(() =>
+  storedFilteredFlights.value.flatMap((flight) => flight.fareOptions.map((option) => option.price))
+)
+const sortedPrices = computed(() => [...allPrices.value].sort((a, b) => a - b))
+console.log('🚀 ~ sortedPrices:', sortedPrices)
+const minValue = computed(() => (sortedPrices.value.length ? sortedPrices.value[0] : 0))
+console.log('🚀 ~ minValue:', minValue)
+const maxValue = computed(() =>
+  sortedPrices.value.length ? sortedPrices.value[sortedPrices.value.length - 1] : 1000000
+)
+console.log('🚀 ~ maxValue:', maxValue)
+
 const formatPrice = (price) => {
   if (!price) return '0'
 
@@ -298,26 +469,25 @@ const ticketExpensive = () => {
 }
 const ticketFastest = () => {
   storedFilteredFlights.value.sort(
-    (a, b) => new Date(a.departure.time) - new Date(b.departure.time)
+    (a, b) => new Date(b.departure.time) - new Date(a.departure.time)
   )
 }
 const ticketSoonest = () => {
   storedFilteredFlights.value.sort(
-    (a, b) => new Date(b.departure.time) - new Date(a.departure.time)
+    (a, b) => new Date(a.departure.time) - new Date(b.departure.time)
   )
 }
 const ticketLanding = () => {
-  storedFilteredFlights.value.sort((a, b) => new Date(a.arrival.time) - new Date(b.arrival.time))
+  storedFilteredFlights.value.sort((a, b) => new Date(b.arrival.time) - new Date(a.arrival.time))
 }
 const ticketLateLanding = () => {
-  storedFilteredFlights.value.sort((a, b) => new Date(b.arrival.time) - new Date(a.arrival.time))
+  storedFilteredFlights.value.sort((a, b) => new Date(a.arrival.time) - new Date(b.arrival.time))
 }
 
 const loading = ref(false)
 const handleFlightSelect = async (flight) => {
   priceTicket.value = null
   flightTicket.value = flight
-  priceTicket.value = flight.fareOptions[0]
   await nextTick()
 }
 
@@ -382,6 +552,7 @@ const bookingFlightHandel = () => {
     })
   }
 }
+
 const resetBooking = () => {
   flightTicket.value = null
   priceTicket.value = null
@@ -397,86 +568,21 @@ onMounted(() => {
   if (savedFlights) {
     storedFilteredFlights.value = JSON.parse(savedFlights)
   }
+  valueMin.value = minValue.value
+  valueMax.value = maxValue.value
 })
 </script>
-<style scoped></style>
-<!-- <div class="bg-slate-200 flex justify-center rounded-lg gap-3 mb-8">
-      <div class="flex w-11/12 h-14 rounded-lg border-2 bg-slate-50">
-        <div class="flex justify-around gap-3">
-          <img
-            src="https://dev.airdata.site/img/airplane.87c2a8f1.svg"
-            style="width: 24px"
-            alt=""
-          />
-          <label class="flex items-center text-stone-950">Một Chiều</label>
-          <div class="h-auto border-l border-gray-500 mx-4 my-2"></div>
-        </div>
-        <div class="grow flex items-center text-orange-400">
-          <div class="flex-1 flex items-center justify-center">
-            <Label>{{ planeStore.airports.city }}</Label>
-          </div>
-          <div>
-            <img
-              src="https://dev.airdata.site/img/swap-horizontal.a11c3836.svg"
-              style="width: 24px"
-              alt=""
-            />
-          </div>
-          <div class="flex-1 flex items-center justify-center">
-            <Label>Cà Mau</Label>
-          </div>
-        </div>
-        <div class="h-auto border-l border-gray-500 mx-4 my-2"></div>
-        <div class="flex gap-3 justify-center">
-          <img
-            src="https://dev.airdata.site/img/airplane-up.50b67a05.svg"
-            style="width: 24px"
-            alt=""
-          />
-          <DatePicker
-            class="h-3/4 pt-3"
-            placeholder="Chọn ngày đi"
-            :showIcon="true"
-            :showButtonBar="true"
-            v-model="calendarValue"
-            iconDisplay="input"
-          ></DatePicker>
-          <div class="h-auto border-l border-gray-500 mx-4 my-2"></div>
-        </div>
-        <div class="flex items-center gap-3">
-          <img src="https://dev.airdata.site/img/users.1985e36a.svg" style="width: 24px" alt="" />
-          <div class="">
-            <InputGroup>
-              <Button icon="pi pi-plus" severity="success" />
-              <InputNumber placeholder="0" />
-              <Button icon="pi pi-minus" severity="danger" />
-            </InputGroup>
-          </div>
-        </div>
-        <div class="h-auto border-l border-gray-500 mx-4 my-2"></div>
-        <div class="flex items-center">
-          <button class="bg-orange-500 h-2/3 p-3 !rounded-full mr-4">
-            <svg
-              data-v-c4b70bea=""
-              xmlns="http://www.w3.org/2000/svg"
-              width="18px"
-              height="18px"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              class="ico-bold feather feather-more-horizontal"
-            >
-              <circle data-v-c4b70bea="" cx="12" cy="12" r="1"></circle>
-              <circle data-v-c4b70bea="" cx="19" cy="12" r="1"></circle>
-              <circle data-v-c4b70bea="" cx="5" cy="12" r="1"></circle>
-            </svg>
-          </button>
-        </div>
-      </div>
-      <div class="flex items-center">
-        <Button class="!bg-slate-600 !rounded-full h-4/5" icon="pi pi-search" iconPos="top" />
-      </div>
-    </div> -->
+<style scoped>
+.vue-slider {
+  height: 6px;
+  background-color: #ccc;
+}
+.vue-slider-dot {
+  width: 18px;
+  height: 18px;
+  background-color: #42b983;
+}
+.vue-slider-dot-handle {
+  border: none;
+}
+</style>

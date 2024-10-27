@@ -67,8 +67,8 @@
 
         <Column header="Điểm đi - Điểm đến" style="min-width: 16rem">
           <template #body="slotProps">
-            {{ getAirportName(slotProps.data.departure.airport) }} -
-            {{ getAirportName(slotProps.data.arrival.airport) }}
+            {{ getAirportName(slotProps.data?.departure?.airport) }} -
+            {{ getAirportName(slotProps.data?.arrival?.airport) }}
           </template>
         </Column>
         <Column
@@ -78,8 +78,8 @@
           style="min-width: 16rem"
         >
           <template #body="slotProps">
-            {{ formatDate(slotProps.data.departure.time) }} -
-            {{ formatDate(slotProps.data.arrival.time) }}
+            {{ formatDate(slotProps.data?.departure?.time) }} -
+            {{ formatDate(slotProps.data?.arrival?.time) }}
           </template>
         </Column>
         <Column header="Hạng vé">
@@ -256,31 +256,27 @@
       >
         <form>
           <div class="flex flex-col gap-6">
-            {{ selectValue }}
             <!-- Hãng bay -->
             <Select
               v-model="selectValue"
               v-bind="selectValueAttrs"
               :options="selectValues"
-              optionLabel="code"
-              placeholder="Chọn hệ thống hãng vé"
-              :filter="true"
+              placeholder="Chọn hệ thống chuyến bay"
+              class="w-full md:w-100"
             >
               <template #value="slotProps">
-                <div
-                  class="inline-flex items-center py-1 px-2 bg-primary text-primary-contrast rounded-border mr-2"
-                  v-for="option of slotProps.value"
-                  :key="option.code"
-                >
-                  <span
-                    :class="'mr-2 flag flag-' + option.code?.toLowerCase()"
-                    style="width: 18px; height: 12px"
+                <div v-if="slotProps.value" class="flex items-center">
+                  <img
+                    :alt="slotProps.value.label"
+                    :src="slotProps.value.img"
+                    :class="`mr-2 flag flag-${slotProps.value.code.toLowerCase()}`"
+                    style="width: 30px"
                   />
-                  <div>{{ option.name }}</div>
+                  <div>{{ slotProps.value.name }}</div>
                 </div>
-                <template v-if="!slotProps.value || slotProps.value.length === 0">
-                  <div class="p-1">Chọn hệ thống đặt vé</div>
-                </template>
+                <span v-else>
+                  {{ slotProps.placeholder }}
+                </span>
               </template>
               <template #option="slotProps">
                 <div class="flex items-center gap-3">
@@ -538,7 +534,8 @@ const handleAddFlights = handleSubmit((values) => {
         life: 3000
       })
       const req = {
-        airline: values.airline,
+        img: selectValue.value.img,
+        airline: selectValue.value.code,
         departure: {
           time: values.departureTime,
           airport: values.departureAirport

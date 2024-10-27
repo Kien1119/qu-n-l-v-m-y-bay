@@ -8,6 +8,7 @@ import App from './App.vue'
 import router from './router'
 import ConfirmationService from 'primevue/confirmationservice'
 import ToastService from 'primevue/toastservice'
+
 const app = createApp(App)
 const pinia = createPinia()
 app.use(ToastService)
