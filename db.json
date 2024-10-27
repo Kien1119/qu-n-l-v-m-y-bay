@@ -636,12 +636,12 @@
       "airline": "VN",
       "bookingCode": "Q2TR56",
       "departure": {
-        "time": "2024-10-24T08:00:00.000Z",
+        "time": "2024-10-28T08:00:00.000Z",
         "airport": "HAN"
       },
       "arrival": {
-        "time": "2024-10-24T10:00:00.000Z",
-        "airport": "SGN"
+        "time": "2024-10-28T10:00:00.000Z",
+        "airport": "DAD"
       },
       "flightNumber": "901",
       "aircraft": "Boeing 787",
@@ -715,11 +715,11 @@
       "bookingCode": "U6LP52",
       "departure": {
         "time": "2024-10-28T08:00:00.000Z",
-        "airport": "SGN"
+        "airport": "HAN"
       },
       "arrival": {
         "time": "2024-10-28T10:00:00.000Z",
-        "airport": "HAN"
+        "airport": "DAD"
       },
       "flightNumber": "789",
       "aircraft": "Boeing 787",
@@ -2224,12 +2224,12 @@
       "img": "https://media.loveitopcdn.com/3807/logo-vietravel-airlines.png",
       "airline": "VU",
       "departure": {
-        "time": "2024-10-24T04:37:07.495Z",
-        "airport": "DAD"
+        "time": "2024-10-28T04:37:07.495Z",
+        "airport": "HAN"
       },
       "arrival": {
-        "time": "2024-10-24T05:37:07.495Z",
-        "airport": "CXR"
+        "time": "2024-10-28T05:37:07.495Z",
+        "airport": "DAD"
       },
       "flightNumber": "A123",
       "aircraft": "VU LINH",
@@ -2249,12 +2249,12 @@
       "img": "https://www.vnas.vn/public/upload/files/29.9.2020/%E1%BA%A3nh%20vinayuuki%20vinh/04.10/06.10/10.10/%C4%91%E1%BA%A1i%20h%E1%BB%8Dc%20vinh/16.10/trang%20nh%C6%B0/ng%C3%A0y%2018.10/%C4%90%E1%BA%A1i%20h%20vinh/ng%C3%A0y%2030.10/th%C3%A1ng%2011/logo%2C/logo%2C%2C%2C/y-nghia-logo-vietjet.jpg",
       "airline": "VJ",
       "departure": {
-        "time": "2024-10-24T05:39:09.968Z",
-        "airport": "SGN"
+        "time": "2024-10-28T05:39:09.968Z",
+        "airport": "HAN"
       },
       "arrival": {
-        "time": "2024-10-24T07:39:09.968Z",
-        "airport": "CXR"
+        "time": "2024-10-28T07:39:09.968Z",
+        "airport": "DAD"
       },
       "flightNumber": "B3333",
       "aircraft": "Duc Kien",
@@ -2295,11 +2295,11 @@
       "img": "https://media.loveitopcdn.com/3807/logo-vietravel-airlines.png",
       "airline": "VU",
       "departure": {
-        "time": "2024-10-24T16:21:44.746Z",
+        "time": "2024-10-28T16:21:44.746Z",
         "airport": "HAN"
       },
       "arrival": {
-        "time": "2024-10-24T20:21:44.000Z",
+        "time": "2024-10-28T20:21:44.000Z",
         "airport": "DAD"
       },
       "flightNumber": "dsds",
@@ -2531,12 +2531,12 @@
         "id": "ea52",
         "airline": "VJ",
         "departure": {
-          "time": "2024-10-24T05:39:09.968Z",
-          "airport": "SGN"
+          "time": "2024-10-28T05:39:09.968Z",
+          "airport": "HAN"
         },
         "arrival": {
-          "time": "2024-10-24T07:39:09.968Z",
-          "airport": "CXR"
+          "time": "2024-10-28T07:39:09.968Z",
+          "airport": "DAD"
         },
         "flightNumber": "B3333",
         "aircraft": "Duc Kien",
@@ -2573,12 +2573,12 @@
         "id": "f795",
         "airline": "VU",
         "departure": {
-          "time": "2024-10-24T04:37:07.495Z",
-          "airport": "DAD"
+          "time": "2024-10-28T04:37:07.495Z",
+          "airport": "HAN"
         },
         "arrival": {
-          "time": "2024-10-24T05:37:07.495Z",
-          "airport": "CXR"
+          "time": "2024-10-28T05:37:07.495Z",
+          "airport": "DAD"
         },
         "flightNumber": "A123",
         "aircraft": "VU LINH",
