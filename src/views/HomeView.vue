@@ -1,6 +1,6 @@
 <template>
   <div
-    class="bg-cover bg-center md:flex items-center justify-center flex md:block"
+    class="bg-cover bg-center md:flex items-center justify-center flex"
     style="height: 100vh; background-image: url('/src/assets/background-image2.15114820.png')"
   >
     <div
@@ -38,7 +38,7 @@
       </div>
       <div class="md:flex gap-5 md:h-1/3 justify-center">
         <AddressPage :title="`Khởi hành`" v-model:airports="departures" />
-        <div class="mx-3 my-3 flex items-center">
+        <div class="mx-3 my-3 md:flex items-center">
           <Button
             type="button"
             class="!bg-orange-400 hover:shadow-xl !hover:bg-black"
@@ -49,11 +49,14 @@
         <AddressPage :title="`Kết thúc`" v-model:airports="arrival" />
       </div>
 
-      <div class="md:flex justify-around gap-3">
-
-        <div class="flex items-center  pr-2 border-r-2 gap-2">
-          <div style="width: 40px !important;height: 40px !important; overflow: hidden;">
-            <img src="https://dev.airdata.site/img/airplane-up.50b67a05.svg" class="w-full" alt="" />
+      <div class="md:flex justify-around md:gap-3">
+        <div class="flex items-center pr-2 border-r-2 gap-2">
+          <div style="width: 40px !important; height: 40px !important; overflow: hidden">
+            <img
+              src="https://dev.airdata.site/img/airplane-up.50b67a05.svg"
+              class="w-full"
+              alt=""
+            />
           </div>
           <DatePicker
             placeholder="Chọn ngày đi"
@@ -66,26 +69,29 @@
           ></DatePicker>
         </div>
 
-        <div class="flex items-center  pr-2 border-r-2 gap-2">
-          <div style="width: 40px !important;height: 40px !important; overflow: hidden;">
-            <img src="https://dev.airdata.site/img/plane-ticket.c034a5ca.svg" class="w-full" alt="" />
+        <div class="flex items-center pr-2 border-r-2 gap-2">
+          <div style="width: 40px !important; height: 40px !important; overflow: hidden">
+            <img
+              src="https://dev.airdata.site/img/plane-ticket.c034a5ca.svg"
+              class="w-full"
+              alt=""
+            />
           </div>
-          <pre></pre>
           <MultiSelect
             v-model="multiselectValue"
             :options="multiselectValues"
             optionLabel="name"
             placeholder="Chọn hệ thống đặt vé"
-            class="w-full"
+            class="w-full md:w-80"
             :filter="true"
           >
             <template #value="slotProps">
               <div
-                class="inline-flex items-center py-1 px-2 bg-primary text-primary-contrast rounded-border mr-2 border rounded bg-gray-100"
+                class="inline-flex items-center px-2 bg-primary text-primary-contrast rounded-border mr-2 border rounded bg-gray-100"
                 v-for="option of slotProps.value"
                 :key="option.code"
               >
-                <div><img style="width: 24px" :src="option.img" alt="" /></div>
+                <div><img style="width: 40px" :src="option.img" alt="" /></div>
                 <span :class="'mr-2 flag flag-' + option.code.toLowerCase()" />
                 <div>{{ option.code }}</div>
               </div>
@@ -99,23 +105,17 @@
           </MultiSelect>
         </div>
 
-        <div class="flex items-center  pr-2 border-r-2 gap-2">
-          <div style="width: 40px !important;height: 40px !important; overflow: hidden;">
+        <div class="flex items-center pr-2 gap-2">
+          <div style="width: 40px !important; height: 40px !important; overflow: hidden">
             <img src="https://dev.airdata.site/img/users.1985e36a.svg" class="w-full" alt="" />
           </div>
-          <div class="flex-1">
-            <div class="flex gap-3 items-center">
-              <!-- <div class="">
-                <span class="font-medium">Hành khách</span>
-              </div> -->
-              <div class="grow w-full">
-                <InputGroup>
-                  <Button icon="pi pi-plus" severity="success" @click="increment" />
-                  <InputNumber v-model="count" :min="0" placeholder="1" />
-                  <Button icon="pi pi-minus" severity="danger" @click="decrement" />
-                </InputGroup>
-              </div>
-            </div>
+
+          <div class="grow w-full">
+            <InputGroup>
+              <Button icon="pi pi-plus" severity="success" @click="increment" />
+              <InputNumber v-model="count" :min="0" placeholder="1" />
+              <Button icon="pi pi-minus" severity="danger" @click="decrement" />
+            </InputGroup>
           </div>
         </div>
       </div>

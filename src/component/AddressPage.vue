@@ -1,6 +1,6 @@
 <template>
-  <div class="flex-1 flex-col rounded-lg bg-white p-5 justify-around md:w-1/2 flex">
-    <div class=" text-base font-mono text-black">{{ props.title }}</div>
+  <div class="flex-1 flex-col rounded-lg bg-white p-5 justify-center md:w-1/2 flex">
+    <div class="text-base font-mono text-black">{{ props.title }}</div>
     <div class="flex flex-col justify-content-start text-title gap-1.5">
       <div class="flex flex-col gap-3">
         <div class="text-slate-950 text-xl mb-0 font-medium-4 Class Properties">

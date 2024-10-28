@@ -3,7 +3,7 @@
   <div class="relative pb-20">
     <form>
       <div class="bg-slate-300 pt-5">
-        <div class="flex h-14 rounded-lg bg-slate-50 justify-around border-2 my-3 mx-5 w-full">
+        <div class="flex h-14 rounded-lg bg-slate-50 md:justify-around border-2 md:w-full">
           <img style="border-radius: 5px" :src="information?.img" alt="" />
           <span class="flex items-center text-orange-600 font-bold">
             {{ information?.airline }}</span
@@ -339,8 +339,15 @@ const { errors, handleSubmit, defineField } = useForm({
         birthday: yup.string().required('Ngày sinh là bắt buộc')
       })
     ),
-    email: yup.string().required('Email bắt buộc'),
-    phone: yup.string().required('Phone bắt buộc').min(8)
+    email: yup
+      .string()
+      .required('Email là bắt buộc')
+      .email('Email không hợp lệ')
+      .matches(/^[^\s@]+@[^\s@]+\.[^\s@]+$/, 'Email không đúng định dạng'),
+    phone: yup
+      .string()
+      .required('Số điện thoại là bắt buộc')
+      .matches(/^(\+84|0)(\d{9}|\d{10})$/, 'Số điện thoại không hợp lệ')
   })
 })
 
@@ -381,10 +388,12 @@ const holdBooking = handleSubmit((values) => {
           },
           flightNumber: information.value?.flightNumber,
           aircraft: information.value?.aircraft,
-          fareOptions: {
-            class: price.value[0]?.class,
-            price: price.value[0]?.total
-          }
+          fareOptions: [
+            {
+              class: price.value[0]?.class,
+              price: price.value[0]?.total
+            }
+          ]
         },
         contact: {
           email: values.email,

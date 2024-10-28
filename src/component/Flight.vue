@@ -1,26 +1,31 @@
 <template>
-  <div class="relative pb-20 pt-10 pl-10 pr-0">
-    <div v-if="storedFilteredFlights.length > 0" class="flex justify-center">
-      <div class="w-2/3">
+  <div class="relative md:flex pb-32 justify-center items-center w-full">
+    <div
+      v-if="storedFilteredFlights.length > 0"
+      class="flex flex-col-reverse md:flex-row justify-center w-full"
+    >
+      <div class="md:w-2/3">
         <Accordion value="0" expandIcon="none" collapseIcon="none">
           <AccordionPanel v-for="flight in filteredFlights" :key="flight.id" :value="flight.id">
-            <AccordionHeader class="">
+            <AccordionHeader>
               <div
-                class="flex w-full h-14 rounded-lg border-2 bg-slate-50 justify-around focus:outline-none"
-                @click="handleFlightSelect(flight)"
+                class="flex md:w-full h-14 rounded-lg md:gap-2 border-2 bg-slate-50 justify-around focus:outline-none"
               >
                 <img
+                  class="hidden md:block"
                   :src="flight.img"
                   alt="Không có cảnh
                 "
                 />
-                <span class="flex items-center text-orange-600 font-bold">{{
-                  flight.airline
-                }}</span>
-                <span class="flex items-center text-gray-600 font-bold">{{
-                  flight.flightNumber
-                }}</span>
-                <div class="flex items-center">
+                <div class="flex flex-col items-center md:gap-3 md:flex md:flex-row">
+                  <span class="md:flex items-center text-orange-600 font-bold">{{
+                    flight.airline
+                  }}</span>
+                  <span class="items-center text-gray-600 font-bold">{{
+                    flight.flightNumber
+                  }}</span>
+                </div>
+                <div class="md:flex items-center">
                   <span class="text-stone-950 font-bold">{{
                     formatDate(flight.departure.time)
                   }}</span>
@@ -41,7 +46,7 @@
                 <div
                   v-for="(price, index) in flight.fareOptions"
                   :key="index"
-                  @click="priceTicket = price"
+                  @click="handleFlightSelect(flight)"
                   class="flex items-center gap-5 bg-slate-200 h-12 p-5 border-2 rounded-lg"
                 >
                   <RadioButton v-model="priceTicket" :inputId="`${price}`" :value="price" />
@@ -56,7 +61,7 @@
           </AccordionPanel>
         </Accordion>
       </div>
-      <div class="w-2/6 sticky top-0">
+      <div class="md:w-2/6 md:sticky top-0">
         <Accordion expandIcon="none" collapseIcon="none">
           <AccordionPanel v-if="flightTicket" class="!bg-orange-500 w-full rounded-lg p-3">
             <AccordionHeader class="!bg-orange-500 w-full !p-0">

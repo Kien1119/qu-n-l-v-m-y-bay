@@ -105,10 +105,14 @@
           <Column field="price" header="Giá">
             <template #body="slotProps">
               <div class="flex flex-col">
-                <div class="text-red-500 font-bold">
-                  {{ slotProps.data.flight.fareOptions.price }}
+                <div
+                  v-for="(priceDetail, index) in slotProps.data.flight.fareOptions"
+                  :key="index"
+                  class="text-red-500 font-bold"
+                >
+                  {{ formatPrice(priceDetail.price) }}
+                  <div class="text-red-300">({{ priceDetail.class }})</div>
                 </div>
-                <div class="text-red-300">({{ slotProps.data.flight.fareOptions.class }})</div>
               </div>
             </template>
           </Column>
@@ -130,6 +134,7 @@ import { usePlaneStore } from '../stores/airports.js'
 import { useReservationStore } from '@/stores/reservation'
 import { formatDate } from '../utils/format'
 import { useRouter } from 'vue-router'
+import { formatPrice } from '../utils/format.js'
 const reservationStore = useReservationStore()
 const planeStore = usePlaneStore()
 const router = useRouter()

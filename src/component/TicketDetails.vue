@@ -13,7 +13,7 @@
 
               <div class="border-r-2"></div>
 
-              <img :src="reservationStore?.detail?.flight?.img" class="w-52" alt="" />
+              <img :src="reservationStore?.detail?.flight?.img" class="w-56" alt="" />
             </div>
           </div>
           <div class="flex flex-col gap-3 mt-3">
@@ -71,19 +71,19 @@
             </AccordionHeader>
             <AccordionContent>
               <div class="flex gap-5 border-2 border-zinc-500 rounded-lg justify-between p-6">
-                <img :src="reservationStore?.detail?.flight?.img" class="w-96" alt="" />
+                <img :src="reservationStore?.detail?.flight?.img" class="w-36" alt="" />
                 <div class="flex gap-2 w-1/4 items-center justify-center">
                   <div class="flex flex-col items-center justify-center font-bold">
-                    <span class="text-7xl">{{ reservationStore?.detail?.flight?.airline }}</span>
-                    <span class="text-5xl">{{ reservationStore?.detail?.flight?.aircraft }}</span>
+                    <span class="text-4xl">{{ reservationStore?.detail?.flight?.airline }}</span>
+                    <span class="text-3xl">{{ reservationStore?.detail?.flight?.aircraft }}</span>
                   </div>
                 </div>
                 <div class="flex gap-5 w-3/6 justify-center">
                   <div class="flex flex-col justify-between">
-                    <span class="font-bold text-orange-400 text-4xl flex justify-center">
+                    <span class="font-bold text-orange-400 text-3xl flex">
                       {{ reservationStore?.detail?.flight?.departure?.airport }}</span
                     >
-                    <span class="text-gray-950 text-3xl font-medium flex justify-center">
+                    <span class="text-gray-950 text-2xl font-medium flex justify-center">
                       {{ formatDate(reservationStore?.detail?.flight?.departure?.time) }}
                     </span>
                   </div>
@@ -91,32 +91,15 @@
                     <span class="flex text-2xl justify-center">2h15p</span>
                     <img src="https://dev.airdata.site/img/line-flight.222ef73e.svg" alt="" />
                   </div>
-                  <div class="flex flex-col justify-between">
-                    <span class="font-bold text-orange-400 text-4xl flex justify-center">
+                  <div class="flex flex-col pl-5 justify-between">
+                    <span class="font-bold text-orange-400 text-3xl flex">
                       {{ reservationStore?.detail?.flight?.arrival?.airport }}</span
                     >
-                    <span class="text-gray-950 text-3xl font-medium flex justify-center">
+                    <span class="text-gray-950 text-2xl font-medium flex justify-center">
                       {{ formatDate(reservationStore?.detail?.flight?.arrival?.time) }}</span
                     >
                   </div>
                 </div>
-                <!-- <div class="flex flex-col gap-3 w-1/4 bg-slate-200 p-3 rounded-lg">
-                  <div class="flex justify-between">
-                    <span>Tình trạng chỗ</span
-                    ><span class="text-green-400 font-semibold text-xl">HK</span>
-                  </div>
-                  <div class="flex justify-between">
-                    <span>Hạng vé</span
-                    ><span>( EC | L <span class="text-red-500">LPXVNF</span> )</span>
-                  </div>
-                  <div class="flex justify-between"><span>Hoàn tháng</span><span>HK</span></div>
-                  <div class="flex justify-between">
-                    <span>Hành lý xách tay</span><span class="font-medium">1 kiện (10KG) +2KG</span>
-                  </div>
-                  <div class="flex justify-between">
-                    <span>Hành lý ký gửi</span><span class="font-medium">1 kiện (23KG)</span>
-                  </div>
-                </div> -->
               </div>
             </AccordionContent>
           </AccordionPanel>
@@ -173,16 +156,21 @@
               </div>
             </AccordionHeader>
             <AccordionContent>
-              <div class="flex text-2xl gap-3">
-                <span>1.</span
-                ><span class="font-medium">{{
-                  reservationStore.detail.flight?.fareOptions.class
-                }}</span
-                ><span class="font-medium">/</span
-                ><span class="font-medium">{{
-                  formatPrice(reservationStore.detail.flight?.fareOptions.price)
-                }}</span>
-              </div>
+              <DataTable
+                :value="reservationStore.detail.flight?.fareOptions"
+                tableStyle="min-width: 50rem"
+              >
+                <Column
+                  field="class"
+                  class="font-mono text-2xl text-orange-500"
+                  header="Hạng Bay"
+                ></Column>
+                <Column class="font-mono text-red-500" header="Giá Bay">
+                  <template #body="slotProps">
+                    {{ formatPrice(slotProps.data.price) }}
+                  </template>
+                </Column>
+              </DataTable>
             </AccordionContent>
           </AccordionPanel>
         </Accordion>
