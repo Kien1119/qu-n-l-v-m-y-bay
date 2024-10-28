@@ -1,10 +1,10 @@
 <template>
   <div
-    class="bg-cover bg-center flex items-center justify-center"
+    class="bg-cover bg-center md:flex items-center justify-center flex md:block"
     style="height: 100vh; background-image: url('/src/assets/background-image2.15114820.png')"
   >
     <div
-      class="backdrop-blur-md flex p-3 flex-col bg-white/50 rounded-2xl mx-20 my-20 border !border-gray-500 gap-7 h-2/3 justify-between"
+      class="backdrop-blur-md flex p-3 flex-col bg-white/50 rounded-2xl md:mx-20 md:my-20 border !border-gray-500 gap-7 md:h-2/3 justify-between"
     >
       <div>
         <div class="card flex justify-between">
@@ -36,7 +36,7 @@
           </div>
         </div>
       </div>
-      <div class="flex gap-5 h-1/3 justify-center">
+      <div class="md:flex gap-5 md:h-1/3 justify-center">
         <AddressPage :title="`Khởi hành`" v-model:airports="departures" />
         <div class="mx-3 my-3 flex items-center">
           <Button
@@ -48,9 +48,13 @@
         </div>
         <AddressPage :title="`Kết thúc`" v-model:airports="arrival" />
       </div>
-      <div class="flex justify-around gap-3">
-        <div class="flex gap-3">
-          <img src="https://dev.airdata.site/img/airplane-up.50b67a05.svg" width="24px" alt="" />
+
+      <div class="md:flex justify-around gap-3">
+
+        <div class="flex items-center  pr-2 border-r-2 gap-2">
+          <div style="width: 40px !important;height: 40px !important; overflow: hidden;">
+            <img src="https://dev.airdata.site/img/airplane-up.50b67a05.svg" class="w-full" alt="" />
+          </div>
           <DatePicker
             placeholder="Chọn ngày đi"
             dateFormat="dd/mm/yy"
@@ -58,18 +62,21 @@
             :minDate="minDate"
             :locale="viLocale"
             @change="onDateSelect(newDate)"
+            class="w-full"
           ></DatePicker>
         </div>
-        <div class="border-r-2"></div>
-        <div class="flex gap-3 items-center">
-          <img src="https://dev.airdata.site/img/plane-ticket.c034a5ca.svg" width="24px" alt="" />
+
+        <div class="flex items-center  pr-2 border-r-2 gap-2">
+          <div style="width: 40px !important;height: 40px !important; overflow: hidden;">
+            <img src="https://dev.airdata.site/img/plane-ticket.c034a5ca.svg" class="w-full" alt="" />
+          </div>
           <pre></pre>
           <MultiSelect
             v-model="multiselectValue"
             :options="multiselectValues"
             optionLabel="name"
             placeholder="Chọn hệ thống đặt vé"
-            class="!min-w-96"
+            class="w-full"
             :filter="true"
           >
             <template #value="slotProps">
@@ -91,15 +98,17 @@
             </template>
           </MultiSelect>
         </div>
-        <div class="border-l-2"></div>
-        <div class="flex items-center gap-3">
-          <img src="https://dev.airdata.site/img/users.1985e36a.svg" width="24px" alt="" />
+
+        <div class="flex items-center  pr-2 border-r-2 gap-2">
+          <div style="width: 40px !important;height: 40px !important; overflow: hidden;">
+            <img src="https://dev.airdata.site/img/users.1985e36a.svg" class="w-full" alt="" />
+          </div>
           <div class="flex-1">
             <div class="flex gap-3 items-center">
-              <div class="">
+              <!-- <div class="">
                 <span class="font-medium">Hành khách</span>
-              </div>
-              <div class="grow">
+              </div> -->
+              <div class="grow w-full">
                 <InputGroup>
                   <Button icon="pi pi-plus" severity="success" @click="increment" />
                   <InputNumber v-model="count" :min="0" placeholder="1" />
