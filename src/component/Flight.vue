@@ -406,8 +406,9 @@ import { usePlaneStore } from '@/stores/airports'
 import { useToast } from 'primevue/usetoast'
 import { formatDate } from '@/utils/format'
 import InputNumber from 'primevue/inputnumber'
-const valueMin = ref(0)
-const valueMax = ref(1000000)
+const valueMin = ref(null)
+const valueMax = ref(null)
+
 const toast = useToast()
 const planeStore = usePlaneStore()
 const router = useRouter()
@@ -420,37 +421,43 @@ const filteredFlights = computed(() => {
     return []
   }
 
-  if (filterFlight.value.length === 0 && filterClassTicket.value.length === 0) {
-    return storedFilteredFlights.value
-  }
-
   return storedFilteredFlights.value.filter((flight) => {
     let matchFlight = true
     let matchClass = true
+    let matchPrice = true
 
     if (filterFlight.value.length > 0) {
       matchFlight = filterFlight.value.includes(flight.airline)
     }
+
     if (filterClassTicket.value.length > 0) {
       matchClass = flight.fareOptions.some((fareOption) =>
         filterClassTicket.value.includes(fareOption.class)
       )
     }
 
-    return matchFlight && matchClass
+    if (valueMin.value !== null || valueMax.value !== null) {
+      matchPrice = flight.fareOptions.some((fareOption) => {
+        const price = fareOption.price
+        return (
+          (valueMin.value === null || price >= valueMin.value) &&
+          (valueMax.value === null || price <= valueMax.value)
+        )
+      })
+    }
+
+    return matchFlight && matchClass && matchPrice
   })
 })
+
 const allPrices = computed(() =>
   storedFilteredFlights.value.flatMap((flight) => flight.fareOptions.map((option) => option.price))
 )
 const sortedPrices = computed(() => [...allPrices.value].sort((a, b) => a - b))
-console.log('🚀 ~ sortedPrices:', sortedPrices)
 const minValue = computed(() => (sortedPrices.value.length ? sortedPrices.value[0] : 0))
-console.log('🚀 ~ minValue:', minValue)
 const maxValue = computed(() =>
   sortedPrices.value.length ? sortedPrices.value[sortedPrices.value.length - 1] : 1000000
 )
-console.log('🚀 ~ maxValue:', maxValue)
 
 const formatPrice = (price) => {
   if (!price) return '0'
