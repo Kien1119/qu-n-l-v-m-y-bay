@@ -546,10 +546,12 @@ const handleAddFlights = handleSubmit((values) => {
         },
         flightNumber: values.flightNumber,
         aircraft: values.aircraft,
-        fareOptions: fareOptions.value.map((item) => ({
-          class: item.class,
-          price: item.price
-        }))
+        fareOptions: fareOptions.value.map((item) => [
+          {
+            class: item.class,
+            price: item.price
+          }
+        ])
       }
 
       if (req) {

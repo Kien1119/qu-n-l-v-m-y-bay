@@ -323,25 +323,20 @@
                   </AccordionPanel>
                   <AccordionPanel value="1">
                     <AccordionHeader>Loại vé</AccordionHeader>
-                    <AccordionContent>
+                    <AccordionContent v-for="(flight, index) in filteredFlights" :key="index">
                       <div class="grid gap-2">
-                        <div class="flex gap-3">
+                        <div
+                          v-for="price in flight.fareOptions"
+                          :key="price.key"
+                          class="flex items-center gap-3"
+                        >
                           <Checkbox
                             v-model="filterClassTicket"
-                            input-id="Eco"
-                            name="Economy"
-                            value="Economy"
+                            :inputId="price.key"
+                            name="price"
+                            :value="price.class"
                           />
-                          <label for="Eco">Economy</label>
-                        </div>
-                        <div class="flex gap-3">
-                          <Checkbox
-                            v-model="filterClassTicket"
-                            input-id="Bus"
-                            name="Business"
-                            value="Business"
-                          />
-                          <label for="Bus">Business</label>
+                          <label :for="price.key">{{ price.class }}</label>
                         </div>
                       </div>
                     </AccordionContent>
