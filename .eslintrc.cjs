@@ -13,6 +13,8 @@ module.exports = {
   },
   rules: {
     // Disable multi-word component names rule
-    'vue/multi-word-component-names': 'off'
+    'vue/multi-word-component-names': 'off',
+    'vue/no-unused-vars': 'off',
+    'no-unused-vars': 'off',
   }
 }
