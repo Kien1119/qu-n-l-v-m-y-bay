@@ -1,42 +1,33 @@
 <template>
-  <div class="flex-1 flex-col rounded-lg bg-white p-5 justify-center md:w-1/2 flex">
+  <div class="flex-1 flex flex-col rounded-lg bg-white p-3">
     <div class="text-base font-mono text-black">{{ props.title }}</div>
-    <div class="flex flex-col justify-content-start text-title gap-1.5">
-      <div class="flex flex-col gap-3">
-        <div class="text-slate-950 text-xl mb-0 font-medium-4 Class Properties">
-          <Select
-            class="!border-0 w-full"
-            :model-value="airports"
-            :options="airportsWithLabel"
-            placeholder="Chọn chuyến bay"
-            optionLabel="label"
-            filter
-            :filterFunction="customFilter"
-            @update:modelValue="onChangeAirports"
-          >
-            <template #value="slotProps">
-              <div v-if="slotProps.value" class="flex items-center !text-orange-400">
-                <div>{{ getAirportName(slotProps.value.airportCode) }}</div>
-              </div>
-              <span v-else>
-                {{ slotProps.placeholder }}
+    <div class="flex flex-col gap-3">
+      <div class="text-slate-950 text-xl mb-0 font-medium-4 Class Properties">
+        <Select class="!border-0 w-full" :model-value="airports" :options="airportsWithLabel"
+          placeholder="Chọn chuyến bay" optionLabel="label" filter :filterFunction="customFilter"
+          @update:modelValue="onChangeAirports">
+          <template #value="slotProps">
+            <div v-if="slotProps.value" class="flex items-center !text-orange-400">
+              <div>{{ getAirportName(slotProps.value.airportCode) }}</div>
+            </div>
+            <span v-else>
+              {{ slotProps.placeholder }}
+            </span>
+          </template>
+
+          <template #option="slotProps">
+            <div class="flex items-center">
+              <span class="text-xl ml-50">
+                {{ slotProps.option.name }} ({{ slotProps.option.airportCode }}, VN)
               </span>
-            </template>
+            </div>
+          </template>
+        </Select>
+      </div>
 
-            <template #option="slotProps">
-              <div class="flex items-center">
-                <span class="text-xl ml-50">
-                  {{ slotProps.option.name }} ({{ slotProps.option.airportCode }}, VN)
-                </span>
-              </div>
-            </template>
-          </Select>
-        </div>
-
-        <div class="flex flex-col gap-1">
-          <span class="text-slate-950 text-2xl font-bold font-mono">{{ props.airports.city }}</span>
-          <span class="text-gray-500">{{ props.airports.country }}</span>
-        </div>
+      <div class="flex flex-col gap-1">
+        <span class="text-slate-950 text-2xl font-bold font-mono">{{ props.airports.city }}</span>
+        <span class="text-gray-500">{{ props.airports.country }}</span>
       </div>
     </div>
   </div>

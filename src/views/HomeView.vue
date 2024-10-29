@@ -4,9 +4,8 @@
     style="height: 100vh; background-image: url('/src/assets/background-image2.15114820.png')"
   >
     <div
-      class="backdrop-blur-md flex p-3 flex-col bg-white/50 rounded-2xl md:mx-20 md:my-20 border !border-gray-500 gap-7 md:h-2/3 justify-between"
+      class="backdrop-blur-md flex p-5 gap-5 flex-col bg-white/50 rounded-2xl border !border-gray-500 "
     >
-      <div>
         <div class="card flex justify-between">
           <div class="flex flex-wrap gap-4">
             <div class="flex items-center">
@@ -35,13 +34,12 @@
             </div>
           </div>
         </div>
-      </div>
-      <div class="md:flex gap-5 md:h-1/3 justify-center">
+      <div class="md:flex gap-5 justify-center">
         <AddressPage :title="`Khởi hành`" v-model:airports="departures" />
-        <div class="mx-3 my-3 md:flex items-center">
+        <div class="md:flex items-center">
           <Button
             type="button"
-            class="!bg-orange-400 hover:shadow-xl !hover:bg-black"
+            class="!bg-primary hover:shadow-xl !hover:bg-black"
             icon="pi pi-arrow-right-arrow-left"
             @click="swapAirports"
           />
@@ -55,6 +53,7 @@
             <img
               src="https://dev.airdata.site/img/airplane-up.50b67a05.svg"
               class="w-full"
+              style="height: 40px;"
               alt=""
             />
           </div>
@@ -69,11 +68,12 @@
           ></DatePicker>
         </div>
 
-        <div class="flex items-center pr-2 border-r-2 gap-2">
+        <div class="flex items-center justify-center pr-2 border-r-2 gap-2">
           <div style="width: 40px !important; height: 40px !important; overflow: hidden">
             <img
               src="https://dev.airdata.site/img/plane-ticket.c034a5ca.svg"
-              class="w-full"
+              class="w-full h-fit"
+              style="height: 40px;"
               alt=""
             />
           </div>
@@ -87,7 +87,7 @@
           >
             <template #value="slotProps">
               <div
-                class="inline-flex items-center px-2 bg-primary text-primary-contrast rounded-border mr-2 border rounded bg-gray-100"
+                class="inline-flex items-center px-2 text-primary-contrast rounded-border mr-2 border rounded bg-gray-100"
                 v-for="option of slotProps.value"
                 :key="option.code"
               >
@@ -107,21 +107,24 @@
 
         <div class="flex items-center pr-2 gap-2">
           <div style="width: 40px !important; height: 40px !important; overflow: hidden">
-            <img src="https://dev.airdata.site/img/users.1985e36a.svg" class="w-full" alt="" />
+            <img src="https://dev.airdata.site/img/users.1985e36a.svg" class="w-full" alt="" 
+            style="height: 40px;"
+            />
           </div>
 
-          <div class="grow w-full">
-            <InputGroup>
-              <Button icon="pi pi-plus" severity="success" @click="increment" />
-              <InputNumber v-model="count" :min="0" placeholder="1" />
-              <Button icon="pi pi-minus" severity="danger" @click="decrement" />
-            </InputGroup>
-          </div>
+            <InputNumber v-model="count" min="1" max="9" inputId="horizontal-buttons" class=" bg-white rounded-md" showButtons buttonLayout="horizontal" :step="1" mode="decimal" fluid>
+                <template #incrementbuttonicon>
+                    <span class="pi pi-plus" />
+                </template>
+                <template #decrementbuttonicon>
+                    <span class="pi pi-minus" />
+                </template>
+            </InputNumber>
         </div>
       </div>
       <div class="flex items-center justify-center">
         <Button
-          class="!rounded-3xl"
+          class=""
           icon="pi pi-search"
           label="Tìm kiếm chuyến bay"
           @click="handleSubmit"
@@ -208,17 +211,6 @@ const arrival = ref({
 })
 
 const count = ref(1)
-const increment = () => {
-  if (count.value < 9) {
-    count.value += 1
-  }
-}
-
-const decrement = () => {
-  if (count.value > 1) {
-    count.value -= 1
-  }
-}
 const handleSubmit = async () => {
   loading.value = true
   const req = {
