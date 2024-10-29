@@ -323,20 +323,20 @@
                   </AccordionPanel>
                   <AccordionPanel value="1">
                     <AccordionHeader>Loại vé</AccordionHeader>
-                    <AccordionContent v-for="(flight, index) in filteredFlights" :key="index">
+                    <AccordionContent>
                       <div class="grid gap-2">
                         <div
-                          v-for="price in flight.fareOptions"
-                          :key="price.key"
+                          v-for="(option, idx) in uniqueFareOptions"
+                          :key="idx"
                           class="flex items-center gap-3"
                         >
                           <Checkbox
                             v-model="filterClassTicket"
-                            :inputId="price.key"
+                            :inputId="option.key"
                             name="price"
-                            :value="price.class"
+                            :value="option.class"
                           />
-                          <label :for="price.key">{{ price.class }}</label>
+                          <label :for="option.key">{{ option.class }}</label>
                         </div>
                       </div>
                     </AccordionContent>
@@ -416,6 +416,13 @@ const storedFilteredFlights = ref([])
 const sortSelect = ref()
 const filterFlight = ref([])
 const filterClassTicket = ref([])
+const uniqueFareOptions = computed(() => {
+  const allFareOptions = filteredFlights.value.flatMap((flight) => flight.fareOptions)
+  const uniqueOptions = [...new Set(allFareOptions.map((option) => option.class))]
+  return uniqueOptions.map((className) => {
+    return allFareOptions.find((option) => option.class === className)
+  })
+})
 const filteredFlights = computed(() => {
   if (!storedFilteredFlights.value || storedFilteredFlights.value.length === 0) {
     return []
