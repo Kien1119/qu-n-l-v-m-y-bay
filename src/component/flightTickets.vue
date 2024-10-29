@@ -1,7 +1,7 @@
 <!-- eslint-disable no-undef -->
 <template>
   <div class="relative pb-20">
-    <form>
+    <Form @submit="handleSubmit" :initial-values="initialValues" :validation-schema="schema">
       <div class="bg-slate-300 pt-5">
         <div class="flex h-14 rounded-lg bg-slate-50 md:justify-around border-2 md:w-full">
           <img style="border-radius: 5px" :src="information?.img" alt="" />
@@ -150,70 +150,80 @@
                     chịu trách nhiệm nếu quý AG không nhập đầy đủ thông tin !"
                   </span>
                 </div> -->
+                <div>
+                  <!-- FieldArray cho danh sách hành khách -->
+                  <FieldArray name="paxLists" v-slot="slotProps">
+                    <div v-if="slotProps && slotProps.fields">
+                      <div
+                        v-for="(field, idx) in slotProps.fields"
+                        :key="field.key"
+                        class="card flex flex-col gap-4 px-4 bg-slate-200 p-6 m-4 rounded-lg py-4"
+                      >
+                        <legend class="text-xl font-bold !text-orange-500 uppercase">
+                          Hành Khách #{{ idx + 1 }}
+                        </legend>
 
-                <div
-                  v-for="(item, index) in passengers"
-                  :key="index"
-                  class="card flex flex-col gap-4 px-4 bg-slate-200 p-6 m-4 rounded-lg py-4"
-                >
-                  <legend class="text-xl font-bold !text-orange-500 uppercase">
-                    Hành Khách #{{ index + 1 }}
-                  </legend>
-                  <div class="h-7">
-                    <span class="text-xl font-medium !text-gray-900 uppercase">
-                      {{ item.firstName }} {{ item.lastName }} {{ item.titleName }}
-                    </span>
-                  </div>
-                  <div class="flex-1 grid grid-cols-4 gap-4">
-                    <div>
-                      <InputText
-                        class="w-full uppercase"
-                        v-bind="item.firstNameAttrs"
-                        type="text"
-                        v-model="item.firstName"
-                        placeholder="Họ (*)"
-                        :class="{ 'p-invalid': errors[`passengers.${item}.firstName`] }"
-                      />
-                    </div>
-                    <span class="text-red-600">{{ errors?.passengers?.[index]?.firstName }}</span>
+                        <!-- Trường Họ -->
+                        <div>
+                          <label :for="`firstName_${idx}`">Họ (*)</label>
+                          <Field
+                            :id="`firstName_${idx}`"
+                            :name="`paxLists[${idx}].firstName`"
+                            class="w-full uppercase"
+                            placeholder="Họ"
+                            as="input"
+                          />
+                          <ErrorMessage :name="`paxLists[${idx}].firstName`" class="text-red-600" />
+                        </div>
 
-                    <div>
-                      <InputText
-                        v-bind="item.lastNameAttrs"
-                        class="w-full uppercase"
-                        v-model="item.lastName"
-                        type="text"
-                        placeholder="Tên đệm & Tên (*)"
-                        :class="{ 'p-invalid': errors[`passengers.${index}.lastName`] }"
-                      />
-                    </div>
-                    <span class="text-red-600">{{ errors?.passengers?.[index]?.lastName }}</span>
+                        <!-- Trường Tên -->
+                        <div>
+                          <label :for="`lastName_${idx}`">Tên đệm & Tên (*)</label>
+                          <Field
+                            :id="`lastName_${idx}`"
+                            :name="`paxLists[${idx}].lastName`"
+                            class="w-full uppercase"
+                            placeholder="Tên đệm & Tên"
+                            as="input"
+                          />
+                          <ErrorMessage :name="`paxLists[${idx}].lastName`" class="text-red-600" />
+                        </div>
 
-                    <div>
-                      <Select
-                        v-model="item.titleName"
-                        v-bind="item.titleNameAttrs"
-                        :options="title"
-                        optionLabel="name"
-                        optionValue="code"
-                        placeholder="Danh xưng"
-                        class="w-full"
-                      />
+                        <!-- Trường Danh xưng -->
+                        <div>
+                          <label :for="`titleName_${idx}`">Danh xưng</label>
+                          <Field
+                            :id="`titleName_${idx}`"
+                            :name="`paxLists[${idx}].titleName`"
+                            as="select"
+                            :options="[
+                              { name: 'Ông', code: 'MR' },
+                              { name: 'Bà', code: 'MRS' },
+                              { name: 'Cô', code: 'MS' }
+                            ]"
+                            optionLabel="name"
+                            optionValue="code"
+                            placeholder="Danh xưng"
+                            class="w-full"
+                          />
+                          <ErrorMessage :name="`paxLists[${idx}].titleName`" class="text-red-600" />
+                        </div>
+
+                        <!-- Trường Ngày sinh -->
+                        <div>
+                          <label :for="`birthday_${idx}`">Ngày sinh</label>
+                          <Field
+                            :id="`birthday_${idx}`"
+                            :name="`paxLists[${idx}].birthday`"
+                            as="input"
+                            type="date"
+                            class="w-full"
+                          />
+                          <ErrorMessage :name="`paxLists[${idx}].birthday`" class="text-red-600" />
+                        </div>
+                      </div>
                     </div>
-                    <span class="text-red-600">{{ errors?.passengers?.[index]?.titleName }}</span>
-                    <div class="">
-                      <DatePicker
-                        v-bind="item.birthdayAttrs"
-                        v-model="item.birthday"
-                        birthdayFormat="dd/mm/yy"
-                        placeholder="Ngày sinh (DD-MM-YYYY)"
-                        class="w-full"
-                        :maxDate="new Date()"
-                        :class="{ 'p-invalid': errors[`passengers.${index}.birthday`] }"
-                      />
-                    </div>
-                    <span class="text-red-600">{{ errors?.passengers?.[index]?.birthday }}</span>
-                  </div>
+                  </FieldArray>
                 </div>
               </div>
             </div>
@@ -222,30 +232,28 @@
         <div class="p-7">
           <div class="flex flex-col p-4 border-2 border-cyan-700 rounded-lg bg-slate-50 gap-3">
             <div><span class="font-bold text-cyan-700">Thông tin liên hệ khách hàng</span></div>
-            <div class="flex gap-5 bg-slate-300 p-4 rounded-lg">
-              <div class="flex flex-col">
-                <label for="phone">Số điện thoại: </label>
-                <InputMask
-                  v-bind="phoneAttrs"
-                  id="phone"
-                  v-model="phone"
-                  mask="(84) 999-9999"
-                  placeholder="(84) 999-9999"
-                  :invalid="errors.phone"
-                  fluid
-                />
-                <span class="h-6" style="color: #d81221">{{ errors.phone }}</span>
+            <div class="flex justify-around gap-5 bg-slate-300 p-4 rounded-lg">
+              <div class="flex items-center flex-col mb-6">
+                <div class="">
+                  <Field
+                    name="contact.email"
+                    v-model="initialValues.contact.email"
+                    type="email"
+                    placeholder="Email"
+                    class="w-full"
+                  />
+                </div>
+                <ErrorMessage class="text-red-600" name="contact.email" />
               </div>
               <div class="flex flex-col">
-                <label for="email">Email: </label>
-                <InputText
-                  type="text"
-                  v-bind="emailAttrs"
-                  v-model="email"
-                  placeholder="Vui lòng nhập"
-                  :invalid="errors.email"
+                <Field
+                  name="contact.phone"
+                  v-model="initialValues.contact.phone"
+                  type="tel"
+                  placeholder="Số điện thoại"
+                  class="w-full"
                 />
-                <span class="h-6" style="color: #d81221">{{ errors.email }}</span>
+                <ErrorMessage class="text-red-600" name="contact.phone" />
               </div>
             </div>
           </div>
@@ -265,21 +273,20 @@
           @click="holdBooking"
         ></Button>
       </div>
-    </form>
+    </Form>
   </div>
 </template>
 <script setup lang="js">
-import { onMounted, ref, watch } from 'vue'
+import { onMounted, ref } from 'vue'
 import { usePlaneStore } from '@/stores/airports'
 import { useReservationStore } from '@/stores/reservation'
-import { useForm } from 'vee-validate'
 import * as yup from 'yup'
 import { useRouter } from 'vue-router'
 import { useToast } from 'primevue/usetoast'
 import { useConfirm } from 'primevue/useconfirm'
-
+import { useForm } from 'vee-validate'
 import { formatDate, formatPrice, genBookingCode } from '../utils/format'
-
+import { Field, Form, ErrorMessage, FieldArray } from 'vee-validate'
 // const loading = ref(false)
 const toast = useToast()
 
@@ -289,71 +296,34 @@ const reservationStore = useReservationStore()
 const planeStore = usePlaneStore()
 const price = ref([{ count: 0 }])
 const information = ref([])
-const title = ref([
-  { name: 'Ông', code: 'MR' },
-  { name: 'Bà', code: 'MRS' },
-  { name: 'Cô', code: 'MS' }
-])
-const passengers = ref([
-  {
-    firstName: '',
-    lastName: '',
-    titleName: '',
-    birthday: '',
-    firstNameAttrs: {},
-    lastNameAttrs: {},
-    titleNameAttrs: {},
-    birthdayAttrs: {}
-  }
-])
-
-watch(
-  () => price.value[0]?.count,
-  (newCount) => {
-    if (newCount && newCount > 0) {
-      passengers.value = Array.from({ length: newCount }, () => ({
-        firstName: '',
-        lastName: '',
-        titleName: '',
-        birthday: '',
-        firstNameAttrs: {},
-        lastNameAttrs: {},
-        titleNameAttrs: {},
-        birthdayAttrs: {}
-      }))
-    } else {
-      passengers.value = []
-    }
-  },
-  { immediate: true }
-)
-
-// Định nghĩa form validation với vee-validate
-const { errors, handleSubmit, defineField } = useForm({
-  validationSchema: yup.object({
-    passengers: yup.array().of(
-      yup.object().shape({
-        firstName: yup.string().required('Bắt buộc nhập họ'),
-        lastName: yup.string().required('Trường tên đệm và tên là bắt buộc'),
-        titleName: yup.string().required('Trường danh xưng là bắt buộc'),
-        birthday: yup.string().required('Ngày sinh là bắt buộc')
-      })
-    ),
-    email: yup
-      .string()
-      .required('Email là bắt buộc')
-      .email('Email không hợp lệ')
-      .matches(/^[^\s@]+@[^\s@]+\.[^\s@]+$/, 'Email không đúng định dạng'),
-    phone: yup
-      .string()
-      .required('Số điện thoại là bắt buộc')
-      .matches(/^(\+84|0)(\d{9}|\d{10})$/, 'Số điện thoại không hợp lệ')
+// const title = ref([
+//   { name: 'Ông', code: 'MR' },
+//   { name: 'Bà', code: 'MRS' },
+//   { name: 'Cô', code: 'MS' }
+// ])
+const initialValues = ref({
+  pax: [{ firstName: '', lastName: '', titleName: '', birthday: '' }],
+  contact: { phone: '', email: '' }
+})
+// Định nghĩa schema xác thực
+const schema = yup.object().shape({
+  paxLists: yup.array().of(
+    yup.object().shape({
+      firstName: yup.string().required('Họ là bắt buộc'),
+      lastName: yup.string().required('Tên là bắt buộc'),
+      titleName: yup.string().required('Danh xưng là bắt buộc'),
+      birthday: yup.date().required('Ngày sinh là bắt buộc')
+    })
+  ),
+  contact: yup.object({
+    phone: yup.string().required('Số điện thoại là bắt buộc'),
+    email: yup.string().email('Email không hợp lệ').required('Email là bắt buộc')
   })
 })
-
-// Định nghĩa các field trong form
-const [email, emailAttrs] = defineField('email')
-const [phone, phoneAttrs] = defineField('phone')
+const { handleSubmit } = useForm({
+  initialValues,
+  validationSchema: schema
+})
 
 // Hàm để xử lý dữ liệu booking
 const holdBooking = handleSubmit((values) => {
@@ -399,11 +369,11 @@ const holdBooking = handleSubmit((values) => {
           email: values.email,
           phone: values.phone
         },
-        paxLists: passengers.value.map((passenger) => ({
-          titleName: passenger.titleName,
-          firstName: passenger.firstName,
-          lastName: passenger.lastName,
-          birthday: passenger.birthday
+        paxLists: values.paxLists.map((pax) => ({
+          titleName: pax.titleName,
+          firstName: pax.firstName,
+          lastName: pax.lastName,
+          birthday: pax.birthday
         }))
       }
 

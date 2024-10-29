@@ -61,7 +61,7 @@
           </AccordionPanel>
         </Accordion>
       </div>
-      <div class="md:w-1/3 md:sticky top-0 bg-white p-3 rounded-xl  shadow-md shadow-[#cdcdcd]">
+      <div class="md:w-1/3 md:sticky top-0 bg-white p-3 rounded-xl shadow-md shadow-[#cdcdcd]">
         <Accordion expandIcon="none" collapseIcon="none">
           <AccordionPanel v-if="flightTicket" class="!bg-primary w-full rounded-lg p-3">
             <AccordionHeader class="!bg-primary w-full !p-0">
@@ -106,7 +106,7 @@
               </div>
             </AccordionHeader>
             <AccordionContent class="rounded">
-              <div v-if="flightTicket && priceTicket" class="rounded-lg"> 
+              <div v-if="flightTicket && priceTicket" class="rounded-lg">
                 <div class="flex gap-3 justify-between">
                   <div class="flex gap-1">
                     <span class="flex items-center text-black font-bold">{{
@@ -131,25 +131,23 @@
                       }}</span>
                     </AccordionHeader>
                     <AccordionContent>
-                      <div class="flex text-blue-900 justify-between font-thin">
+                      <div class="flex text-blue-900 justify-between font-medium">
                         <span>KH</span>
                         <span>x{{ priceDetails.count }}</span>
                         <span>{{ formatPrice(priceDetails.tax) }}</span>
                         <span>{{ formatPrice(priceDetails.price * 0.9) }}</span>
-                        <span class="text-yellow-600">{{ formatPrice(priceDetails.price) }}</span>
+                        <span class="!text-yellow-300">{{ formatPrice(priceDetails.price) }}</span>
                       </div>
                     </AccordionContent>
                   </AccordionPanel>
                 </Accordion>
               </div>
               <div v-else>
-                <p class="text-red-600 font-normal font-mono ">
-                  Vui lòng chọn chuyến bay!
-                </p>
+                <p class="text-red-600 font-normal font-mono">Vui lòng chọn chuyến bay!</p>
               </div>
             </AccordionContent>
             <div
-              class="float-left bg-white font-bold text-primary p-3 flex justify-end border-dashed border-stone-950 border-t-4 gap-3"
+              class="float-left bg-white font-bold text-red-500 text-xl p-3 flex justify-end border-dashed border-stone-950 border-t-4 gap-3"
             >
               <span>Tổng tiền:</span>
               <span v-if="priceDetails">{{
@@ -178,10 +176,7 @@
               v-for="(sort, index) in sortValue"
               :key="index"
             >
-              <Button
-                @click="sort.sortFun"
-                >{{ sort.name }}</Button
-              >
+              <Button @click="sort.sortFun">{{ sort.name }}</Button>
             </div>
           </div>
           <Accordion>
@@ -378,23 +373,14 @@
       </p>
     </div>
 
-    
     <div
       class="backdrop-blur-md flex !bg-white/50 rounded-2xl border justify-center fixed inset-x-0 bottom-0"
     >
-    <div class="py-3 flex gap-3">
-      <Button
-        label="Làm mới"
-        @click="resetBooking"
-      ></Button>
-      <Button
-        label="Quay lại"
-        @click="backBooking"
-      ></Button>
-      <Button
-        label="Xác nhận"
-        @click="bookingFlightHandel"
-      ></Button></div>
+      <div class="py-3 flex gap-3">
+        <Button label="Làm mới" @click="resetBooking"></Button>
+        <Button label="Quay lại" @click="backBooking"></Button>
+        <Button label="Xác nhận" @click="bookingFlightHandel"></Button>
+      </div>
     </div>
   </div>
 </template>
@@ -608,7 +594,7 @@ onMounted(() => {
 .vue-slider-dot-handle {
   border: none;
 }
-.p-accordionheader{
-  padding:0.75rem 0;
+.p-accordionheader {
+  padding: 0.75rem 0;
 }
 </style>
