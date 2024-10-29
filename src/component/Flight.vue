@@ -428,35 +428,46 @@ const filteredFlights = computed(() => {
     return []
   }
 
-  return storedFilteredFlights.value.filter((flight) => {
-    let matchFlight = true
-    let matchClass = true
-    let matchPrice = true
+  return storedFilteredFlights.value
+    .map((flight) => {
+      let matchFlight = true
+      let matchClass = true
 
-    if (filterFlight.value.length > 0) {
-      matchFlight = filterFlight.value.includes(flight.airline)
-    }
+      // Kiểm tra nếu hãng bay phù hợp
+      if (filterFlight.value.length > 0) {
+        matchFlight = filterFlight.value.includes(flight.airline)
+      }
 
-    if (filterClassTicket.value.length > 0) {
-      matchClass = flight.fareOptions.some((fareOption) =>
-        filterClassTicket.value.includes(fareOption.class)
-      )
-    }
-
-    if (valueMin.value !== null || valueMax.value !== null) {
-      matchPrice = flight.fareOptions.some((fareOption) => {
-        const price = fareOption.price
-        return (
-          (valueMin.value === null || price >= valueMin.value) &&
-          (valueMax.value === null || price <= valueMax.value)
+      // Kiểm tra nếu chuyến bay có hạng vé phù hợp
+      if (filterClassTicket.value.length > 0) {
+        matchClass = flight.fareOptions.some((fareOption) =>
+          filterClassTicket.value.includes(fareOption.class)
         )
-      })
-    }
+      }
 
-    return matchFlight && matchClass && matchPrice
-  })
+      // Lọc các hạng vé theo khoảng giá và lớp vé
+      const matchingFareOptions = matchClass
+        ? flight.fareOptions.filter((fareOption) => {
+            const price = fareOption.price
+            const classMatches =
+              filterClassTicket.value.length === 0 ||
+              filterClassTicket.value.includes(fareOption.class)
+            const priceMatches =
+              (valueMin.value === null || price >= valueMin.value) &&
+              (valueMax.value === null || price <= valueMax.value)
+            return classMatches && priceMatches
+          })
+        : []
+
+      // Chỉ giữ chuyến bay nếu còn hạng vé trong khoảng giá
+      return matchFlight && matchingFareOptions.length > 0
+        ? { ...flight, fareOptions: matchingFareOptions }
+        : null
+    })
+    .filter((flight) => flight !== null)
 })
 
+// Tính giá min và max từ danh sách giá
 const allPrices = computed(() =>
   storedFilteredFlights.value.flatMap((flight) => flight.fareOptions.map((option) => option.price))
 )
@@ -465,7 +476,6 @@ const minValue = computed(() => (sortedPrices.value.length ? sortedPrices.value[
 const maxValue = computed(() =>
   sortedPrices.value.length ? sortedPrices.value[sortedPrices.value.length - 1] : 1000000
 )
-
 const formatPrice = (price) => {
   if (!price) return '0'
 
