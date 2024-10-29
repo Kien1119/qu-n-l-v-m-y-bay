@@ -1,10 +1,7 @@
 <!-- eslint-disable no-undef -->
 <template>
   <div class="relative pb-20">
-<<<<<<< HEAD
     <Form @submit="handleSubmit" :initial-values="initialValues" :validation-schema="schema">
-=======
->>>>>>> 835a5f653e1e92de7f412cffaf954d2bd40b913f
       <div class="bg-slate-300 pt-5">
         <div class="flex h-14 rounded-lg bg-slate-50 md:justify-around border-2 md:w-full">
           <img style="border-radius: 5px" :src="information?.img" alt="" />
@@ -27,8 +24,6 @@
             {{ information?.departure?.airport }} - {{ information?.arrival?.airport }}
           </span>
         </div>
-
-        <!-- GIÁ VÉ -->
         <div class="m-7 h-1/3 border-2 rounded-lg border-cyan-700 bg-slate-50 p-4">
           <div>
             <div class="border-2 rounded-lg">
@@ -113,8 +108,39 @@
             <span class="text-slate-950 font-bold">Tổng chi phí: </span>
           </div>
         </div>
+        <div class="m-7 h-1/3 border-2 border-cyan-700 rounded-lg bg-slate-50 p-4">
+          <div>
+            <div class="border-2 rounded-lg">
+              <div class="flex gap-3 bg-gradient-to-r from-cyan-500 from-10%">
+                <div class="h-ful flex justify-center items-center bg-cyan-200">
+                  <svg
+                    data-v-33ccfcdd=""
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="50px"
+                    height="30px"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    class="text-body feather feather-users"
+                  >
+                    <path data-v-33ccfcdd="" d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                    <circle data-v-33ccfcdd="" cx="9" cy="7" r="4"></circle>
+                    <path data-v-33ccfcdd="" d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                    <path data-v-33ccfcdd="" d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                  </svg>
+                </div>
+                <div class="flex flex-col p-3">
+                  <span class="font-bol text-2xl text-cyan-900">Thông tin hành khách</span>
+                  <span
+                    >Nhập tiếng Việt không dấu, tên hành khách phải chính xác như trong CCCD/Hộ
+                    chiếu/Giấy phép lái xe.</span
+                  >
+                </div>
+              </div>
 
-<<<<<<< HEAD
               <div class="flex flex-col card border-2 !border-gray-500 rounded-lg mx-5 my-5 gap-5">
                 <div class="flex flex-wrap items-center pl-4 gap-2"></div>
                 <!-- <div class="bg-red-200 text-red-600 mx-4 font-bold rounded-lg p-3">
@@ -242,72 +268,11 @@
           @click="backBooking"
         ></Button>
         <Button
-=======
-
-        <!-- HÀNH KHÁCH -->
-        <!--  -->
-        <Form :validation-schema="schema" @submit.prevent="onSubmit">
-          <!-- Danh sách hành khách -->
-           {{ values }}
-          <FieldArray name="passengers" v-slot="{ fields }">
-            <div v-for="(entry, idx) in values.passengers" :key="entry.key">
-            <Field  :name="`passengers[${idx}].titleName`" v-slot="{ field, errors }">
-              <InputText v-bind="field" placeholder="Title Name" />
-              <small v-if="errors[0]" class="p-error">{{ errors[0] }}</small>
-            </Field>
-
-            <Field  :name="`passengers[${idx}].firstName`" v-slot="{ field, errors }">
-              <InputText v-bind="field" placeholder="First Name" />
-              <small v-if="errors[0]" class="p-error">{{ errors[0] }}</small>
-            </Field>
-
-            <Field  :name="`passengers[${idx}].lastName`" v-slot="{ field, errors }">
-              <InputText v-bind="field" placeholder="Last Name" />
-              <small v-if="errors[0]" class="p-error">{{ errors[0] }}</small>
-            </Field>
-
-            <Field  :name="`passengers[${idx}].birthday`" v-slot="{ field, errors }">
-              <Calendar v-bind="field" placeholder="Birthday" />
-              <small v-if="errors[0]" class="p-error">{{ errors[0] }}</small>
-            </Field>
-          </div>
-          </FieldArray>
-
-          <!-- Email -->
-          <Field name="email" v-slot="{ field, errors }">
-            <InputText v-bind="field" placeholder="Email" />
-                <small v-if="errors[0]" class="text-red-600">{{ errors[0] }}</small>
-          </Field>
-
-          <!-- Phone -->
-          <Field name="phone" v-slot="{ field, errors }">
-            <InputText v-bind="field" placeholder="Phone" />
-            <small v-if="errors[0]" class="p-error">{{ errors[0] }}</small>
-          </Field>
-
-          <!-- <Button 
->>>>>>> 835a5f653e1e92de7f412cffaf954d2bd40b913f
           class="!bg-gradient-to-r shadow-2xl from-orange-500 from-10% !rounded-2xl h-10 flex items-center justify-center mt-5"
-          type="submit" label="Submit" /> -->
-        
-        <!-- BUTTON -->
-        <!-- <div
-          class="backdrop-blur-md flex !bg-white/50 border gap-7 h-20 justify-center fixed inset-x-0 bottom-0"
-        > -->
-          <!-- <Button
-            class="!bg-gradient-to-r from-orange-500 from-10% !rounded-2xl h-10 flex items-center shadow-2xl justify-center mt-5"
-            label="Quay lại"
-            @click="backBooking"
-          ></Button> -->
-          <Button
-            class="!bg-gradient-to-r shadow-2xl from-orange-500 from-10% !rounded-2xl h-10 flex items-center justify-center mt-5"
-            label="Giữ chỗ"
-            type="submit"
-          ></Button>
-        <!-- </div> -->
-        </Form>
+          label="Giữ chỗ"
+          @click="holdBooking"
+        ></Button>
       </div>
-<<<<<<< HEAD
     </Form>
   </div>
 </template>
@@ -315,17 +280,6 @@
 import { onMounted, ref } from 'vue'
 import { usePlaneStore } from '@/stores/airports'
 import { useReservationStore } from '@/stores/reservation'
-=======
-
-
-  </div>
-</template>
-<script setup lang="js">
-import { onMounted, ref, watch, watchEffect } from 'vue'
-import { usePlaneStore } from '@/stores/airports'
-import { useReservationStore } from '@/stores/reservation'
-import { Form, useForm, FieldArray, Field, ErrorMessage } from 'vee-validate'
->>>>>>> 835a5f653e1e92de7f412cffaf954d2bd40b913f
 import * as yup from 'yup'
 import { useRouter } from 'vue-router'
 import { useToast } from 'primevue/usetoast'
@@ -342,7 +296,6 @@ const reservationStore = useReservationStore()
 const planeStore = usePlaneStore()
 const price = ref([{ count: 0 }])
 const information = ref([])
-<<<<<<< HEAD
 // const title = ref([
 //   { name: 'Ông', code: 'MR' },
 //   { name: 'Bà', code: 'MRS' },
@@ -447,147 +400,7 @@ const holdBooking = handleSubmit((values) => {
       })
     }
   })
-=======
-const title = ref([
-  { name: 'Ông', code: 'MR' },
-  { name: 'Bà', code: 'MRS' },
-  { name: 'Cô', code: 'MS' }
-])
-
-const schema = yup.object({
-  passengers: yup.array().of(
-    yup.object({
-      titleName: yup.string().required('Title name is required'),
-      firstName: yup.string().required('First name is required'),
-      lastName: yup.string().required('Last name is required'),
-      birthday: yup.string() //.required('Birthday is required'),
-    })
-  ),
-  email: yup.string().email('Invalid email').required('Email is required'),
-  phone: yup.string().required('Phone is required'),
 })
-
-// Định nghĩa form validation với vee-validate
-const { handleSubmit, values, setFieldValue } = useForm({
-  validationSchema: schema,
-  initialValues: {
-  passengers: [{ titleName: '', firstName: '', lastName: '', birthday: '' }],
-  email: '',
-  phone: '',
-},
-})
-
-// Hàm cập nhật số lượng passengers
-const updatePassengers = (count) => {
-  const passengers = Array.from({ length: count }, () => ({
-    titleName: '',
-    firstName: '',
-    lastName: '',
-    birthday: '',
-  }))
-  setFieldValue('passengers', passengers)
-}
-
-watch(() => price.value[0]?.count, (newCount) => {
-    if (newCount && newCount > 0) {
-      updatePassengers(newCount)
-    } else {
-      updatePassengers(1)
-    }
-  },
-  { immediate: true }
-)
-
-const onSubmit = handleSubmit((values) => {
-  console.log('Form submitted:', values)
-})
-
-watchEffect(() => {
-  console.log('watchEffect: ',{ values })
->>>>>>> 835a5f653e1e92de7f412cffaf954d2bd40b913f
-})
-
-// // Hàm để xử lý dữ liệu booking
-// const onSubmit = handleSubmit((values) => {
-//   console.log( 'holdBooking = handleSubmit', {values})
-
-//   // eslint-disable-next-line no-constant-condition
-//   if (true) return
-
-//   confirm.require({
-//     message: 'Bạn có chắc chắn muốn tiếp tục không?',
-//     header: 'Xác nhận',
-//     icon: 'pi pi-exclamation-triangle',
-//     rejectProps: { label: 'Hủy bỏ', severity: 'secondary', outlined: true },
-//     acceptProps: { label: 'Save' },
-//     accept: async () => {
-//       toast.add({
-//         severity: 'info',
-//         summary: 'Đang cập nhật',
-//         detail: 'Đang tiến hành cập nhật sân bay...',
-//         life: 3000
-//       })
-
-//       const req = {
-//         bookingCode: genBookingCode(),
-//         createdAt: new Date().getTime(),
-//         flight: {
-//           img: information.value?.img,
-//           id: information.value?.id,
-//           airline: information.value?.airline,
-//           departure: {
-//             time: information.value?.departure.time,
-//             airport: information.value?.departure.airport
-//           },
-//           arrival: {
-//             time: information.value?.arrival.time,
-//             airport: information.value?.arrival.airport
-//           },
-//           flightNumber: information.value?.flightNumber,
-//           aircraft: information.value?.aircraft,
-//           fareOptions: [
-//             {
-//               class: price.value[0]?.class,
-//               price: price.value[0]?.total
-//             }
-//           ]
-//         },
-//         contact: {
-//           email: values.email,
-//           phone: values.phone
-//         },
-//         paxLists: values.passengers.map((passenger) => ({
-//           titleName: passenger.titleName,
-//           firstName: passenger.firstName,
-//           lastName: passenger.lastName,
-//           birthday: passenger.birthday
-//         }))
-//       }
-
-//       if (req) {
-//         reservationStore.holdBooking(req) // Gọi API
-//         router.push({ path: '/bookings' })
-//       } else {
-//         alert('Đặt Thất bại')
-//       }
-
-//       toast.add({
-//         severity: 'success',
-//         summary: 'Thành công',
-//         detail: 'Đặt vé thành công!',
-//         life: 3000
-//       })
-//     },
-//     reject: () => {
-//       toast.add({
-//         severity: 'error',
-//         summary: 'Lỗi',
-//         detail: 'Bạn đã từ chối',
-//         life: 3000
-//       })
-//     }
-//   })
-// })
 
 // Hàm để quay lại trang booking
 const backBooking = () => {
@@ -601,10 +414,6 @@ const getAirportName = (code) => {
 }
 onMounted(() => {
   planeStore.fetchAirports()
-
-  if (price.value[0]?.count) {
-    updatePassengers(price.value[0].count)
-  }
 
   const saveInformation = localStorage.getItem('flightTicket')
   const priceChair = localStorage.getItem('priceTicket')
