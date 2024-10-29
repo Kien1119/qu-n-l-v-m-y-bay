@@ -1,7 +1,7 @@
 <!-- eslint-disable no-undef -->
 <template>
   <div class="relative pb-20">
-    <Form @submit="handleSubmit" :initial-values="initialValues" :validation-schema="schema">
+    <Form :initial-values="initialValues" :validation-schema="schema">
       <div class="bg-slate-300 pt-5">
         <div class="flex h-14 rounded-lg bg-slate-50 md:justify-around border-2 md:w-full">
           <img style="border-radius: 5px" :src="information?.img" alt="" />
@@ -153,6 +153,7 @@
                 <div>
                   <!-- FieldArray cho danh sách hành khách -->
                   <FieldArray name="paxLists" v-slot="slotProps">
+                    {{ slotProps }}
                     <div v-if="slotProps && slotProps.fields">
                       <div
                         v-for="(field, idx) in slotProps.fields"
@@ -165,7 +166,9 @@
 
                         <!-- Trường Họ -->
                         <div>
-                          <label :for="`firstName_${idx}`">Họ (*)</label>
+                          <label :for="`firstName_${idx}`"
+                            >Họ <span class="text-red-600">(*)</span></label
+                          >
                           <Field
                             :id="`firstName_${idx}`"
                             :name="`paxLists[${idx}].firstName`"
@@ -178,7 +181,9 @@
 
                         <!-- Trường Tên -->
                         <div>
-                          <label :for="`lastName_${idx}`">Tên đệm & Tên (*)</label>
+                          <label :for="`lastName_${idx}`"
+                            >Tên đệm & Tên <span class="text-red-600">(*)</span></label
+                          >
                           <Field
                             :id="`lastName_${idx}`"
                             :name="`paxLists[${idx}].lastName`"
@@ -196,31 +201,32 @@
                             :id="`titleName_${idx}`"
                             :name="`paxLists[${idx}].titleName`"
                             as="select"
-                            :options="[
-                              { name: 'Ông', code: 'MR' },
-                              { name: 'Bà', code: 'MRS' },
-                              { name: 'Cô', code: 'MS' }
-                            ]"
-                            optionLabel="name"
-                            optionValue="code"
                             placeholder="Danh xưng"
                             class="w-full"
-                          />
+                          >
+                            <option value="MR">Ông</option>
+                            <option value="MRS">Bà</option>
+                            <option value="MS">Cô</option></Field
+                          >
                           <ErrorMessage :name="`paxLists[${idx}].titleName`" class="text-red-600" />
                         </div>
 
                         <!-- Trường Ngày sinh -->
                         <div>
                           <label :for="`birthday_${idx}`">Ngày sinh</label>
-                          <Field
+                          <!-- <Field
                             :id="`birthday_${idx}`"
                             :name="`paxLists[${idx}].birthday`"
                             as="input"
                             type="date"
                             class="w-full"
-                          />
-                          <ErrorMessage :name="`paxLists[${idx}].birthday`" class="text-red-600" />
+                          /> -->
                         </div>
+                        <Field :name="`paxLists[${idx}].birthday`" v-slot="{ field, value }">
+                          {{ field }},{{ value }}
+                          <DatePicker v-bind="field" :model-value="value" />
+                        </Field>
+                        <ErrorMessage :name="`paxLists[${idx}].birthday`" class="text-red-600" />
                       </div>
                     </div>
                   </FieldArray>
@@ -277,7 +283,7 @@
   </div>
 </template>
 <script setup lang="js">
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, watch, watchEffect } from 'vue'
 import { usePlaneStore } from '@/stores/airports'
 import { useReservationStore } from '@/stores/reservation'
 import * as yup from 'yup'
@@ -302,7 +308,7 @@ const information = ref([])
 //   { name: 'Cô', code: 'MS' }
 // ])
 const initialValues = ref({
-  pax: [{ firstName: '', lastName: '', titleName: '', birthday: '' }],
+  paxLists: [{ firstName: '', lastName: '', titleName: '', birthday: '' }],
   contact: { phone: '', email: '' }
 })
 // Định nghĩa schema xác thực
@@ -325,8 +331,29 @@ const { handleSubmit } = useForm({
   validationSchema: schema
 })
 
+watch(
+  () => price.value[0]?.count,
+  (newCount) => {
+    console.log('🚀 ~ newCount:', newCount)
+
+    if (newCount && newCount > 0) {
+      initialValues.value.paxLists = Array.from({ length: newCount }, () => ({
+        firstName: '',
+        lastName: '',
+        titleName: '',
+        birthday: ''
+      }))
+      console.log('🚀 ~ initialValues.value=Array.from ~ initialValues:', initialValues.value)
+    }
+    //else {
+    //   initialValues.value.paxLists = []
+    // }
+  },
+  { immediate: true }
+)
 // Hàm để xử lý dữ liệu booking
 const holdBooking = handleSubmit((values) => {
+  console.log(1)
   confirm.require({
     message: 'Bạn có chắc chắn muốn tiếp tục không?',
     header: 'Xác nhận',
@@ -414,7 +441,13 @@ const getAirportName = (code) => {
 }
 onMounted(() => {
   planeStore.fetchAirports()
-
+  // const passgerNumber = 3
+  // initialValues.value.paxLists = Array.from({ length: passgerNumber }, () => ({
+  //   firstName: '',
+  //   lastName: '',
+  //   titleName: '',
+  //   birthday: ''
+  // }))
   const saveInformation = localStorage.getItem('flightTicket')
   const priceChair = localStorage.getItem('priceTicket')
 
