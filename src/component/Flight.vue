@@ -49,7 +49,7 @@
                 <div
                   v-for="(price, index) in flight.fareOptions"
                   :key="index"
-                  @click="handleFlightSelect(flight)"
+                  @click="handleFlightSelect(flight, price)"
                   class="flex items-center gap-5 bg-slate-50 h-12 p-5 border-2 rounded-lg"
                 >
                   <RadioButton v-model="priceTicket" :inputId="`${price}`" :value="price" />
@@ -147,7 +147,7 @@
                 </Accordion>
               </div>
               <div v-else>
-                <p class="text-red-600 font-normal font-mono">Vui lòng chọn chuyến bay!</p>
+                <p class="text-red-600 font-normal font-mono">Vui lòng chọn hạng bay!</p>
               </div>
             </AccordionContent>
             <div
@@ -273,7 +273,7 @@
                         />
                         <img
                           class="w-16"
-                          src="https://www.vnas.vn/public/upload/files/29.9.2020/%E1%BA%A3nh%20vinayuuki%20vinh/04.10/06.10/10.10/%C4%91%E1%BA%A1i%20h%E1%BB%8Dc%20vinh/16.10/trang%20nh%C6%B0/ng%C3%A0y%2018.10/%C4%90%E1%BA%A1i%20h%20vinh/ng%C3%A0y%2030.10/th%C3%A1ng%2011/logo%2C/logo%2C%2C%2C/y-nghia-logo-vietjet.jpg"
+                          src="https://airdata-cms-dev.sgp1.cdn.digitaloceanspaces.com/airlines/VJ.png"
                           alt=""
                         />
                         <label for="ingredient2" class="ml-2"> Vietjet Air </label>
@@ -487,8 +487,8 @@ const ticketLateLanding = () => {
 }
 
 const loading = ref(false)
-const handleFlightSelect = async (flight) => {
-  priceTicket.value = null
+const handleFlightSelect = async (flight, price) => {
+  priceTicket.value = price
   flightTicket.value = flight
   await nextTick()
 }
