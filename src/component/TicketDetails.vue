@@ -1,11 +1,14 @@
 <template>
-  <div>
+  <div class="">
     <div>
-      <div class="flex justify-between rounded-lg border-2 border-cyan-500 p-5">
+      <!-- Thông tin vé -->
+      <div
+        class="flex justify-between border-2 border-gray-200 p-5 bg-white rounded-xl shadow-md shadow-[#cdcdcd]"
+      >
         <div>
           <div class="flex gap-3 items-center">
             <div
-              class="flex gap-3 justify-between items-center bg-sky-100 p-4 rounded-lg border-2 border-sky-400"
+              class="flex gap-3 justify-between items-center bg-sky-100 p-4 rounded-lg border-2 border-gray-500"
             >
               <span class="font-bold text-indigo-600 text-4xl">{{
                 reservationStore.detail.bookingCode
@@ -51,7 +54,8 @@
           </div>
         </div>
       </div>
-      <div class="rounded-lg border-2 border-sky-400 my-7">
+      <!-- Thông tin chuyến bay -->
+      <div class="border-2 border-gray-200 my-7 bg-white rounded-lg shadow-md shadow-[#cdcdcd]">
         <Accordion value="0">
           <AccordionPanel value="0">
             <AccordionHeader>
@@ -105,7 +109,8 @@
           </AccordionPanel>
         </Accordion>
       </div>
-      <div class="rounded-lg border-2 border-sky-400 my-7">
+      <!-- Chi tiết khách hàng -->
+      <div class="border-2 border-gray-200 my-7 bg-white rounded-lg shadow-md shadow-[#cdcdcd]">
         <Accordion value="0">
           <AccordionPanel value="0">
             <AccordionHeader>
@@ -138,7 +143,8 @@
           </AccordionPanel>
         </Accordion>
       </div>
-      <div class="rounded-lg border-2 border-sky-400 my-7">
+      <!-- Chi tiết giá -->
+      <div class="border-2 border-gray-200 my-7 bg-white rounded-lg shadow-md shadow-[#cdcdcd]">
         <Accordion value="0">
           <AccordionPanel value="0">
             <AccordionHeader>
@@ -160,12 +166,8 @@
                 :value="reservationStore.detail.flight?.fareOptions"
                 tableStyle="min-width: 50rem"
               >
-                <Column
-                  field="class"
-                  class="font-mono text-2xl text-orange-500"
-                  header="Hạng Bay"
-                ></Column>
-                <Column class="font-mono text-red-500" header="Giá Bay">
+                <Column field="class" class="text-2xl text-orange-500" header="Hạng Bay"></Column>
+                <Column class="text-2xl text-red-500" header="Giá Bay">
                   <template #body="slotProps">
                     {{ formatPrice(slotProps.data.price) }}
                   </template>

@@ -1,6 +1,6 @@
 <template>
   <div class="flex gap-2.5">
-    <Sidebar></Sidebar>
+    <Sidebar class="sticky top-0"></Sidebar>
     <div class="flex-1">
       <router-view />
     </div>

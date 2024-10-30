@@ -1,5 +1,5 @@
 <template>
-  <div class="max-h-full">
+  <div class="h-full sticky top-0">
     <div>
       <div class="card flex justify-center">
         <Menu class="h-lvh" :model="items">

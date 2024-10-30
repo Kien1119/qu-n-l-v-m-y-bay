@@ -1,7 +1,7 @@
 <template>
   <div class="Manages">
     <div class="mt-5">
-      <Toolbar class="mb-6">
+      <Toolbar class="mb-6 shadow-md shadow-[#cdcdcd]">
         <template #start>
           <Button
             label="Thêm"
@@ -10,11 +10,6 @@
             class="mr-2"
             @click="airportAddDialog = true"
           />
-          <Button disabled label="Xóa" icon="pi pi-trash" severity="secondary" />
-        </template>
-
-        <template #end>
-          <Button disabled label="Export" icon="pi pi-upload" severity="secondary" />
         </template>
       </Toolbar>
 
@@ -23,6 +18,7 @@
         :loading="loading"
         :rows="planeStore.params._per_page"
         lazy
+        showGridlines
         v-model="selectionAirports"
         :totalRecords="planeStore.total"
         paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
@@ -33,6 +29,7 @@
         tableStyle="min-width: 50rem"
         @page="onPage"
         @sort="onSort"
+        class="shadow-md shadow-[#cdcdcd]"
       >
         <template #header>
           <div class="flex flex-wrap gap-2 items-center justify-between">
@@ -41,7 +38,7 @@
               <Button @click="handleSearch" icon="pi pi-search" severity="search" />
               <InputText
                 v-model="searchQueryAirport"
-                placeholder="Search..."
+                placeholder="Tìm kiếm..."
                 @keyup.enter="debouncedSearch()"
               />
               <Button icon="pi pi-times" severity="danger" @click="resetFilters" />
@@ -125,7 +122,7 @@
         </div>
 
         <template #footer>
-          <Button label="Save" icon="pi pi-check" @click="handleUpdateAirport" />
+          <Button label="Lưu" icon="pi pi-check" @click="handleUpdateAirport" />
         </template>
       </Dialog>
       <Dialog
@@ -189,7 +186,7 @@
         </div>
 
         <template #footer>
-          <Button label="Save" icon="pi pi-check" @click="handleAddAirport" />
+          <Button label="Lưu" icon="pi pi-check" @click="handleAddAirport" />
         </template>
       </Dialog>
     </div>
@@ -364,7 +361,7 @@ const handleAddAirport = handleSubmit((values) => {
       outlined: true
     },
     acceptProps: {
-      label: 'Save'
+      label: 'Lưu'
     },
     accept: async () => {
       loading.value = true

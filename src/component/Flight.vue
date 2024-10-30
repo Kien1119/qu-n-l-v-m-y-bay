@@ -1,15 +1,18 @@
 <template>
   <div class="relative p-5 md:flex pb-32 justify-center items-center w-full">
+    <!-- Điều kiện nếu có chuyến bay -->
     <div
       v-if="storedFilteredFlights.length > 0"
       class="flex flex-col-reverse md:flex-row justify-center w-full gap-3"
     >
-      <div class="md:w-2/3 px-3 bg-white rounded-xl shadow-md shadow-[#cdcdcd]">
+      <!-- Hiển thị chuyến bay -->
+      <div class="md:w-2/3 px-3 bg-slate-50 rounded-xl shadow-md shadow-[#cdcdcd]">
         <Accordion value="0" expandIcon="none" collapseIcon="none">
           <AccordionPanel v-for="flight in filteredFlights" :key="flight.id" :value="flight.id">
             <AccordionHeader>
               <div
                 class="flex md:w-full h-14 rounded-lg md:gap-2 border-2 bg-slate-50 justify-around focus:outline-none"
+                @click="handleFlightSelect(flight)"
               >
                 <img
                   class="hidden md:block"
@@ -61,7 +64,8 @@
           </AccordionPanel>
         </Accordion>
       </div>
-      <div class="md:w-1/3 md:sticky top-0 bg-white p-3 rounded-xl shadow-md shadow-[#cdcdcd]">
+      <!-- Thao tác với chuyến bay -->
+      <div class="sticky top-0 h-full md:w-1/3 bg-white p-3 rounded-xl shadow-md shadow-[#cdcdcd]">
         <Accordion expandIcon="none" collapseIcon="none">
           <AccordionPanel v-if="flightTicket" class="!bg-primary w-full rounded-lg p-3">
             <AccordionHeader class="!bg-primary w-full !p-0">
@@ -170,15 +174,6 @@
           </AccordionPanel>
         </Accordion>
         <div class="mt-3">
-          <div class="flex flex-wrap gap-2">
-            <div
-              class="!flex flex-wrap justify-center gap-3 text-nowrap"
-              v-for="(sort, index) in sortValue"
-              :key="index"
-            >
-              <Button @click="sort.sortFun">{{ sort.name }}</Button>
-            </div>
-          </div>
           <Accordion>
             <AccordionPanel>
               <AccordionHeader>
@@ -228,16 +223,14 @@
                 </div>
               </AccordionHeader>
               <AccordionContent class="flex justify-center" style="padding: 0">
-                <div class="flex flex-col gap-3">
-                  <label>Sắp xếp theo:</label>
-                  <Select
-                    v-model="sortSelect"
-                    :options="sortValue"
-                    optionLabel="name"
-                    optionValue="sortFun"
-                    placeholder="Select a sort"
-                    class="w-full md:w-56"
-                  />
+                <div class="flex flex-wrap gap-2">
+                  <div
+                    class="!flex flex-wrap justify-center gap-3 text-nowrap"
+                    v-for="(sort, index) in sortValue"
+                    :key="index"
+                  >
+                    <Button @click="sort.sortFun">{{ sort.name }}</Button>
+                  </div>
                 </div>
               </AccordionContent>
             </AccordionPanel>

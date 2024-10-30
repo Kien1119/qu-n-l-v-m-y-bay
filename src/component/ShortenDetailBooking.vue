@@ -34,8 +34,12 @@
             <span>Email:</span><span>{{ reservationStore?.detail?.contact?.email }}</span>
           </div>
           <div>
+            <span>Hạng vé:</span
+            ><span>{{ reservationStore?.detail?.flight.fareOptions[0]?.class }}</span>
+          </div>
+          <div>
             <span>Tổng tiền:</span
-            ><span>{{ formatPrice(reservationStore?.detail?.flight?.fareOptions?.price) }}</span>
+            ><span>{{ reservationStore?.detail?.flight.fareOptions[0]?.price }}</span>
           </div>
         </div>
       </div>

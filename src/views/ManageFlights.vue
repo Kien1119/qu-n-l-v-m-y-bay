@@ -1,7 +1,7 @@
 <template>
   <div class="Manages">
     <div class="mt-5">
-      <Toolbar class="mb-6">
+      <Toolbar class="mb-6 shadow-md shadow-[#cdcdcd]">
         <template #start>
           <Button
             label="Thêm"
@@ -10,17 +10,6 @@
             class="mr-2"
             @click="flightsAddDialog = true"
           />
-          <Button
-            disabled
-            label="Xóa"
-            icon="pi pi-trash"
-            severity="secondary"
-            @click="confirmDeleteSelected"
-          />
-        </template>
-
-        <template #end>
-          <Button disabled label="Export" icon="pi pi-upload" severity="secondary" />
         </template>
       </Toolbar>
       <DataTable
@@ -28,6 +17,8 @@
         :loading="loading"
         :rows="planeStore.params._per_page"
         lazy
+        showGridlines
+        :breakpoints="breakpoints"
         v-model:selection="selectionFlights"
         :totalRecords="planeStore.total"
         paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
@@ -38,6 +29,7 @@
         tableStyle="min-width: 40rem"
         @page="onPage"
         @sort="onSort"
+        class="shadow-md shadow-[#cdcdcd]"
       >
         <template #header>
           <div class="flex flex-wrap gap-2 items-center justify-between">
@@ -46,7 +38,7 @@
               <Button @click="handleSearch" icon="pi pi-search" severity="search" />
               <InputText
                 v-model="searchQueryAirport"
-                placeholder="Search..."
+                placeholder="Tìm kiếm..."
                 @keyup.enter="debouncedSearch()"
               />
               <Button icon="pi pi-times" severity="danger" @click="resetFilters" />
@@ -61,11 +53,11 @@
             {{ startIndex + index + 1 }}
           </template>
         </Column>
-        <Column class="" field="airline" header="Hãng" style="min-width: 12rem" />
-        <Column class="" field="flightNumber" header="Số hiệu" style="min-width: 12rem" />
-        <Column class="" field="aircraft" header="Loại máy bay" style="min-width: 12rem" />
+        <Column class="" field="airline" header="Hãng" style="min-width: 7rem" />
+        <Column class="" field="flightNumber" header="Số hiệu" style="min-width: 5rem" />
+        <Column class="" field="aircraft" header="Loại máy bay" style="min-width: 7rem" />
 
-        <Column header="Điểm đi - Điểm đến" style="min-width: 16rem">
+        <Column header="Điểm đi - Điểm đến" style="min-width: 14rem">
           <template #body="slotProps">
             {{ getAirportName(slotProps.data?.departure?.airport) }} -
             {{ getAirportName(slotProps.data?.arrival?.airport) }}
@@ -75,7 +67,7 @@
           header="Thời gian khởi hành - Thời gian đến"
           sortable
           class="flex items-center justify-center"
-          style="min-width: 16rem"
+          style="min-width: 9rem"
         >
           <template #body="slotProps">
             {{ formatDate(slotProps.data?.departure?.time) }} -
@@ -244,7 +236,7 @@
         </div>
 
         <template #footer>
-          <Button label="Save" icon="pi pi-check" @click="handleUpdateFlights" />
+          <Button label="Lưu" icon="pi pi-check" @click="handleUpdateFlights" />
         </template>
       </Dialog>
       <Dialog
@@ -434,7 +426,7 @@
         </form>
 
         <template #footer>
-          <Button label="Save" icon="pi pi-check" @click="handleAddFlights" />
+          <Button label="Thêm" icon="pi pi-check" @click="handleAddFlights" />
         </template>
       </Dialog>
     </div>
@@ -449,6 +441,17 @@ import { useForm } from 'vee-validate'
 import * as yup from 'yup'
 const selectionFlights = ref()
 const confirmDeleteSelected = () => {}
+const breakpoints = {
+  '1024px': {
+    display: 'table-cell'
+  },
+  '768px': {
+    display: 'table-row'
+  },
+  '560px': {
+    display: 'none' // Ẩn cột trên màn hình nhỏ hơn 560px
+  }
+}
 const selectValues = ref([
   {
     name: 'Vietnam Airlines',
@@ -523,7 +526,7 @@ const handleAddFlights = handleSubmit((values) => {
       outlined: true
     },
     acceptProps: {
-      label: 'Save'
+      label: 'Lưu '
     },
     accept: async () => {
       loading.value = true

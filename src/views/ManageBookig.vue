@@ -1,54 +1,16 @@
 <template>
   <div>
     <div class="m-4 p-4">
-      <div class="flex gap-5">
-        <div class="flex-1">
-          <DatePicker
-            placeholder="Ngày đặt vé"
-            date-format="mm/dd/yy"
-            v-model="filter.startDate"
-            :showIcon="true"
-          >
-          </DatePicker>
-        </div>
-        <div class="flex-1">
-          <DatePicker
-            :showIcon="true"
-            placeholder="Ngày bay"
-            date-format="mm/dd/yy"
-            v-model="filter.endDate"
-          ></DatePicker>
-        </div>
-        <div class="flex-1">
-          <InputGroup>
-            <InputText v-model="filter.name" placeholder="Tìm kiếm tên khách hàng" />
-            <Button
-              icon="pi pi-search"
-              class="!bg-gray-300 !border-none"
-              severity="warn"
-              @click="handleSearch"
-            />
-          </InputGroup>
-        </div>
-        <div class="flex-1">
-          <InputGroup>
-            <InputText v-model="filter.bookingCode" placeholder="Tìm kiếm PNR trong hệ thống" />
-            <Button
-              icon="pi pi-search"
-              class="!bg-gray-300 !border-none"
-              severity="warn"
-              @click="handleSearch"
-            />
-          </InputGroup>
-        </div>
-        <div class="search">
+      <div class="p-4">
+        <InputGroup>
+          <InputText v-model="filter.bookingCode" placeholder="Tìm kiếm PNR trong hệ thống" />
           <Button
             icon="pi pi-search"
             class="!bg-gray-300 !border-none"
             severity="warn"
             @click="handleSearch"
           />
-        </div>
+        </InputGroup>
       </div>
       <div>
         <DataTable
@@ -56,6 +18,7 @@
           :loading="loading"
           :rows="reservationStore.params._per_page"
           lazy
+          showGridlines
           :totalRecords="reservationStore.total"
           paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
           :rowsPerPageOptions="[5, 10, reservationStore.total]"
