@@ -87,19 +87,19 @@
       <Dialog
         v-model:visible="airportDialog"
         :style="{ width: '450px' }"
-        header="Airport Details"
+        header="Sửa sân bay"
         :modal="true"
       >
         <div class="flex flex-col gap-6">
           <div>
             <label for="name" class="block font-bold mb-3">Tên sân bay</label>
-            <InputText id="name" v-model.trim="airport.name" required="true" autofocus fluid />
+            <InputText id="name" v-model="airport.name" required="true" autofocus fluid />
           </div>
           <div>
             <label for="airportCode" class="block font-bold mb-3">Mã sân bay</label>
             <InputText
               id="airportCode"
-              v-model.trim="airport.airportCode"
+              v-model="airport.airportCode"
               required="true"
               autofocus
               fluid
@@ -107,17 +107,11 @@
           </div>
           <div>
             <label for="city" class="block font-bold mb-3">Thành phố</label>
-            <InputText id="city" v-model.trim="airport.city" required="true" autofocus fluid />
+            <InputText id="city" v-model="airport.city" required="true" autofocus fluid />
           </div>
           <div>
             <label for="country" class="block font-bold mb-3">Đất nước</label>
-            <InputText
-              id="country"
-              v-model.trim="airport.country"
-              required="true"
-              autofocus
-              fluid
-            />
+            <InputText id="country" v-model="airport.country" required="true" autofocus fluid />
           </div>
         </div>
 
@@ -128,56 +122,68 @@
       <Dialog
         v-model:visible="airportAddDialog"
         :style="{ width: '450px' }"
-        header="Airport Details"
+        header="Thêm sân bay"
         :modal="true"
       >
         <div class="flex flex-col gap-6">
           <div>
-            <label for="name" class="block font-bold mb-3">Tên sân bay</label>
+            <label for="name" class="block font-bold mb-3"
+              >Tên sân bay<span class="text-red-500 font-medium">(*)</span></label
+            >
             <InputText
               v-bind="nameAttrs"
               id="name"
-              v-model.trim="name"
+              v-model="name"
               required="true"
               autofocus
               fluid
+              :class="{ 'p-invalid': errors.name }"
             />
           </div>
           <span style="color: #d81221">{{ errors.name }}</span>
 
           <div>
-            <label for="airportCode" class="block font-bold mb-3">Mã sân bay</label>
+            <label for="airportCode" class="block font-bold mb-3"
+              >Mã sân bay<span class="text-red-500 font-medium">(*)</span></label
+            >
             <InputText
               id="airportCode"
               v-bind="airportCodeAttrs"
-              v-model.trim="airportCode"
+              v-model="airportCode"
               required="true"
               autofocus
               fluid
+              :class="{ 'p-invalid': errors.airportCode }"
             />
           </div>
           <span style="color: #d81221">{{ errors.airportCode }}</span>
 
           <div>
-            <label for="city" class="block font-bold mb-3">Thành phố</label>
+            <label for="city" class="block font-bold mb-3"
+              >Thành phố<span class="text-red-500 font-medium">(*)</span></label
+            >
             <InputText
               id="city"
               v-bind="cityAttrs"
-              v-model.trim="city"
+              v-model="city"
               required="true"
               autofocus
               fluid
+              :class="{ 'p-invalid': errors.city }"
             />
           </div>
           <span style="color: #d81221">{{ errors.city }}</span>
 
           <div>
-            <label for="country" class="block font-bold mb-3">Đất nước</label>
+            <label for="country" class="block font-bold mb-3"
+              >Đất nước<span class="text-red-500 font-medium">(*)</span></label
+            >
             <InputText
               v-bind="countryAttrs"
               id="country"
-              v-model.trim="country"
+              v-model="country"
               required="true"
+              :class="{ 'p-invalid': errors.country }"
               autofocus
               fluid
             />
@@ -255,7 +261,7 @@ watch(searchQueryAirport, debouncedSearch)
 const confirmDeleteAirport = (id) => {
   confirm.require({
     message: 'Bạn có muốn xóa sân bay này không??',
-    header: 'Danger Zone',
+    header: 'Xóa chuyến bay',
     icon: 'pi pi-info-circle',
     rejectLabel: 'Hủy bỏ',
     acceptLabel: 'Xóa bỏ',
