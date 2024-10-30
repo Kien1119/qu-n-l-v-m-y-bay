@@ -153,80 +153,94 @@
                 <div>
                   <!-- FieldArray cho danh sách hành khách -->
                   <FieldArray name="paxLists" v-slot="slotProps">
-                    {{ slotProps }}
                     <div v-if="slotProps && slotProps.fields">
                       <div
                         v-for="(field, idx) in slotProps.fields"
                         :key="field.key"
-                        class="card flex flex-col gap-4 px-4 bg-slate-200 p-6 m-4 rounded-lg py-4"
+                        class="card gap-4 px-4 bg-slate-200 p-6 m-4 rounded-lg py-4"
                       >
-                        <legend class="text-xl font-bold !text-orange-500 uppercase">
-                          Hành Khách #{{ idx + 1 }}
-                        </legend>
-
-                        <!-- Trường Họ -->
-                        <div>
-                          <label :for="`firstName_${idx}`"
-                            >Họ <span class="text-red-600">(*)</span></label
+                        <div class="flex flex-col gap-2 pb-1">
+                          <legend class="text-xl font-bold !text-orange-500 uppercase">
+                            Hành Khách #{{ idx + 1 }}
+                          </legend>
+                          <span class="text-xl uppercase font-medium font-montserrat"
+                            >{{ field.value.firstName }} {{ field.value.lastName }}
+                            {{ field.value.titleName }}</span
                           >
-                          <Field
-                            :id="`firstName_${idx}`"
-                            :name="`paxLists[${idx}].firstName`"
-                            class="w-full uppercase"
-                            placeholder="Họ"
-                            as="input"
-                          />
-                          <ErrorMessage :name="`paxLists[${idx}].firstName`" class="text-red-600" />
                         </div>
+                        <div class="p-3 grid grid-cols-2 gap-6">
+                          <!-- Trường Họ -->
+                          <div class="flex flex-col gap-1 mb-3">
+                            <label :for="`firstName_${idx}`"
+                              >Họ <span class="text-red-600">(*)</span></label
+                            >
+                            <Field
+                              :id="`firstName_${idx}`"
+                              :name="`paxLists[${idx}].firstName`"
+                              class="w-full uppercase h-10 rounded-md"
+                              placeholder="Họ"
+                              as="input"
+                            />
+                            <ErrorMessage
+                              :name="`paxLists[${idx}].firstName`"
+                              class="text-red-600"
+                            />
+                          </div>
 
-                        <!-- Trường Tên -->
-                        <div>
-                          <label :for="`lastName_${idx}`"
-                            >Tên đệm & Tên <span class="text-red-600">(*)</span></label
-                          >
-                          <Field
-                            :id="`lastName_${idx}`"
-                            :name="`paxLists[${idx}].lastName`"
-                            class="w-full uppercase"
-                            placeholder="Tên đệm & Tên"
-                            as="input"
-                          />
-                          <ErrorMessage :name="`paxLists[${idx}].lastName`" class="text-red-600" />
-                        </div>
+                          <!-- Trường Tên -->
+                          <div class="flex flex-col gap-1">
+                            <label :for="`lastName_${idx}`"
+                              >Tên đệm & Tên <span class="text-red-600">(*)</span></label
+                            >
+                            <Field
+                              :id="`lastName_${idx}`"
+                              :name="`paxLists[${idx}].lastName`"
+                              class="w-full uppercase h-10 rounded-md"
+                              placeholder="Tên đệm & Tên"
+                              as="input"
+                            />
+                            <ErrorMessage
+                              :name="`paxLists[${idx}].lastName`"
+                              class="text-red-600"
+                            />
+                          </div>
 
-                        <!-- Trường Danh xưng -->
-                        <div>
-                          <label :for="`titleName_${idx}`">Danh xưng</label>
-                          <Field
-                            :id="`titleName_${idx}`"
-                            :name="`paxLists[${idx}].titleName`"
-                            as="select"
-                            placeholder="Danh xưng"
-                            class="w-full"
-                          >
-                            <option value="MR">Ông</option>
-                            <option value="MRS">Bà</option>
-                            <option value="MS">Cô</option></Field
-                          >
-                          <ErrorMessage :name="`paxLists[${idx}].titleName`" class="text-red-600" />
-                        </div>
+                          <!-- Trường Danh xưng -->
+                          <div class="flex flex-col gap-1">
+                            <label :for="`titleName_${idx}`"
+                              >Danh xưng<span class="text-red-600">(*)</span></label
+                            >
+                            <Field
+                              :id="`titleName_${idx}`"
+                              :name="`paxLists[${idx}].titleName`"
+                              as="select"
+                              placeholder="Danh xưng"
+                              class="w-full h-10 rounded-md"
+                            >
+                              <option value="MR">Ông</option>
+                              <option value="MRS">Bà</option>
+                              <option value="MS">Cô</option></Field
+                            >
+                            <ErrorMessage
+                              :name="`paxLists[${idx}].titleName`"
+                              class="text-red-600"
+                            />
+                          </div>
 
-                        <!-- Trường Ngày sinh -->
-                        <div>
-                          <label :for="`birthday_${idx}`">Ngày sinh</label>
-                          <!-- <Field
-                            :id="`birthday_${idx}`"
-                            :name="`paxLists[${idx}].birthday`"
-                            as="input"
-                            type="date"
-                            class="w-full"
-                          /> -->
+                          <!-- Trường Ngày sinh -->
+                          <div class="flex flex-col gap-1">
+                            <label :for="`birthday_${idx}`"
+                              >Ngày sinh<span class="text-red-600">(*)</span></label
+                            >
+                            <Field :name="`paxLists[${idx}].birthday`" v-slot="{ field, value }">
+                              <DatePicker v-bind="field" :model-value="value" />
+                            </Field>
+                            <ErrorMessage
+                              :name="`paxLists[${idx}].birthday`"
+                              class="text-red-600"
+                            />
+                          </div>
                         </div>
-                        <Field :name="`paxLists[${idx}].birthday`" v-slot="{ field, value }">
-                          {{ field }},{{ value }}
-                          <DatePicker v-bind="field" :model-value="value" />
-                        </Field>
-                        <ErrorMessage :name="`paxLists[${idx}].birthday`" class="text-red-600" />
                       </div>
                     </div>
                   </FieldArray>
@@ -240,24 +254,26 @@
             <div><span class="font-bold text-cyan-700">Thông tin liên hệ khách hàng</span></div>
             <div class="flex justify-around gap-5 bg-slate-300 p-4 rounded-lg">
               <div class="flex items-center flex-col mb-6">
-                <div class="">
+                <div class="flex flex-col gap-1">
+                  <label>Email <span class="text-red-600">(*)</span></label>
                   <Field
                     name="contact.email"
                     v-model="initialValues.contact.email"
                     type="email"
                     placeholder="Email"
-                    class="w-full"
+                    class="w-full h-10 rounded-md"
                   />
                 </div>
                 <ErrorMessage class="text-red-600" name="contact.email" />
               </div>
-              <div class="flex flex-col">
+              <div class="flex flex-col gap-1">
+                <label>Số điện thoại <span class="text-red-600">(*)</span></label>
                 <Field
                   name="contact.phone"
                   v-model="initialValues.contact.phone"
                   type="tel"
                   placeholder="Số điện thoại"
-                  class="w-full"
+                  class="w-full h-10 rounded-md"
                 />
                 <ErrorMessage class="text-red-600" name="contact.phone" />
               </div>
@@ -269,12 +285,12 @@
         class="backdrop-blur-md flex !bg-white/50 border gap-7 h-20 justify-center fixed inset-x-0 bottom-0"
       >
         <Button
-          class="!bg-gradient-to-r from-orange-500 from-10% !rounded-2xl h-10 flex items-center shadow-2xl justify-center mt-5"
+          class="!bg-gradient-to-r !rounded-2xl h-10 flex items-center shadow-2xl justify-center mt-5"
           label="Quay lại"
           @click="backBooking"
         ></Button>
         <Button
-          class="!bg-gradient-to-r shadow-2xl from-orange-500 from-10% !rounded-2xl h-10 flex items-center justify-center mt-5"
+          class="!bg-gradient-to-r shadow-2xl !rounded-2xl h-10 flex items-center justify-center mt-5"
           label="Giữ chỗ"
           @click="holdBooking"
         ></Button>
@@ -283,16 +299,17 @@
   </div>
 </template>
 <script setup lang="js">
-import { onMounted, ref, watch, watchEffect } from 'vue'
+import { onMounted, ref, watch } from 'vue'
 import { usePlaneStore } from '@/stores/airports'
 import { useReservationStore } from '@/stores/reservation'
 import * as yup from 'yup'
 import { useRouter } from 'vue-router'
 import { useToast } from 'primevue/usetoast'
 import { useConfirm } from 'primevue/useconfirm'
-import { useForm } from 'vee-validate'
+import { useForm, useFieldArray } from 'vee-validate'
 import { formatDate, formatPrice, genBookingCode } from '../utils/format'
 import { Field, Form, ErrorMessage, FieldArray } from 'vee-validate'
+
 // const loading = ref(false)
 const toast = useToast()
 
@@ -302,11 +319,7 @@ const reservationStore = useReservationStore()
 const planeStore = usePlaneStore()
 const price = ref([{ count: 0 }])
 const information = ref([])
-// const title = ref([
-//   { name: 'Ông', code: 'MR' },
-//   { name: 'Bà', code: 'MRS' },
-//   { name: 'Cô', code: 'MS' }
-// ])
+const count = ref(0)
 const initialValues = ref({
   paxLists: [{ firstName: '', lastName: '', titleName: '', birthday: '' }],
   contact: { phone: '', email: '' }
@@ -330,7 +343,7 @@ const { handleSubmit } = useForm({
   initialValues,
   validationSchema: schema
 })
-
+const { fields } = useFieldArray('paxLists')
 watch(
   () => price.value[0]?.count,
   (newCount) => {
@@ -345,12 +358,12 @@ watch(
       }))
       console.log('🚀 ~ initialValues.value=Array.from ~ initialValues:', initialValues.value)
     }
-    //else {
-    //   initialValues.value.paxLists = []
-    // }
   },
   { immediate: true }
 )
+watch(count, (newCount) => {
+  console.log('🚀 ~ count changed to:', newCount)
+})
 // Hàm để xử lý dữ liệu booking
 const holdBooking = handleSubmit((values) => {
   console.log(1)
@@ -441,13 +454,7 @@ const getAirportName = (code) => {
 }
 onMounted(() => {
   planeStore.fetchAirports()
-  // const passgerNumber = 3
-  // initialValues.value.paxLists = Array.from({ length: passgerNumber }, () => ({
-  //   firstName: '',
-  //   lastName: '',
-  //   titleName: '',
-  //   birthday: ''
-  // }))
+
   const saveInformation = localStorage.getItem('flightTicket')
   const priceChair = localStorage.getItem('priceTicket')
 
