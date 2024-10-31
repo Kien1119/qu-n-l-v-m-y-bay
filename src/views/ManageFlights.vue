@@ -233,7 +233,7 @@
           <Button label="Lưu" icon="pi pi-check" @click="handleUpdateFlights" />
         </template>
       </Dialog>
-      <Form :initial-values="initialValues" :validation-schema="schema">
+      <Form :validation-schema="schema">
         <Dialog
           v-model:visible="flightsAddDialog"
           :style="{ width: '50rem' }"
@@ -449,7 +449,7 @@ import { usePlaneStore } from '@/stores/airports'
 import { computed, onMounted, ref } from 'vue'
 import { useConfirm } from 'primevue/useconfirm'
 import { useToast } from 'primevue/usetoast'
-import { useForm, useFieldArray, useField } from 'vee-validate'
+import { useForm } from 'vee-validate'
 import * as yup from 'yup'
 import { formatPrice } from '@/utils/format'
 import { Field, Form } from 'vee-validate'
@@ -488,10 +488,7 @@ const selectValues = ref([
     img: 'https://media.loveitopcdn.com/3807/logo-vietravel-airlines.png'
   }
 ])
-const { fields } = useFieldArray('fareOptions')
-const initialValues = ref({
-  fareOptions: fields
-})
+
 const schema = yup.object().shape({
   flightNumber: yup.string().required('Số hiệu chuyến bay là bắt buộc'),
   aircraft: yup.string().required('Phi cơ là bắt buộc'),
