@@ -44,7 +44,7 @@
             {{ startIndex + index + 1 }}
           </template>
         </Column>
-        <Column class="" field="airline" header="Hãng" style="min-width: 7rem" />
+        <Column class="" field="airline.name" header="Hãng" style="min-width: 7rem" />
         <Column class="" field="flightNumber" header="Số hiệu" style="min-width: 5rem" />
         <Column class="" field="aircraft" header="Loại máy bay" style="min-width: 7rem" />
 
@@ -106,7 +106,7 @@
         v-model:visible="flightsEditDialog"
         :style="{ width: '50rem' }"
         :breakpoints="{ '1199px': '75vw', '575px': '90vw' }"
-        header="Flights Details"
+        header="Chỉnh sửa chuyến bay"
         :modal="true"
       >
         <div class="flex flex-col gap-6">
@@ -233,12 +233,12 @@
           <Button label="Lưu" icon="pi pi-check" @click="handleUpdateFlights" />
         </template>
       </Dialog>
-      <Form :initial-values="initialValues" :validation-schema="schema" v-slot="{ setFieldValue }">
+      <Form :initial-values="initialValues" :validation-schema="schema">
         <Dialog
           v-model:visible="flightsAddDialog"
           :style="{ width: '50rem' }"
           :breakpoints="{ '1199px': '75vw', '575px': '90vw' }"
-          header="Flights New"
+          header="Thêm chuyến bay mới"
           :modal="true"
         >
           <div class="flex flex-col gap-6">
@@ -247,8 +247,8 @@
               >Hãng bay<span class="text-red-500 font-medium">(*)</span></label
             >
 
-            <Field name="airline" v-slot="{ field, value }">
-              {{ airline }}
+            <small id="email-help" class="p-error">{{ errors.type }}</small>
+            <Field name="airline" v-slot="{ field }">
               <Select
                 v-bind="field"
                 class="w-full md:w-100"
@@ -257,7 +257,6 @@
                 name="airline"
                 v-model="airline"
                 optionLabel="name"
-                optionValue="value"
                 :class="{ 'p-invalid': errors.airline }"
               >
                 <template #value="slotProps">
@@ -265,23 +264,23 @@
                     <img
                       :alt="slotProps.value.label"
                       :src="slotProps.value.img"
-                      :class="`mr-2 flag flag-${slotProps.value.code}`"
-                      style="width: 30px"
+                      :class="`mr-2 flag flag-${slotProps.value.code.toLowerCase()}`"
+                      style="width: 18px"
                     />
                     <div>{{ slotProps.value.name }}</div>
                   </div>
-
                   <span v-else>
                     {{ slotProps.placeholder }}
                   </span>
                 </template>
                 <template #option="slotProps">
-                  <div class="flex items-center gap-3">
-                    <span
-                      :class="'mr-2 flag flag-' + slotProps.option.code?.toLowerCase()"
-                      style="width: 18px; height: 12px"
+                  <div class="flex items-center">
+                    <img
+                      :alt="slotProps.option.label"
+                      :src="slotProps.option.img"
+                      :class="`mr-2 flag flag-${slotProps.option.code.toLowerCase()}`"
+                      style="width: 18px"
                     />
-                    <div><img style="width: 24px" :src="slotProps.option.img" alt="" /></div>
                     <div>{{ slotProps.option.name }}</div>
                   </div>
                 </template>
@@ -299,6 +298,7 @@
                 v-bind="flightNumberAttrs"
                 :class="{ 'p-invalid': errors.flightNumber }"
                 required
+                class="uppercase"
                 fluid
               />
               <span style="color: #d81221">{{ errors.flightNumber }}</span>
@@ -314,6 +314,7 @@
                 v-model="aircraft"
                 v-bind="aircraftAttrs"
                 :class="{ 'p-invalid': errors.aircraft }"
+                class="uppercase"
                 required
                 fluid
               />
@@ -325,7 +326,7 @@
               <div class="bg-green-100" v-for="(item, index) of fareOptions" :key="index">
                 <Card class="ml-5 bg-red-100">
                   <template #content>
-                    <div class="flex gap-5">
+                    <div class="flex gap-5 uppercase">
                       <Select
                         v-model="item.class"
                         editable
@@ -451,7 +452,7 @@ import { useToast } from 'primevue/usetoast'
 import { useForm, useFieldArray, useField } from 'vee-validate'
 import * as yup from 'yup'
 import { formatPrice } from '@/utils/format'
-import { Field, Form, ErrorMessage, FieldArray } from 'vee-validate'
+import { Field, Form } from 'vee-validate'
 
 const selectionFlights = ref()
 const breakpoints = {
@@ -494,7 +495,7 @@ const initialValues = ref({
 const schema = yup.object().shape({
   flightNumber: yup.string().required('Số hiệu chuyến bay là bắt buộc'),
   aircraft: yup.string().required('Phi cơ là bắt buộc'),
-  airline: yup.string().required('Hãng bay là bắt buộc'),
+  airline: yup.object().required('Hãng bay là bắt buộc'),
   departureAirport: yup
     .string()
     .required('Điểm đi là bắt buộc')
@@ -531,6 +532,7 @@ const addFareOption = () => {
   fareOptions.value.push({ class: '', price: null })
 }
 const handleAddFlights = handleSubmit((values) => {
+  console.log('🚀 ~ handleAddFlights ~ values:', values)
   confirm.require({
     message: 'Bạn có chắc chắn muốn tiếp tục không?',
     header: 'Xác nhận',
@@ -553,7 +555,7 @@ const handleAddFlights = handleSubmit((values) => {
       })
       const req = {
         img: values.airline.img,
-        airline: values.airline.code,
+        airline: values.airline,
         departure: {
           time: values.departureTime,
           airport: values.departureAirport
@@ -619,7 +621,7 @@ const startIndex = computed(() => {
 const confirmDeleteFlights = (id) => {
   confirm.require({
     message: 'Bạn có muốn xóa chuyến bay này không??',
-    header: 'Danger Zone',
+    header: 'Xóa chuyến bay?',
     icon: 'pi pi-info-circle',
     rejectLabel: 'Hủy bỏ',
     acceptLabel: 'Xóa bỏ',

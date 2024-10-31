@@ -2367,6 +2367,31 @@
           "price": 2000000
         }
       ]
+    },
+    {
+      "id": "0796",
+      "img": "https://www.vnas.vn/public/upload/files/29.9.2020/%E1%BA%A3nh%20vinayuuki%20vinh/04.10/06.10/10.10/%C4%91%E1%BA%A1i%20h%E1%BB%8Dc%20vinh/16.10/trang%20nh%C6%B0/ng%C3%A0y%2018.10/%C4%90%E1%BA%A1i%20h%20vinh/ng%C3%A0y%2030.10/th%C3%A1ng%2011/logo%2C/vietnam-airline-logo.jpg",
+      "airline": {
+        "name": "Vietnam Airlines",
+        "code": "VN",
+        "img": "https://www.vnas.vn/public/upload/files/29.9.2020/%E1%BA%A3nh%20vinayuuki%20vinh/04.10/06.10/10.10/%C4%91%E1%BA%A1i%20h%E1%BB%8Dc%20vinh/16.10/trang%20nh%C6%B0/ng%C3%A0y%2018.10/%C4%90%E1%BA%A1i%20h%20vinh/ng%C3%A0y%2030.10/th%C3%A1ng%2011/logo%2C/vietnam-airline-logo.jpg"
+      },
+      "departure": {
+        "time": "2024-10-31T06:58:28.400Z",
+        "airport": "HAN"
+      },
+      "arrival": {
+        "time": "2024-10-31T08:58:28.456Z",
+        "airport": "SGN"
+      },
+      "flightNumber": "Boing099",
+      "aircraft": "linh vu",
+      "fareOptions": [
+        {
+          "class": "Eco",
+          "price": 3331222
+        }
+      ]
     }
   ],
   "reservations": [
