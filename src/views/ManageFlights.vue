@@ -3,34 +3,16 @@
     <div class="mt-5">
       <Toolbar class="mb-6 shadow-md shadow-[#cdcdcd]">
         <template #start>
-          <Button
-            label="Thêm"
-            icon="pi pi-plus"
-            severity="secondary"
-            class="mr-2"
-            @click="flightsAddDialog = true"
-          />
+          <Button label="Thêm" icon="pi pi-plus" severity="secondary" class="mr-2" @click="flightsAddDialog = true" />
         </template>
       </Toolbar>
-      <DataTable
-        :paginator="true"
-        :loading="loading"
-        :rows="planeStore.params._per_page"
-        lazy
-        showGridlines
-        :breakpoints="breakpoints"
-        v-model:selection="selectionFlights"
-        :totalRecords="planeStore.total"
+      <DataTable :paginator="true" :loading="loading" :rows="planeStore.params._per_page" lazy showGridlines
+        :breakpoints="breakpoints" v-model:selection="selectionFlights" :totalRecords="planeStore.total"
         paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
         :rowsPerPageOptions="[5, 10, 36]"
         currentPageReportTemplate="Hiển thị {first} đến {last} trong số {totalRecords} chuyến bay"
-        selectionMode="single"
-        :value="planeStore.flights"
-        tableStyle="min-width: 40rem"
-        @page="onPage"
-        @sort="onSort"
-        class="shadow-md shadow-[#cdcdcd]"
-      >
+        selectionMode="single" :value="planeStore.flights" tableStyle="min-width: 40rem" @page="onPage" @sort="onSort"
+        class="shadow-md shadow-[#cdcdcd]">
         <template #header>
           <div class="flex flex-wrap gap-2 items-center justify-between">
             <h1 class="m-0 font-mono font-medium text-4xl text-orange-600">Danh sách chuyến bay</h1>
@@ -44,7 +26,7 @@
             {{ startIndex + index + 1 }}
           </template>
         </Column>
-        <Column class="" field="airline.name" header="Hãng" style="min-width: 7rem" />
+        <Column class="" field="airline" header="Hãng" style="min-width: 7rem" />
         <Column class="" field="flightNumber" header="Số hiệu" style="min-width: 5rem" />
         <Column class="" field="aircraft" header="Loại máy bay" style="min-width: 7rem" />
 
@@ -54,11 +36,8 @@
             {{ getAirportName(slotProps.data?.arrival?.airport) }}
           </template>
         </Column>
-        <Column
-          header="Thời gian khởi hành - Thời gian đến"
-          class="flex items-center justify-center"
-          style="min-width: 9rem"
-        >
+        <Column header="Thời gian khởi hành - Thời gian đến" class="flex items-center justify-center"
+          style="min-width: 9rem">
           <template #body="slotProps">
             {{ formatDate(slotProps.data?.departure?.time) }} -
             {{ formatDate(slotProps.data?.arrival?.time) }}
@@ -69,46 +48,25 @@
             <div v-for="(priceFlight, index) in slotProps.data.fareOptions" :key="index">
               {{ priceFlight.class }}
             </div>
-          </template></Column
-        >
+          </template>
+        </Column>
         <Column header="Giá vé">
           <template #body="slotProps">
-            <div
-              v-for="(priceFlight, index) in slotProps.data.fareOptions"
-              :key="index"
-              class="text-red-500"
-            >
+            <div v-for="(priceFlight, index) in slotProps.data.fareOptions" :key="index" class="text-red-500">
               {{ formatPrice(priceFlight.price) }}
             </div>
-          </template></Column
-        >
+          </template>
+        </Column>
         <Column class="" header="Thao tác" :exportable="false" style="min-width: 12rem">
           <template #body="{ data }">
-            <Button
-              icon="pi pi-pencil"
-              outlined
-              rounded
-              class="mr-2 !bg-green-100"
-              @click="editFlights(data)"
-            />
-            <Button
-              class="!bg-red-100"
-              icon="pi pi-trash"
-              outlined
-              rounded
-              severity="danger"
-              @click="confirmDeleteFlights(data.id)"
-            />
+            <Button icon="pi pi-pencil" outlined rounded class="mr-2 !bg-green-100" @click="editFlights(data)" />
+            <Button class="!bg-red-100" icon="pi pi-trash" outlined rounded severity="danger"
+              @click="confirmDeleteFlights(data.id)" />
           </template>
         </Column>
       </DataTable>
-      <Dialog
-        v-model:visible="flightsEditDialog"
-        :style="{ width: '50rem' }"
-        :breakpoints="{ '1199px': '75vw', '575px': '90vw' }"
-        header="Chỉnh sửa chuyến bay"
-        :modal="true"
-      >
+      <Dialog v-model:visible="flightsEditDialog" :style="{ width: '50rem' }"
+        :breakpoints="{ '1199px': '75vw', '575px': '90vw' }" header="Chỉnh sửa chuyến bay" :modal="true">
         <div class="flex flex-col gap-6">
           <div>
             <label for="airline" class="block font-bold mb-3">Hãng Bay</label>
@@ -116,13 +74,7 @@
           </div>
           <div>
             <label for="flightNumber" class="block font-bold mb-3">Số hiệu chuyến bay</label>
-            <InputText
-              id="flightNumber"
-              v-model="flights.flightNumber"
-              required="true"
-              autofocus
-              fluid
-            />
+            <InputText id="flightNumber" v-model="flights.flightNumber" required="true" autofocus fluid />
           </div>
           <div>
             <label for="aircraft" class="block font-bold mb-3">Phi cơ</label>
@@ -134,14 +86,8 @@
               <Card class="ml-5 bg-red-100">
                 <template #content>
                   <div class="flex gap-5">
-                    <Select
-                      v-model="item.class"
-                      editable
-                      :options="levelOptions"
-                      placeholder="Hạng vé"
-                      class="w-full"
-                      checkmark
-                    />
+                    <Select v-model="item.class" editable :options="levelOptions" placeholder="Hạng vé" class="w-full"
+                      checkmark />
                     <InputGroup>
                       <InputGroupAddon>$</InputGroupAddon>
                       <InputNumber v-model="item.price" placeholder="Giá vé" />
@@ -156,12 +102,8 @@
             <div class="">
               <div class="">
                 <label for="aircraft" class="block font-bold mb-3">Điểm đi</label>
-                <Select
-                  v-model="flights.departure.airport"
-                  :options="planeStore.airports"
-                  option-value="airportCode"
-                  placeholder="Select a flights"
-                >
+                <Select v-model="flights.departure.airport" :options="planeStore.airports" option-value="airportCode"
+                  placeholder="Select a flights">
                   <template #value="slotProps">
                     <div v-if="slotProps.value" class="flex items-center">
                       <div>{{ getAirportName(slotProps.value) }}</div>
@@ -180,12 +122,8 @@
             <div class="">
               <div class="">
                 <label for="aircraft" class="block font-bold mb-3">Điểm đến</label>
-                <Select
-                  v-model="flights.arrival.airport"
-                  :options="planeStore.airports"
-                  option-value="airportCode"
-                  placeholder="Select a Country"
-                >
+                <Select v-model="flights.arrival.airport" :options="planeStore.airports" option-value="airportCode"
+                  placeholder="Select a Country">
                   <template #value="slotProps">
                     <div v-if="slotProps.value" class="flex items-center">
                       <div>{{ getAirportName(slotProps.value) }}</div>
@@ -205,25 +143,13 @@
             <div>
               <div class="flex-auto">
                 <label for="aircraft" class="block font-bold mb-3">Thời Gian đi</label>
-                <DatePicker
-                  id="datepicker-24h"
-                  v-model="flights.departure.time"
-                  showTime
-                  hourFormat="24"
-                  fluid
-                />
+                <DatePicker id="datepicker-24h" v-model="flights.departure.time" showTime hourFormat="24" fluid />
               </div>
             </div>
             <div>
               <div class="flex-auto">
                 <label for="aircraft" class="block font-bold mb-3">Thời gian đến</label>
-                <DatePicker
-                  id="datepicker-24h"
-                  v-model="flights.arrival.time"
-                  showTime
-                  hourFormat="24"
-                  fluid
-                />
+                <DatePicker id="datepicker-24h" v-model="flights.arrival.time" showTime hourFormat="24" fluid />
               </div>
             </div>
           </div>
@@ -234,90 +160,50 @@
         </template>
       </Dialog>
       <Form :validation-schema="schema">
-        <Dialog
-          v-model:visible="flightsAddDialog"
-          :style="{ width: '50rem' }"
-          :breakpoints="{ '1199px': '75vw', '575px': '90vw' }"
-          header="Thêm chuyến bay mới"
-          :modal="true"
-        >
+        <Dialog v-model:visible="flightsAddDialog" :style="{ width: '50rem' }"
+          :breakpoints="{ '1199px': '75vw', '575px': '90vw' }" header="Thêm chuyến bay mới" :modal="true">
           <div class="flex flex-col gap-6">
             <!-- Hãng bay -->
-            <label for="selectValue" class="block font-bold"
-              >Hãng bay<span class="text-red-500 font-medium">(*)</span></label
-            >
+            <label for="selectValue" class="block font-bold">Hãng bay<span
+                class="text-red-500 font-medium">(*)</span></label>
 
             <small id="email-help" class="p-error">{{ errors.type }}</small>
             <Field name="airline" v-slot="{ field }">
-              <Select
-                v-bind="field"
-                class="w-full md:w-100"
-                placeholder="Chọn hệ thống chuyến bay"
-                :options="selectValues"
-                name="airline"
-                v-model="airline"
-                optionLabel="name"
-                :class="{ 'p-invalid': errors.airline }"
-              >
-                <template #value="slotProps">
-                  <div v-if="slotProps.value" class="flex items-center">
-                    <img
-                      :alt="slotProps.value.label"
-                      :src="slotProps.value.img"
-                      :class="`mr-2 flag flag-${slotProps.value.code.toLowerCase()}`"
-                      style="width: 18px"
-                    />
-                    <div>{{ slotProps.value.name }}</div>
+              <Select v-bind="field" class="w-full md:w-100" placeholder="Chọn hệ thống chuyến bay"
+                :options="selectValues" name="airline" v-model="airline" 
+                :class="{ 'p-invalid': errors.airline }" option-value="code">
+                <template #value="{ value }">
+                  <div v-if="value" class="flex items-center">
+                    <img :alt="getAirlineByCode(value)?.name" :src="getAirlineByCode(value)?.img"
+                      :class="`mr-2 flag flag-${value?.toLowerCase()}`" style="width: 18px" />
+                    <div>{{ getAirlineByCode(value)?.name }}</div>
                   </div>
-                  <span v-else>
-                    {{ slotProps.placeholder }}
-                  </span>
                 </template>
-                <template #option="slotProps">
+                <template #option="{ option }">
                   <div class="flex items-center">
-                    <img
-                      :alt="slotProps.option.label"
-                      :src="slotProps.option.img"
-                      :class="`mr-2 flag flag-${slotProps.option.code.toLowerCase()}`"
-                      style="width: 18px"
-                    />
-                    <div>{{ slotProps.option.name }}</div>
+                    <img :alt="getAirlineByCode(option.code)?.name" :src="getAirlineByCode(option.code)?.img"
+                      :class="`mr-2 flag flag-${option.code?.toLowerCase()}`" style="width: 18px" />
+                    <div>{{ getAirlineByCode(option.code)?.name }}</div>
                   </div>
                 </template>
               </Select>
-              <span style="color: #d81221">{{ errors.airline }}</span>
+              <small style="color: #d81221">{{ errors.airline }}</small>
             </Field>
             <!-- Số hiệu chuyến bay -->
             <div>
-              <label for="flightNumber" class="block font-bold mb-3"
-                >Số hiệu chuyến bay<span class="text-red-500 font-medium">(*)</span></label
-              >
-              <InputText
-                id="flightNumber"
-                v-model="flightNumber"
-                v-bind="flightNumberAttrs"
-                :class="{ 'p-invalid': errors.flightNumber }"
-                required
-                class="uppercase"
-                fluid
-              />
+              <label for="flightNumber" class="block font-bold mb-3">Số hiệu chuyến bay<span
+                  class="text-red-500 font-medium">(*)</span></label>
+              <InputText id="flightNumber" v-model="flightNumber" v-bind="flightNumberAttrs"
+                :class="{ 'p-invalid': errors.flightNumber }" required class="uppercase" fluid />
               <span style="color: #d81221">{{ errors.flightNumber }}</span>
             </div>
 
             <!-- Phi cơ -->
             <div>
-              <label for="aircraft" class="block font-bold mb-3"
-                >Phi cơ<span class="text-red-500 font-medium">(*)</span></label
-              >
-              <InputText
-                id="aircraft"
-                v-model="aircraft"
-                v-bind="aircraftAttrs"
-                :class="{ 'p-invalid': errors.aircraft }"
-                class="uppercase"
-                required
-                fluid
-              />
+              <label for="aircraft" class="block font-bold mb-3">Phi cơ<span
+                  class="text-red-500 font-medium">(*)</span></label>
+              <InputText id="aircraft" v-model="aircraft" v-bind="aircraftAttrs"
+                :class="{ 'p-invalid': errors.aircraft }" class="uppercase" required fluid />
               <span style="color: #d81221">{{ errors.aircraft }}</span>
             </div>
 
@@ -327,14 +213,8 @@
                 <Card class="ml-5 bg-red-100">
                   <template #content>
                     <div class="flex gap-5 uppercase">
-                      <Select
-                        v-model="item.class"
-                        editable
-                        :options="levelOptions"
-                        placeholder="Hạng vé"
-                        class="w-full"
-                        checkmark
-                      />
+                      <Select v-model="item.class" editable :options="levelOptions" placeholder="Hạng vé" class="w-full"
+                        checkmark />
                       <InputGroup>
                         <InputGroupAddon>$</InputGroupAddon>
                         <InputNumber v-model="item.price" placeholder="Giá vé" />
@@ -354,16 +234,9 @@
             <div class="flex justify-around gap-3">
               <div class="flex flex-col gap-3">
                 <label for="departureAirport" class="block font-bold mb-3">Điểm đi</label>
-                <Select
-                  id="departureAirport"
-                  v-model="departureAirport"
-                  :options="planeStore.airports"
-                  option-value="airportCode"
-                  placeholder="chọn chuyến bay đi"
-                  class="w-full"
-                  :class="{ 'p-invalid': errors['departure.airport'] }"
-                  v-bind="departureAirportAttrs"
-                >
+                <Select id="departureAirport" v-model="departureAirport" :options="planeStore.airports"
+                  option-value="airportCode" placeholder="chọn chuyến bay đi" class="w-full"
+                  :class="{ 'p-invalid': errors['departure.airport'] }" v-bind="departureAirportAttrs">
                   <template #value="slotProps">
                     <span v-if="slotProps.value">{{ getAirportName(slotProps.value) }}</span>
                     <span v-else>{{ slotProps.placeholder }}</span>
@@ -379,15 +252,9 @@
 
               <div class="flex flex-col gap-3">
                 <label for="arrivalAirport" class="block font-bold mb-3">Điểm đến</label>
-                <Select
-                  id="arrivalAirport"
-                  v-model="arrivalAirport"
-                  :options="planeStore.airports"
-                  option-value="airportCode"
-                  placeholder="chọn chuyến bay đến"
-                  :class="{ 'p-invalid': errors['arrival.airport'] }"
-                  v-bind="arrivalAirportAttrs"
-                >
+                <Select id="arrivalAirport" v-model="arrivalAirport" :options="planeStore.airports"
+                  option-value="airportCode" placeholder="chọn chuyến bay đến"
+                  :class="{ 'p-invalid': errors['arrival.airport'] }" v-bind="arrivalAirportAttrs">
                   <template #value="slotProps">
                     <span v-if="slotProps.value">{{ getAirportName(slotProps.value) }}</span>
                     <span v-else>{{ slotProps.placeholder }}</span>
@@ -406,31 +273,17 @@
             <div class="flex justify-around">
               <div class="flex flex-col gap-3">
                 <label for="departureTime" class="block font-bold mb-3">Thời Gian đi</label>
-                <DatePicker
-                  id="departureTime"
-                  v-model="departureTime"
-                  showTime
-                  :min-date="new Date()"
-                  hourFormat="24"
-                  :class="{ 'p-invalid': errors['departure.time'] }"
-                  v-bind="departureTimeAttrs"
-                  placeholder="Thời gian đi"
-                />
+                <DatePicker id="departureTime" v-model="departureTime" showTime :min-date="new Date()" hourFormat="24"
+                  :class="{ 'p-invalid': errors['departure.time'] }" v-bind="departureTimeAttrs"
+                  placeholder="Thời gian đi" />
                 <span style="color: #d81221">{{ errors['departure.time'] }}</span>
               </div>
 
               <div class="flex flex-col gap-3">
                 <label for="arrivalTime" class="block font-bold mb-3">Thời gian đến</label>
-                <DatePicker
-                  id="arrivalTime"
-                  v-model="arrivalTime"
-                  :minDate="departureTime"
-                  showTime
-                  hourFormat="24"
-                  :class="{ 'p-invalid': errors['arrival.time'] }"
-                  v-bind="arrivalTimeAttrs"
-                  placeholder="Thời gian đến"
-                />
+                <DatePicker id="arrivalTime" v-model="arrivalTime" :minDate="departureTime" showTime hourFormat="24"
+                  :class="{ 'p-invalid': errors['arrival.time'] }" v-bind="arrivalTimeAttrs"
+                  placeholder="Thời gian đến" />
                 <span style="color: #d81221">{{ errors['arrival.time'] }}</span>
               </div>
             </div>
@@ -492,7 +345,7 @@ const selectValues = ref([
 const schema = yup.object().shape({
   flightNumber: yup.string().required('Số hiệu chuyến bay là bắt buộc'),
   aircraft: yup.string().required('Phi cơ là bắt buộc'),
-  airline: yup.object().required('Hãng bay là bắt buộc'),
+  airline: yup.string().required('Hãng bay là bắt buộc'),
   departureAirport: yup
     .string()
     .required('Điểm đi là bắt buộc')
@@ -528,8 +381,10 @@ const [airline] = defineField('airline')
 const addFareOption = () => {
   fareOptions.value.push({ class: '', price: null })
 }
+const getAirlineByCode = (code) => {
+  return selectValues.value.find(e => e.code == code)
+}
 const handleAddFlights = handleSubmit((values) => {
-  console.log('🚀 ~ handleAddFlights ~ values:', values)
   confirm.require({
     message: 'Bạn có chắc chắn muốn tiếp tục không?',
     header: 'Xác nhận',
@@ -570,7 +425,6 @@ const handleAddFlights = handleSubmit((values) => {
       }
 
       if (req) {
-        console.log('🚀 ~ accept: ~ req:', req)
         try {
           await planeStore.addFlights(req)
 
@@ -605,7 +459,7 @@ const getAirportName = (code) => {
   const airport = planeStore.airports.find((airport) => airport.airportCode === code)
   return `${airport ? airport.name : code} (${code})` // Return the code if no name is found
 }
-const onSort = () => {}
+const onSort = () => { }
 const onPage = async (event) => {
   loading.value = true
   planeStore.params._page = event.page + 1 || event
