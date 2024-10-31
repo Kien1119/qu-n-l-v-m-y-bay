@@ -2627,6 +2627,50 @@
           "birthday": "1992-04-07T17:00:00.000Z"
         }
       ]
+    },
+    {
+      "id": "8615",
+      "bookingCode": "IT5SZS4F",
+      "createdAt": 1730310643670,
+      "flight": {
+        "img": "https://www.vnas.vn/public/upload/files/29.9.2020/%E1%BA%A3nh%20vinayuuki%20vinh/04.10/06.10/10.10/%C4%91%E1%BA%A1i%20h%E1%BB%8Dc%20vinh/16.10/trang%20nh%C6%B0/ng%C3%A0y%2018.10/%C4%90%E1%BA%A1i%20h%20vinh/ng%C3%A0y%2030.10/th%C3%A1ng%2011/logo%2C/vietnam-airline-logo.jpg",
+        "id": "3d57",
+        "airline": "VN",
+        "departure": {
+          "time": "2024-10-30T10:25:35.604Z",
+          "airport": "HAN"
+        },
+        "arrival": {
+          "time": "2024-10-30T12:25:35.604Z",
+          "airport": "SGN"
+        },
+        "flightNumber": "ST321",
+        "aircraft": "VU LINH",
+        "fareOptions": [
+          {
+            "class": "Thông thường",
+            "price": 4000000
+          }
+        ]
+      },
+      "contact": {
+        "email": "dsdsdsds@sdsds",
+        "phone": "123122312331"
+      },
+      "paxLists": [
+        {
+          "titleName": "MRS",
+          "firstName": "Nguyen",
+          "lastName": "Duc kien",
+          "birthday": "2024-09-30T17:00:00.000Z"
+        },
+        {
+          "titleName": "MR",
+          "firstName": "Vu",
+          "lastName": "linh",
+          "birthday": "2024-09-30T17:00:00.000Z"
+        }
+      ]
     }
   ]
 }

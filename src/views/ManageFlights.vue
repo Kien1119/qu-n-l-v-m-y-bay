@@ -233,7 +233,7 @@
           <Button label="Lưu" icon="pi pi-check" @click="handleUpdateFlights" />
         </template>
       </Dialog>
-      <Form :initial-values="initialValues" :validation-schema="schema">
+      <Form :initial-values="initialValues" :validation-schema="schema" v-slot="{ setFieldValue }">
         <Dialog
           v-model:visible="flightsAddDialog"
           :style="{ width: '50rem' }"
@@ -248,16 +248,17 @@
             >
 
             <Field name="airline" v-slot="{ field, value }">
-              {{ errors }} | {{ value.value }}||{{ initialValues.airline }}
+              {{ airline }}
               <Select
-                name="airline"
-                v-model="initialValues.airline"
-                :options="selectValues"
                 v-bind="field"
-                placeholder="Chọn hệ thống chuyến bay"
                 class="w-full md:w-100"
+                placeholder="Chọn hệ thống chuyến bay"
+                :options="selectValues"
+                name="airline"
+                v-model="airline"
+                optionLabel="name"
+                optionValue="value"
                 :class="{ 'p-invalid': errors.airline }"
-                option-label="name"
               >
                 <template #value="slotProps">
                   <div v-if="slotProps.value" class="flex items-center">
@@ -285,7 +286,7 @@
                   </div>
                 </template>
               </Select>
-              <ErrorMessage name="airline" class="text-red-600" />
+              <span style="color: #d81221">{{ errors.airline }}</span>
             </Field>
             <!-- Số hiệu chuyến bay -->
             <div>
@@ -447,7 +448,7 @@ import { usePlaneStore } from '@/stores/airports'
 import { computed, onMounted, ref } from 'vue'
 import { useConfirm } from 'primevue/useconfirm'
 import { useToast } from 'primevue/usetoast'
-import { useForm, useFieldArray } from 'vee-validate'
+import { useForm, useFieldArray, useField } from 'vee-validate'
 import * as yup from 'yup'
 import { formatPrice } from '@/utils/format'
 import { Field, Form, ErrorMessage, FieldArray } from 'vee-validate'
@@ -488,8 +489,7 @@ const selectValues = ref([
 ])
 const { fields } = useFieldArray('fareOptions')
 const initialValues = ref({
-  fareOptions: fields,
-  airline: ''
+  fareOptions: fields
 })
 const schema = yup.object().shape({
   flightNumber: yup.string().required('Số hiệu chuyến bay là bắt buộc'),
@@ -513,9 +513,8 @@ const schema = yup.object().shape({
     })
   )
 })
-const { handleSubmit, errors, defineField } = useForm({
-  validationSchema: schema,
-  initialValues
+const { defineField, handleSubmit, resetForm, errors } = useForm({
+  validationSchema: schema
 })
 const fareOptions = ref([{}])
 const levelOptions = ref(['Eco', 'Bussiness'])
@@ -526,6 +525,8 @@ const [departureAirport, departureAirportAttrs] = defineField('departureAirport'
 const [arrivalAirport, arrivalAirportAttrs] = defineField('arrivalAirport')
 const [departureTime, departureTimeAttrs] = defineField('departureTime')
 const [arrivalTime, arrivalTimeAttrs] = defineField('arrivalTime')
+const [airline] = defineField('airline')
+
 const addFareOption = () => {
   fareOptions.value.push({ class: '', price: null })
 }
@@ -551,8 +552,8 @@ const handleAddFlights = handleSubmit((values) => {
         life: 3000
       })
       const req = {
-        img: values.initialValues.airline.img,
-        airline: values.initialValues.airline.code,
+        img: values.airline.img,
+        airline: values.airline.code,
         departure: {
           time: values.departureTime,
           airport: values.departureAirport

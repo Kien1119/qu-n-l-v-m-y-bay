@@ -169,6 +169,7 @@
                       :id="`firstName_${idx}`"
                       :name="`paxLists[${idx}].firstName`"
                       class="px-2 w-full uppercase h-10 rounded-md"
+                      :class="{ 'p-invalid': `paxLists[${idx}].firstName` }"
                       placeholder="Họ"
                       as="input"
                     />
@@ -313,8 +314,6 @@ const planeStore = usePlaneStore()
 const price = ref([{ count: 0 }])
 const information = ref([])
 
-useForm()
-
 const { fields } = useFieldArray('paxLists')
 
 // khởi tạo giá trị
@@ -438,82 +437,82 @@ const getHold = (values) => {
   })
 }
 
-const holdBooking = handleSubmit((values) => {
-  console.log(1)
-  confirm.require({
-    message: 'Bạn có chắc chắn muốn tiếp tục không?',
-    header: 'Xác nhận',
-    icon: 'pi pi-exclamation-triangle',
-    rejectProps: { label: 'Hủy bỏ', severity: 'secondary', outlined: true },
-    acceptProps: { label: 'Save' },
-    accept: async () => {
-      toast.add({
-        severity: 'info',
-        summary: 'Đang cập nhật',
-        detail: 'Đang tiến hành cập nhật sân bay...',
-        life: 3000
-      })
+// const holdBooking = handleSubmit((values) => {
+//   console.log(1)
+//   confirm.require({
+//     message: 'Bạn có chắc chắn muốn tiếp tục không?',
+//     header: 'Xác nhận',
+//     icon: 'pi pi-exclamation-triangle',
+//     rejectProps: { label: 'Hủy bỏ', severity: 'secondary', outlined: true },
+//     acceptProps: { label: 'Save' },
+//     accept: async () => {
+//       toast.add({
+//         severity: 'info',
+//         summary: 'Đang cập nhật',
+//         detail: 'Đang tiến hành cập nhật sân bay...',
+//         life: 3000
+//       })
 
-      const req = {
-        bookingCode: genBookingCode(),
-        createdAt: new Date().getTime(),
-        flight: {
-          img: information.value?.img,
-          id: information.value?.id,
-          airline: information.value?.airline,
-          departure: {
-            time: information.value?.departure.time,
-            airport: information.value?.departure.airport
-          },
-          arrival: {
-            time: information.value?.arrival.time,
-            airport: information.value?.arrival.airport
-          },
-          flightNumber: information.value?.flightNumber,
-          aircraft: information.value?.aircraft,
-          fareOptions: [
-            {
-              class: price.value[0]?.class,
-              price: price.value[0]?.total
-            }
-          ]
-        },
-        contact: {
-          email: values.email,
-          phone: values.phone
-        },
-        paxLists: values.paxLists.map((pax) => ({
-          titleName: pax.titleName,
-          firstName: pax.firstName,
-          lastName: pax.lastName,
-          birthday: pax.birthday
-        }))
-      }
+//       const req = {
+//         bookingCode: genBookingCode(),
+//         createdAt: new Date().getTime(),
+//         flight: {
+//           img: information.value?.img,
+//           id: information.value?.id,
+//           airline: information.value?.airline,
+//           departure: {
+//             time: information.value?.departure.time,
+//             airport: information.value?.departure.airport
+//           },
+//           arrival: {
+//             time: information.value?.arrival.time,
+//             airport: information.value?.arrival.airport
+//           },
+//           flightNumber: information.value?.flightNumber,
+//           aircraft: information.value?.aircraft,
+//           fareOptions: [
+//             {
+//               class: price.value[0]?.class,
+//               price: price.value[0]?.total
+//             }
+//           ]
+//         },
+//         contact: {
+//           email: values.email,
+//           phone: values.phone
+//         },
+//         paxLists: values.paxLists.map((pax) => ({
+//           titleName: pax.titleName,
+//           firstName: pax.firstName,
+//           lastName: pax.lastName,
+//           birthday: pax.birthday
+//         }))
+//       }
 
-      if (req) {
-        reservationStore.holdBooking(req) // Gọi API
-        router.push({ path: '/bookings' })
-      } else {
-        alert('Đặt Thất bại')
-      }
+//       if (req) {
+//         reservationStore.holdBooking(req) // Gọi API
+//         router.push({ path: '/bookings' })
+//       } else {
+//         alert('Đặt Thất bại')
+//       }
 
-      toast.add({
-        severity: 'success',
-        summary: 'Thành công',
-        detail: 'Đặt vé thành công!',
-        life: 3000
-      })
-    },
-    reject: () => {
-      toast.add({
-        severity: 'error',
-        summary: 'Lỗi',
-        detail: 'Bạn đã từ chối',
-        life: 3000
-      })
-    }
-  })
-})
+//       toast.add({
+//         severity: 'success',
+//         summary: 'Thành công',
+//         detail: 'Đặt vé thành công!',
+//         life: 3000
+//       })
+//     },
+//     reject: () => {
+//       toast.add({
+//         severity: 'error',
+//         summary: 'Lỗi',
+//         detail: 'Bạn đã từ chối',
+//         life: 3000
+//       })
+//     }
+//   })
+// })
 
 // Hàm để quay lại trang booking
 const backBooking = () => {
