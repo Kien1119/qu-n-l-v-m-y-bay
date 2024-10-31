@@ -43,6 +43,12 @@ const router = createRouter({
       meta: { layout: NormalPage }
     },
     {
+      path: '/flights2',
+      name: 'ManageFlights2',
+      component: () => import('../views/ManageFlights2.vue'),
+      meta: { layout: NormalPage }
+    },
+    {
       path: '/bookings',
       name: 'ManageBookings',
       component: () => import('../views/ManageBookig.vue'),
